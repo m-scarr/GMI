@@ -1,4 +1,4 @@
-# test
+# GMI
 
 ## Project setup
 ```
