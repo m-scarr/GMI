@@ -1,0 +1,46 @@
+.register-container {
+    position: fixed;
+    background-color: rgb(48, 48, 48);
+    border: 1px solid white;
+    border-radius: 16px;
+    width: 320px;
+}
+
+.register-container {
+    width: 320px;
+}
+
+.register-container header {
+    width: 100%;
+    text-align: center;
+    padding: 8px;
+    display: flex;
+    flex-direction: row;
+}
+
+.register-container header div {
+    width: calc(100% - 48px)
+}
+
+.register-container main {
+    border-top: 1px solid white;
+    padding: 8px;
+}
+
+.register-container header img {
+    border-radius: 8px;
+}
+
+.register-container header img:hover {
+    background-color: rgba(255, 255, 255, .2);
+}
+
+.register-container input {
+    margin: 8px;
+    width: calc(100% - 20px);
+    background-color: rgb(32, 32, 32);
+}
+
+.register-container button {
+    width: calc(100% - 16px);
+}

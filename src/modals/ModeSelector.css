@@ -1,0 +1,33 @@
+.mode-selector-container {
+    position: fixed;
+    background-color: rgb(48, 48, 48);
+    border: 1px solid white;
+    border-radius: 16px;
+    width: 320px;
+}
+
+.mode-selector-option {
+    height: 160px;
+}
+
+.mode-selector-container hr {
+    margin: 0;
+}
+
+.mode-selector-log-out {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    right: 8px;
+    top: 8px;
+    border-radius: 8px;
+}
+
+.mode-selector-back {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    left: 8px;
+    top: 8px;
+    border-radius: 8px;
+}

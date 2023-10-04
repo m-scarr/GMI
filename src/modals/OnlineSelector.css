@@ -1,0 +1,15 @@
+.online-selector-container {
+    position: fixed;
+    background-color: rgb(48, 48, 48);
+    border: 1px solid white;
+    border-radius: 16px;
+    width: 320px;
+}
+
+.online-selector-option {
+    height: 160px;
+}
+
+.online-selector-container hr {
+    margin: 0;
+}

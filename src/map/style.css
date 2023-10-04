@@ -1,0 +1,7 @@
+.map-canvas {
+    position: fixed;
+    border: 2px solid gray;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    z-index: 1;
+}

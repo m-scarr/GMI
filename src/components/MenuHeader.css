@@ -1,0 +1,25 @@
+.menu-header-title-container {
+    padding: 8px;
+    font-size: 32px;
+}
+
+.menu-header-options-container {
+    height: 32px;
+    width: 320px;
+    display: flex;
+    flex-direction: row;
+}
+
+.menu-header-container {
+    width: 320px;
+}
+
+.refresh {
+    width: 32px;
+    height: 32px;
+    position: fixed;
+    top: 3px;
+    left: 291px;
+    z-index: 2;
+    border-bottom-left-radius: 8px;
+}

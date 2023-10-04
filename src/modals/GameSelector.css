@@ -1,0 +1,51 @@
+.game-selector-container {
+    position: fixed;
+    background-color: rgb(48, 48, 48);
+    border: 1px solid white;
+    border-radius: 16px;
+    width: 320px;
+}
+
+.game-selector-back {
+    border-radius: 8px;
+}
+
+.game-selector-game {
+    width: 100%;
+}
+
+.game-selector-game:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+}
+
+.game-selector-add-button {
+    width: calc(100% - 32px);
+    text-align: center;
+    border: 1px solid white;
+    margin: 8px;
+    padding: 8px;
+    border-radius: 16px;
+}
+
+.game-selector-container header {
+    width: 100%;
+    text-align: center;
+    padding: 8px;
+    display: flex;
+    flex-direction: row;
+}
+
+.game-selector-container header div {
+    width: calc(100% - 80px);
+}
+
+.game-selector-log-out {
+    border-radius: 8px;
+}
+
+.game-selector-container main {
+    height: 320px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}

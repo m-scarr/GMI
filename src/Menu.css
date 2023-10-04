@@ -1,0 +1,15 @@
+.menu-container {
+    background-color: rgb(48, 48, 48);
+    border: 2px solid white;
+    width: 320px;
+    height: calc(100% - 6px);
+    margin-top: 1px;
+    margin-left: 1px;
+    z-index: 2;
+}
+
+.menu-entity-container {
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
