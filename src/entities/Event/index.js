@@ -71,7 +71,6 @@ export default class Event extends Entity {
     }
 
     afterUpdate(field, oldValue, newValue) {
-
     }
 
     save() {

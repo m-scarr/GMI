@@ -61,12 +61,12 @@ export default class Combatant extends Entity {
         }
     }
 
-    afterUpdate() {
-    }
-
     cascadeDelete() {
         this.character.removeCombatant(this);
         this.battlefield.removeCombatant(this);
+    }
+    
+    afterUpdate(field, oldValue, newValue) {
     }
 
     save() {

@@ -75,6 +75,10 @@ export default class Cache extends Entity {
         }
     }
 
+    afterUpdate(field, oldValue, newValue) {
+    }
+
+
     save() {
         var data = { inventory: [], logs: [] };
         this.inventory.forEach((inventoryItem) => {

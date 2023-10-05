@@ -48,12 +48,11 @@ export default class Stat extends Entity {
         }
     }
 
-    afterUpdate(field, oldValue, newValue) {
-
-    }
-
     cascadeDelete() {
         this.item.removeStat(this);
+    }
+
+    afterUpdate(field, oldValue, newValue) {
     }
 
     save() {

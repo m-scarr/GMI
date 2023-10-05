@@ -74,6 +74,8 @@ export default class Log extends Entity {
         this.owner.removeLog(this);
     }
 
+    afterUpdate(field, oldValue, newValue) {
+    }
 
     save() {
         if (typeof this.owner !== "undefined") {

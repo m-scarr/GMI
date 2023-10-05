@@ -63,16 +63,15 @@ export default class Locale extends Entity {
         }
     }
 
-    afterUpdate(field, oldValue, newValue) {
-
-    }
-
     cascadeDelete() {
         while (this.logs.length > 0) {
             this.logs[0].forceDelete();
         }
     }
 
+    afterUpdate(field, oldValue, newValue) {
+    }
+    
     save() {
         var data = { logs: [] };
         this.logs.forEach((log) => {

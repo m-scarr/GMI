@@ -22,6 +22,16 @@ export class Map extends Component {
         Object.keys(drawing).forEach((func) => {
             this[func] = drawing[func].bind(this)
         })
+        const ctx = this.canvasRef.current.getContext("2d")
+        const img = new Image();
+        img.src = "./assets/defaultMap.jpeg"
+        img.onload = () => {
+            console.log("!!!")
+            ctx.drawImage(img, 200, -200, img.width / 3, img.height / 3);
+        }
+        img.onerror = (e) => {
+            console.log(e)
+        }
     }
 
     render() {

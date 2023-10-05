@@ -54,8 +54,8 @@ export default class GroupMember extends Entity {
     }
   }
 
-  afterUpdate(field, value) {
-    if (field === "quantity" && value < 1) {
+  afterUpdate(field, oldValue, newValue) {
+    if (field === "quantity" && newValue < 1) {
       this.forceDelete();
     }
   }

@@ -108,7 +108,7 @@ export default class Character extends Entity {
         }
     }
 
-    afterUpdate(field, value) {
+    afterUpdate(field, oldValue, newValue) {
         if (field === "unique") {
             while (this.inventory.length > 0) {
                 this.inventory[0].forceDelete();
@@ -122,7 +122,7 @@ export default class Character extends Entity {
         }
         if (field === "hp") {
             this.combatants.forEach((combatant) => {
-                combatant.fields.hp = value;
+                combatant.fields.hp = newValue;
             })
         }
     }

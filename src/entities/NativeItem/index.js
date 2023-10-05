@@ -56,27 +56,6 @@ export default class NativeItem extends Entity {
         }
     }
 
-    afterUpdate(field, value) {
-        if (field === "unique") {
-            while (this.inventoryItems.length > 0) {
-                this.inventoryItems[0].deleteOffline();
-            }
-            if (value) {
-                this.fields.currency = false;
-            }
-        }
-        if (field === "currency" && value) {
-            this.fields.unique = false;
-            this.fields.equippable = false;
-            while (this.inventoryItems.length > 0) {
-                this.inventoryItems[0].deleteOffline();
-            }
-        }
-        if (field === "equippable" && value) {
-            this.fields.currency = false;
-        }
-    }
-
     cascadeDelete() {
         while (this.inventoryItems.length > 0) {
             this.inventoryItems[0].forceDelete();
@@ -86,6 +65,27 @@ export default class NativeItem extends Entity {
         }
         while (this.logs.length > 0) {
             this.logs[0].forceDelete();
+        }
+    }
+
+    afterUpdate(field, oldValue, newValue) {
+        if (field === "unique") {
+            while (this.inventoryItems.length > 0) {
+                this.inventoryItems[0].deleteOffline();
+            }
+            if (newValue) {
+                this.fields.currency = false;
+            }
+        }
+        if (field === "currency" && newValue) {
+            this.fields.unique = false;
+            this.fields.equippable = false;
+            while (this.inventoryItems.length > 0) {
+                this.inventoryItems[0].deleteOffline();
+            }
+        }
+        if (field === "equippable" && newValue) {
+            this.fields.currency = false;
         }
     }
 
