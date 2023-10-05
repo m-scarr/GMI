@@ -15,7 +15,7 @@ export default class Locale extends Entity {
 
     fields = {
         name: null,
-        location: { localeId: null, x: null, y: null },
+        location: { locale: null, x: null, y: null },
         visible: null,
         mapSrc: null,
         markerSrc: null,

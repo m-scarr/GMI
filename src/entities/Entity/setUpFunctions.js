@@ -5,13 +5,17 @@ import Stat from "../Stat";
 import Combatant from "../Combatant";
 
 const setUpFunctions = {
-    setUpFields:(entity)=> {
+    setUpFields: (entity) => {
         Object.keys(entity.fields).forEach((field) => {
             if (typeof entity.protoData[field] !== "undefined") {
                 entity.fields[field] = entity.protoData[field];
+                if (field.slice(-3) === "Src") {
+                    entity[field.split("Src")[0]].src = entity.protoData[field];
+                }
             }
         })
     },
+
     setUpLogs: (entity) => {
         if (typeof entity.protoData.logs !== "undefined") {
             var foundEntity;
@@ -92,15 +96,13 @@ const setUpFunctions = {
             }
         })
     },
-    
+
     setUpMarker: (entity) => {
         entity.marker.src = entity.protoData.markerSrc;
     },
 
     setUpLocation: (entity) => {
         if (typeof entity.protoData.localeId !== "undefined") {
-            var i = 0;
-            while (i < entity.game.locales.length && entity.game.locales[i].id !== entity.protoData.localeId) { i++ }
             entity.fields.location.locale = entity.game.locales.findById(entity.protoData.localeId);
         }
         if (typeof entity.protoData.x !== "undefined") {

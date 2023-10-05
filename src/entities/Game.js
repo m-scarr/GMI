@@ -52,12 +52,16 @@ export default class Game {
         this.app = app;
         if (!online) {
             Locale.create(this, (locale) => {
-                locale.name = "Overworld Locale";
+                locale.fields.name = "Overworld Locale";
+                locale.set("mapSrc", "./assets/defaultMap.jpeg");
                 this.overworldLocale = locale;
+                this.app.set("currentGame", this);
+                this.app.set("currentLocale", locale);
             })
+        } else {
+            this.app.set("currentGame", this);
+            this.app.set("currentLocale", this.overworldLocale);
         }
-        this.app.set("currentGame", this);
-        this.app.set("currentLocale", this.overworldLocale);
     }
 
     set(field, value) {
@@ -157,7 +161,7 @@ export default class Game {
             entity.setUp()
         });
 
-        this.app.setState({ currentLocale: this.overworldLocale }, cb);
+        this.app.set("currentLocale", this.overworldLocale, cb);
     }
 
     refresh(cb) {

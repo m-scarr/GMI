@@ -15,7 +15,7 @@ export default class Event extends Entity {
 
     fields = {
         name: null,
-        location: { localeId: null, x: null, y: null },
+        location: { locale: null, x: null, y: null },
         visible: null,
         markerSrc: null,
         notes: null
