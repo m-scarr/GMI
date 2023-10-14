@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Marker from '../../components/Marker';
+import DeleteButton from '../../components/DeleteButton';
 
 export let panelInstance;
 
@@ -15,6 +16,7 @@ export class CharacterPanel extends Component {
         return (
             <div>
                 <Marker entity={this.props.entity} />
+                <DeleteButton entity={this.props.entity} />
             </div>
         )
     }

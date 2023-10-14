@@ -7,6 +7,7 @@ import NativeItem from "./NativeItem";
 import Event from "./Event";
 import API from "../API";
 import { nameInputInstance } from "../components/NameInput";
+import { menuInstance } from "../Menu";
 
 export default class Game {
     category = "games"
@@ -83,6 +84,11 @@ export default class Game {
 
     removeEntity(entity) {
         this[entity.category].removeById(entity.id);
+        this.refreshMenu();
+    }
+
+    refreshMenu() {
+        menuInstance.forceUpdate();
     }
 
     addEntity(entity) {

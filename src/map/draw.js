@@ -91,6 +91,7 @@ const drawText = (context, text, x, y, mapX, mapY, zoom) => {
 const draw = (map) => {
     const context = map.canvasRef.current.getContext("2d");
     context.clearRect(0, 0, map.state.width, map.state.height);
+    context.imageSmoothingEnabled = true;
     context.drawImage(
         map.props.app.state.currentLocale.map,
         map.state.x,

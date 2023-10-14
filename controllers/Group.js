@@ -33,7 +33,7 @@ module.exports = {
         delete: {
             delete: (db, req, res) => {
                 db.Group.destroy({ where: { id: req.query.id } }).then((result) => {
-                    res.json((result[0] > 0));
+                    res.json((result > 0));
                 }).catch((err) => {
                     console.log(err);
                     res.json(false);

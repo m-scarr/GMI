@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Marker from "../../components/Marker";
+import DeleteButton from '../../components/DeleteButton';
 
 export let panelInstance;
 
@@ -11,7 +12,10 @@ export class CachePanel extends Component {
 
     render() {
         return (
-            <div><Marker entity={this.props.entity} /></div>
+            <div>
+                <Marker entity={this.props.entity} />
+                <DeleteButton entity={this.props.entity} />
+            </div>
         )
     }
 }

@@ -21,7 +21,7 @@ export class EntityButton extends Component {
         <div className="hoverable entity-button-name-container" onClick={() => { this.props.entity.game.app.set('currentEntity', this.props.entity) }}>
           {this.props.entity.fields.name}
         </div>
-        {this.props.entity.category !== "nativeItems" ?
+        {(this.props.entity.category !== "nativeItems" && !(this.props.entity.category === "locales" && this.props.entity === this.props.entity.game.overworldLocale)) ?
           <div className="hoverable entity-button-visible-container">
             <Center><img alt="visibility toggle" src={(this.props.entity.fields.visible ? "./assets/visible.png" : "./assets/invisible.png")} onClick={this.handleVisibleClick.bind(this)} /></Center>
           </div> : null}

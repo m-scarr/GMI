@@ -1,21 +1,20 @@
-.marker-header {
+.map-header {
     display: flex;
     flex-direction: row;
 }
 
-.marker-header-title {
+.map-header-title {
     width: 100%;
     padding-top: 8px;
 }
 
-.marker-button {
+.map-button {
     padding: 8px 1px 8px 1px;
     border-bottom-right-radius: 18px;
     border-bottom-left-radius: 18px;
 }
 
-.marker-img {
+.map-img {
     margin-top: 4px;
     width: 100%;
-    image-rendering: pixelated;
 }

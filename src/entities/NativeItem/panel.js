@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import DeleteButton from '../../components/DeleteButton';
 
 export let panelInstance;
 
@@ -10,7 +11,9 @@ export class NativeItemPanel extends Component {
 
     render() {
         return (
-            <div>{this.props.entity.fields.name}</div>
+            <div>
+                <DeleteButton entity={this.props.entity} />
+            </div>
         )
     }
 }
