@@ -115,6 +115,7 @@ export default class Entity {
                 this[field.split("Src")[0]].src = this.testImage.src;
                 this.fields[field] = this.testImage.src;
                 this.afterUpdate(field, oldValue, this.testImage.src);
+                this.refreshButton();
                 this.refreshPanel();
             }
             this.testImage.onerror = () => {
@@ -125,6 +126,7 @@ export default class Entity {
                 this.game.app.getMarkerEntities();
             }
             this.afterUpdate(field, oldValue, value);
+            this.refreshButton();
             this.refreshPanel();
         }
     }
