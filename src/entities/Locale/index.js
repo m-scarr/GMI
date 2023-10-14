@@ -69,6 +69,9 @@ export default class Locale extends Entity {
         while (this.logs.length > 0) {
             this.logs[0].forceDelete();
         }
+        if (this.game.app.state.currentLocale === this) {
+            this.game.app.set("currentLocale", this.game.overworldLocale);
+        }
     }
 
     afterUpdate(field, oldValue, newValue) {

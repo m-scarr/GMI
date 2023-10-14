@@ -13,10 +13,10 @@ export class LocalePanel extends Component {
 
     render() {
         return (
-            <div>{this.props.entity !== this.props.entity.game.overworldLocale ?
-                <Marker entity={this.props.entity} /> : null}
+            <div>
+                {this.props.entity !== this.props.entity.game.overworldLocale ? <Marker entity={this.props.entity} /> : null}
                 <Map entity={this.props.entity} />
-                <DeleteButton entity={this.props.entity} />
+                {this.props.entity !== this.props.entity.game.overworldLocale ? <DeleteButton entity={this.props.entity} /> : null}
             </div>
         )
     }
