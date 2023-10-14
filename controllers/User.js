@@ -42,12 +42,12 @@ module.exports = {
     authorized: {
         get: {
             info: (db, req, res) => { res.json(req.user.dataValues) }, // /auth/User?func=info
+        },
+        post: {
             logOut: (db, req, res) => {
                 req.logout();
                 res.json(true)
             },
-        },
-        post: {
         },
         delete: {
         }

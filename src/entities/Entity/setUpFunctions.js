@@ -70,31 +70,35 @@ const setUpFunctions = {
     },
 
     setUpStats: (entity) => {
-        var newEntity;
-        var foundEntity;
-        entity.protoData.stats.forEach((stat) => {
-            foundEntity = entity.game.stats.findById(stat.id);
-            if (foundEntity === null) {
-                newEntity = new Stat({ ...stat, game: entity.game });
-                newEntity.setUp();
-            } else {
-                foundEntity.refresh(stat);
-            }
-        })
+        if (typeof entity.protoData.stats !== "undefined") {
+            var newEntity;
+            var foundEntity;
+            entity.protoData.stats.forEach((stat) => {
+                foundEntity = entity.game.stats.findById(stat.id);
+                if (foundEntity === null) {
+                    newEntity = new Stat({ ...stat, game: entity.game });
+                    newEntity.setUp();
+                } else {
+                    foundEntity.refresh(stat);
+                }
+            })
+        }
     },
 
     setUpCombatants: (entity) => {
-        var newEntity;
-        var foundEntity;
-        entity.protoData.combatants.forEach((combatant) => {
-            foundEntity = entity.game.combatants.findById(combatant.id);
-            if (foundEntity === null) {
-                newEntity = new Combatant({ ...combatant, game: entity.game });
-                newEntity.setUp();
-            } else {
-                foundEntity.refresh(combatant);
-            }
-        })
+        if (typeof entity.protoData.combatants !== "undefined") {
+            var newEntity;
+            var foundEntity;
+            entity.protoData.combatants.forEach((combatant) => {
+                foundEntity = entity.game.combatants.findById(combatant.id);
+                if (foundEntity === null) {
+                    newEntity = new Combatant({ ...combatant, game: entity.game });
+                    newEntity.setUp();
+                } else {
+                    foundEntity.refresh(combatant);
+                }
+            })
+        }
     },
 
     setUpMarker: (entity) => {

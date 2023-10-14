@@ -3,13 +3,14 @@ import "./style.css";
 import functions from "./functions";
 import draw from "./draw";
 
-
 export class Map extends Component {
 
     canvasRef = React.createRef();
 
     state = {
         timeout: null,
+        width: window.innerWidth - 4,
+        height: window.innerHeight - 4,
         x: 0,
         y: 0,
         zoom: 1,
@@ -19,34 +20,33 @@ export class Map extends Component {
         clickY: 0,
         clicked: false,
         hoverEntity: null,
-        animationFrame: null
-    }
-
-    constructor(props) {
-        super(props);
+        animationFrame: null,
     }
 
     componentDidMount() {
-        this.setState({ animationFrame: requestAnimationFrame(this.draw.bind(this)) })
+        this.drawLoop();
+        window.addEventListener('resize', () => {
+            this.setState({ width: window.innerWidth - 4, height: window.innerHeight - 4, })
+        })
     }
 
-    handleMouseEnter(e) { functions.handleMouseEnter(this, e) }
+    handleMouseEnter(e) { functions.handleMouseEnter(this, e); }
 
-    handleMouseMove(e) { functions.handleMouseMove(this, e) }
+    handleMouseMove(e) { functions.handleMouseMove(this, e); }
 
-    handleMouseDown(e) { functions.handleMouseDown(this, e) }
+    handleMouseDown(e) { functions.handleMouseDown(this, e); }
 
-    handleWheel(e) { functions.handleWheel(this, e) }
+    handleWheel(e) { functions.handleWheel(this, e); }
 
-    handleMouseUp() {
-        this.setState({ clicked: false })
-    }
+    handleMouseUp() { functions.handleMouseUp(this); }
 
-    draw() {
+    handleMouseOut() { functions.handleMouseOut(this); }
+
+    drawLoop() {
         if (this.props.app.state.currentLocale !== null) {
-            draw(this.canvasRef.current, window.innerWidth - 4, window.innerHeight - 4, this.props.app, this.state.x, this.state.y, this.state.zoom, this.state.mouseX, this.state.mouseY, this.state.hoverEntity)
+            draw(this);
         }
-        this.setState({ animationFrame: requestAnimationFrame(this.draw.bind(this)) })
+        this.setState({ animationFrame: requestAnimationFrame(this.drawLoop.bind(this)) });
     }
 
     render() {
@@ -54,12 +54,14 @@ export class Map extends Component {
             <canvas
                 ref={this.canvasRef}
                 className="map-canvas"
-                width={window.innerWidth - 4}
-                height={window.innerHeight - 4}
+                width={this.state.width}
+                height={this.state.height}
+                onContextMenu={(e) => { e.preventDefault() }}
                 onMouseDown={this.handleMouseDown.bind(this)}
                 onMouseMove={this.handleMouseMove.bind(this)}
                 onMouseUp={this.handleMouseUp.bind(this)}
                 onWheel={this.handleWheel.bind(this)}
+                onMouseOut={this.handleMouseOut.bind(this)}
             />
         )
     }

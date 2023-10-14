@@ -8,7 +8,6 @@ export class NameInput extends Component {
 
     constructor(props) {
         super(props);
-        nameInputInstance = this;
     }
 
     componentDidMount() {
@@ -17,6 +16,12 @@ export class NameInput extends Component {
 
     update() {
         this.setState({ disabled: true, name: this.props.entity.fields.name })
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.entity !== this.props.entity) {
+            this.update();
+        }
     }
 
 

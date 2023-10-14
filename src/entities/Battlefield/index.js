@@ -40,7 +40,7 @@ export default class Battlefield extends Entity {
     static create(game, cb) {
         var newEntity;
         if (game.online) {
-            API.create("battlfields", {}, (result) => {
+            API.create("battlefields", { gameId: game.id }, (result) => {
                 newEntity = new Battlefield({ ...result, game });
                 newEntity.setUp();
                 if (typeof cb === "function") {
@@ -61,6 +61,9 @@ export default class Battlefield extends Entity {
         setUpFunctions.setUpCombatants(this);
         setUpFunctions.setUpLogs(this);
         setUpFunctions.setUpMarker(this);
+        super.refreshButton();
+        this.refreshPanel();
+        //this.refreshModal();
     }
 
     refreshPanel() {

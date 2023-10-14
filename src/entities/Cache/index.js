@@ -36,7 +36,7 @@ export default class Cache extends Entity {
     static create(game, cb) {
         var newEntity;
         if (game.online) {
-            API.create("caches", {}, (result) => {
+            API.create("caches", { gameId: game.id }, (result) => {
                 newEntity = new Cache({ ...result, game });
                 newEntity.setUp();
                 if (typeof cb === "function") {
@@ -64,6 +64,9 @@ export default class Cache extends Entity {
         setUpFunctions.setUpInventoryItems(this)
         setUpFunctions.setUpLogs(this);
         setUpFunctions.setUpMarker(this);
+        setUpFunctions.setUpLocation(this);
+        super.refreshButton();
+        this.refreshPanel();
     }
 
     cascadeDelete() {

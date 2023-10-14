@@ -15,24 +15,24 @@ const functions = {
     },
     handleMouseDown: (map, e) => {
         if (e.nativeEvent.which === 1) {
-            if (map.state.hoverEntity !== null) {
-                functions.goTo(map.state.hoverEntity);
+            if (typeof map.state.hoverEntity !== "undefined" && map.state.hoverEntity !== null && map.state.timeout == null) {
+                functions.goToEntity(map, map.state.hoverEntity);
                 map.props.app.set("currentEntity", map.state.hoverEntity);
             }
-            map.setState({
-                clicked: true,
-                clickX: map.state.mouseX - map.state.x,
-                clickY: map.state.mouseY - map.state.y,
-            })
-        } else if (e.nativeEvent.which === 3) {
-            if (map.props.app.droppingMarker !== null) {
-                map.props.app.droppingMarker.set("location", {
-                    locale: map.props.app.currentLocale,
-                    x: (map.state.mouseX - map.state.x) / map.state.zoom,
-                    y: (map.state.mouseY - map.state.y) / map.state.zoom,
-                });
-                map.props.app.set("droppingMarker", null);
+            else {
+                map.setState({
+                    clicked: true,
+                    clickX: map.state.mouseX - map.state.x,
+                    clickY: map.state.mouseY - map.state.y,
+                })
             }
+        } else if (e.nativeEvent.which === 3 && map.props.app.state.droppingMarker !== null) {
+            map.props.app.state.droppingMarker.set("location", {
+                locale: map.props.app.state.currentLocale,
+                x: (map.state.mouseX - map.state.x) / map.state.zoom,
+                y: (map.state.mouseY - map.state.y) / map.state.zoom,
+            });
+            map.props.app.set("droppingMarker", null);
         }
     },
     handleWheel: (map, e) => {
@@ -42,37 +42,38 @@ const functions = {
             y: map.state.mouseY - (map.state.mouseY - map.state.y) * (1 - e.nativeEvent.deltaY / Math.abs(e.nativeEvent.deltaY) / 8),
         })
     },
+    handleMouseUp: (map) => { map.setState({ clicked: false }); },
+    handleMouseOut: (map) => { map.setState({ clicked: false }); },
     goToEntity: (map, destination) => {
-        map.props.app.set("currentLocale", destination.fields.location.locale);
+        if (map.props.app.state.currentLocale !== destination.fields.location.locale) {
+            map.props.app.set("currentLocale", destination.fields.location.locale);
+        }
+        var centerX = (map.props.app.state.hideMenu ? (map.state.width / 2) : (320 + ((map.state.width - 320) / 2)));
+        var centerY = map.state.height / 2;
         if (
             getDistance(
                 map.state.x,
                 map.state.y,
-                map.state.width / 2 - destination.fields.location.x * map.state.zoom,
-                map.state.height / 2 - destination.fields.location.y * map.state.zoom
+                centerX - destination.fields.location.x * map.state.zoom,
+                centerY - destination.fields.location.y * map.state.zoom
             ) > 3
         ) {
-            if (!map.state.clicked) {
+            map.setState({
+                x: map.state.x - (map.state.x - (centerX - destination.fields.location.x * map.state.zoom)) / 5,
+                y: map.state.y - (map.state.y - (centerY - destination.fields.location.y * map.state.zoom)) / 5,
+            }, () => {
+                clearTimeout(map.state.timeout);
                 map.setState({
-                    x: map.state.x - (map.state.x - (map.state.width / 2 - destination.fields.location.x * map.state.zoom)) / 5,
-                    y: map.state.y - (map.state.y - (map.state.height / 2 - destination.fields.location.y * map.state.zoom)) / 5,
                     timeout: setTimeout(() => {
-                        functions.goTo(map, destination);
+                        functions.goToEntity(map, destination);
                     }, 16)
                 })
-            } else {
-                clearTimeout(map.state.timeout);
-                this.setState({
-                    x: map.state.width / 2 - destination.fields.location.x * map.state.zoom,
-                    y: map.state.height / 2 - destination.fields.location.y * map.state.zoom,
-                    timeout: null
-                })
-            }
+            })
         } else {
             clearTimeout(map.state.timeout);
-            this.setState({
-                x: map.state.width / 2 - destination.fields.location.x * map.state.zoom,
-                y: map.state.height / 2 - destination.fields.location.y * map.state.zoom,
+            map.setState({
+                x: centerX - destination.fields.location.x * map.state.zoom,
+                y: centerY - destination.fields.location.y * map.state.zoom,
                 timeout: null
             })
         }

@@ -46,7 +46,7 @@ export default class API {
         },
         logOut: () => {
             appInstance.setState({ loading: true }, () => {
-                axios.get("/auth/User?func=logOut").then((res) => {
+                axios.post("/auth/User?func=logOut").then((res) => {
                     window.location.href = "/"
                 }).catch((err) => {
                     window.location.href = "/"
@@ -146,6 +146,7 @@ export default class API {
         } else {
             data[field] = value;
         }
+
         appInstance.setState({ loading: true }, () => {
             axios.post("/auth/" + switchCase[entity.category] + "?func=update", data).then((res) => {
                 appInstance.setState({ loading: false }, () => {

@@ -132,6 +132,7 @@ export default class Game {
         this.heroes = [];
         this.npcs = [];
         this.enemies = [];
+
         game.characters.forEach((character) => { new Character({ ...character, game: this }); });
 
         this.groups = [];
@@ -161,7 +162,9 @@ export default class Game {
             entity.setUp()
         });
 
-        this.app.set("currentLocale", this.overworldLocale, cb);
+        this.app.set("currentLocale", this.overworldLocale, () => {
+            this.app.getMarkerEntities(cb);
+        });
     }
 
     refresh(cb) {
@@ -294,9 +297,7 @@ export default class Game {
                     nameInputInstance.update();
                 }
                 this.app.setState({ currentEntity: currentEntityId === null ? null : this[this.app.state.currentView].findById(currentEntityId) }, () => {
-                    if (typeof cb === "function") {
-                        cb()
-                    }
+                    this.app.getMarkerEntities(cb);
                 })
             })
         })

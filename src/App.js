@@ -2,7 +2,7 @@ import API from "./API"
 import { Component } from "react";
 import defaultState from "./defaultState";
 import { Menu } from "./Menu";
-import { Map, mapInstance } from "./map";
+import { Map } from "./map";
 
 import Battlefield from "./entities/Battlefield";
 import Cache from "./entities/Cache";
@@ -102,7 +102,9 @@ export class App extends Component {
 
   refresh(cb) {
     API.readGame(this.state.currentGame.id, (game) => {
-      this.state.currentGame.refresh(game, cb);
+      this.state.currentGame.refresh(game, () => {
+        this.getMarkerEntities(cb)
+      });
     })
   }
 
@@ -114,16 +116,16 @@ export class App extends Component {
 
   getMarkerEntities(cb) {
     if (this.state.currentGame !== null) {
-      var allEntities = [...this.state.currentGame.heroes, ...this.state.currentGame.npcs, ...this.state.currentGame.enemies, ...this.state.currentGame.groups,
-      ...this.state.currentGame.caches, ...this.state.currentGame.locales, ...this.state.currentGame.events, ...this.state.currentGame.battlefields];
       var markerEntities = [];
-      allEntities.forEach((entity) => {
-        if (this.state.currentLocale !== null && typeof entity.fields.location.locale !== "undefined" && entity.fields.location.locale !== null && this.state.currentLocale.id === entity.fields.location.locale.id &&
+      [...this.state.currentGame.heroes, ...this.state.currentGame.npcs, ...this.state.currentGame.enemies, ...this.state.currentGame.groups,
+      ...this.state.currentGame.caches, ...this.state.currentGame.locales, ...this.state.currentGame.events, ...this.state.currentGame.battlefields].forEach((entity) => {
+        if (this.state.currentLocale !== null && typeof entity.fields.location !== "undefined" && typeof entity.fields.location.locale !== "undefined" &&
+          entity.fields.location.locale !== null && this.state.currentLocale.id === entity.fields.location.locale.id &&
           (((entity.category === "heroes" || entity.category === "npcs" || entity.category === "enemies") && entity.fields.unique && entity.fields.visible && entity.groupMembers.length === 0) ||
             ((entity.category !== "heroes" && entity.category !== "npcs" && entity.category !== "enemies") && entity.fields.visible))) {
-          markerEntities[markerEntities.length] = entity;
+          markerEntities.push(entity);
         }
-      })
+      });
       this.setState({ markerEntities }, () => {
         if (typeof cb === "function") {
           cb();
@@ -133,7 +135,7 @@ export class App extends Component {
   }
 
   set(field, value, cb) {
-    this.setState({ [field]: value }, cb)
+    this.setState({ [field]: value }, cb);
   }
 
   componentDidUpdate(prevProps, prevState) {

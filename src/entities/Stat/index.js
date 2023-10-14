@@ -39,6 +39,7 @@ export default class Stat extends Entity {
     setUp() {
         setUpFunctions.setUpFields(this);
         setUpFunctions.setUpItem(this);
+        this.refreshPanel();
     }
 
     refreshPanel() {

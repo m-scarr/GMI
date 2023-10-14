@@ -53,6 +53,8 @@ export default class Log extends Entity {
     setUp() {
         setUpFunctions.setUpFields(this);
         setUpFunctions.setUpOwner(this);
+        super.refreshButton();
+        this.refreshPanel();
     }
 
     refreshPanel() {

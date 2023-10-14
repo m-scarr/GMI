@@ -1,0 +1,20 @@
+.marker-header {
+    display: flex;
+    flex-direction: row;
+}
+
+.marker-header-title {
+    width: 100%;
+    padding-top: 8px;
+}
+
+.marker-button {
+    padding: 8px 1px 8px 1px;
+    border-bottom-right-radius: 18px;
+    border-bottom-left-radius: 18px;
+}
+
+.marker-img {
+    width: 100%;
+    image-rendering: pixelated;
+}

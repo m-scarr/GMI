@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import Marker from "../../components/Marker";
 
 export let panelInstance;
 
@@ -10,7 +11,7 @@ export class BattlefieldPanel extends Component {
 
     render() {
         return (
-            <div>{this.props.entity.fields.name}</div>
+            <div><Marker entity={this.props.entity} /></div>
         )
     }
 }

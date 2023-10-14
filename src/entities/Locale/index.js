@@ -34,7 +34,7 @@ export default class Locale extends Entity {
     static create(game, cb) {
         var newEntity;
         if (game.online) {
-            API.create("locales", {}, (result) => {
+            API.create("locales", { gameId: game.id }, (result) => {
                 newEntity = new Locale({ ...result, game });
                 newEntity.setUp();
                 if (typeof cb === "function") {
@@ -54,6 +54,8 @@ export default class Locale extends Entity {
         setUpFunctions.setUpFields(this);
         setUpFunctions.setUpLocation(this);
         setUpFunctions.setUpLogs(this);
+        super.refreshButton();
+        this.refreshPanel();
     }
 
     refreshPanel() {
@@ -71,7 +73,7 @@ export default class Locale extends Entity {
 
     afterUpdate(field, oldValue, newValue) {
     }
-    
+
     save() {
         var data = { logs: [] };
         this.logs.forEach((log) => {

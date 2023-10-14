@@ -21,6 +21,17 @@ export default class Entity {
         this.game = data.game;
         this.button = <EntityButton entity={this} key={"entity-button-" + data.category + data.id} />
         this.game.addEntity(this);
+        if (this.category === "heroes" ||
+            this.category === "enemies" ||
+            this.category === "npcs" ||
+            this.category === "groups" ||
+            this.category === "groupMembers" ||
+            this.category === "caches" ||
+            this.category === "battlefields" ||
+            this.category === "locales" ||
+            this.category === "events") {
+            this.game.app.getMarkerEntities();
+        }
         menuInstance.forceUpdate();
     }
 
@@ -37,7 +48,9 @@ export default class Entity {
 
     refreshButton() {
         this.button = <EntityButton entity={this} key={"entity-button-" + this.category + this.id} />
-        buttonInstance.forceUpdate();
+        if (typeof buttonInstance !== "undefined") {
+            buttonInstance.forceUpdate();
+        }
     }
 
     addGroupMember(groupMember) {
@@ -81,28 +94,28 @@ export default class Entity {
     }
 
     set(field, value) {
-        var oldValue;
         if (this.game.online) {
             API.updateEntity(this, field, value, (updated) => {
                 if (updated) {
-                    oldValue = this.fields[field];
-                    this.fields[field] = value;
-                    if (field.slice(-3) === "Src") {
-                        this[field.split("Src")[0]].src = value;
-                    }
-                    this.afterUpdate(field, oldValue, value);
-                    this.refreshPanel();
+                    this.forceUpdate(field, value);
                 }
             })
         } else {
-            oldValue = this.fields[field];
-            this.fields[field] = value;
-            if (field.slice(-3) === "Src") {
-                this[field.split("Src")[0]].src = value;
-            }
-            this.afterUpdate(field, oldValue, value);
-            this.refreshPanel();
+            this.forceUpdate(field, value);
         }
+    }
+
+    forceUpdate(field, value) {
+        var oldValue = this.fields[field];
+        this.fields[field] = value;
+        if (field.slice(-3) === "Src") {
+            this[field.split("Src")[0]].src = value;
+        }
+        if (field === "visible" || field === "location") {
+            this.game.app.getMarkerEntities();
+        }
+        this.afterUpdate(field, oldValue, value);
+        this.refreshPanel();
     }
 
     afterUpdate(field, oldValue, newValue) {
@@ -126,6 +139,16 @@ export default class Entity {
             this.cascadeDelete();
         }
         this.game.removeEntity(this);
+        if (this.category === "heroes" ||
+            this.category === "enemies" ||
+            this.category === "npcs" ||
+            this.category === "groups" ||
+            this.category === "caches" ||
+            this.category === "battlefields" ||
+            this.category === "locales" ||
+            this.category === "events") {
+            this.game.app.getMarkerEntities();
+        }
     }
 
     save() {

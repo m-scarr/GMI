@@ -16,7 +16,7 @@ module.exports = function (sequelize, Sequelize) {
         },
         visible: {
             type: Sequelize.BOOLEAN,
-            default: true
+            defaultValue: true
         },
         markerSrc: {
             type: Sequelize.STRING(1027),

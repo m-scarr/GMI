@@ -17,8 +17,8 @@ export default class OnlineSelector extends Component {
                 </div>
                 <hr />
                 <div className="hoverable online-selector-option" style={{ borderBottomRightRadius: 16, borderBottomLeftRadius: 16 }} onClick={() => {
-                    this.props.app.setState({ currentGame: new Game(this.props.app, false) });
-                    this.props.app.set('currentModal', null)
+                    new Game(this.props.app, false) ;
+                    this.props.app.set('currentModal', null);
                 }}>
                     <Center>
                         Offline

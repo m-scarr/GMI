@@ -34,7 +34,7 @@ export default class Event extends Entity {
     static create(game, cb) { //create from + button, not from loading
         var newEntity;
         if (game.online) {
-            API.create("events", {}, (result) => {
+            API.create("events", { gameId: game.id }, (result) => {
                 newEntity = new Event({ ...result, game });
                 newEntity.setUp();
                 if (typeof cb === "function") {
@@ -55,6 +55,8 @@ export default class Event extends Entity {
         setUpFunctions.setUpLocation(this);
         setUpFunctions.setUpMarker(this);
         setUpFunctions.setUpLogs(this);
+        super.refreshButton();
+        this.refreshPanel();
     }
 
     refreshPanel() {

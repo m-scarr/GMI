@@ -34,7 +34,7 @@ export default class Group extends Entity {
     static create(game, cb) {
         var newEntity;
         if (game.online) {
-            API.create("groups", {}, (result) => {
+            API.create("groups", { gameId: game.id }, (result) => {
                 newEntity = new Group({ ...result, game });
                 newEntity.setUp();
                 if (typeof cb === "function") {
@@ -56,6 +56,8 @@ export default class Group extends Entity {
         setUpFunctions.setUpMarker(this);
         setUpFunctions.setUpLogs(this);
         setUpFunctions.setUpGroupMembers(this);
+        super.refreshButton();
+        this.refreshPanel();
     }
 
     refreshPanel() {

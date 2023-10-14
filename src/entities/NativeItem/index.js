@@ -27,7 +27,7 @@ export default class NativeItem extends Entity {
     static create(game, cb) {
         var newEntity;
         if (game.online) {
-            API.create("nativeItems", {}, (result) => {
+            API.create("nativeItems", { gameId: game.id }, (result) => {
                 newEntity = new NativeItem({ ...result, game });
                 newEntity.setUp();
                 if (typeof cb === "function") {
@@ -47,6 +47,8 @@ export default class NativeItem extends Entity {
         setUpFunctions.setUpFields(this);
         setUpFunctions.setUpStats(this);
         setUpFunctions.setUpLogs(this);
+        super.refreshButton();
+        this.refreshPanel();
     }
 
     refreshPanel() {

@@ -52,6 +52,8 @@ export default class Combatant extends Entity {
         setUpFunctions.setUpFields(this);
         setUpFunctions.setUpCharacter(this);
         setUpFunctions.setUpBattlefield(this);
+        super.refreshButton();
+        this.refreshPanel();
     }
 
     refreshPanel() {

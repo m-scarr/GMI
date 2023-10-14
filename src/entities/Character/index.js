@@ -62,7 +62,7 @@ export default class Character extends Entity {
     static create(game, category, cb) {
         var newEntity;
         if (game.online) {
-            API.create(category, { category }, (result) => {
+            API.create(category, { gameId: game.id, category }, (result) => {
                 newEntity = new Character({ ...result, category, game });
                 newEntity.setUp();
                 if (typeof cb === "function") {
@@ -91,6 +91,8 @@ export default class Character extends Entity {
         setUpFunctions.setUpMarker(this);
         setUpFunctions.setUpInventoryItems(this);
         setUpFunctions.setUpLogs(this);
+        super.refreshButton();
+        this.refreshPanel();
     }
 
     cascadeDelete() {

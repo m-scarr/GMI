@@ -51,6 +51,8 @@ export default class InventoryItem extends Entity {
         setUpFunctions.setUpFields(this);
         setUpFunctions.setUpOwner(this);
         setUpFunctions.setUpItem(this);
+        super.refreshButton();
+        this.refreshPanel();
     }
 
     refreshPanel() {

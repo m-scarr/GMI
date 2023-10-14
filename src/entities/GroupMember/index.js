@@ -45,6 +45,8 @@ export default class GroupMember extends Entity {
     setUpFunctions.setUpFields(this);
     setUpFunctions.setUpCharacter(this);
     setUpFunctions.setUpGroup(this);
+    super.refreshButton();
+    this.refreshPanel();
   }
 
   refreshPanel() {
