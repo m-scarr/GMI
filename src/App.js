@@ -150,6 +150,9 @@ export class App extends Component {
         this.getGames();
       }
     }
+    if (prevState.currentLocale !== this.state.currentLocale) {
+      this.getMarkerEntities();
+    }
   }
 
   setModal(modal, value, cb) {
