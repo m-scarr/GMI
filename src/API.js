@@ -136,26 +136,44 @@ export default class API {
             "stats": "Stat",
             "games": "Game",
         }
-
-        if (field === "location") {
-            if (entity.category !== "combatants") {
-                data.localeId = value.locale.id;
+        if (field.slice(-3) === "Src") {
+            var testImage = new Image();
+            testImage.src = value;
+            testImage.onload = () => {
+                data[field] = testImage.src;
+                appInstance.setState({ loading: true }, () => {
+                    axios.post("/auth/" + switchCase[entity.category] + "?func=update", data).then((res) => {
+                        appInstance.setState({ loading: false }, () => {
+                            if (typeof cb === "function") {
+                                cb(res.data, value)
+                            }
+                        })
+                    })
+                })
             }
-            data.x = value.x;
-            data.y = value.y;
+            testImage.onerror = () => {
+                testImage.src = "./assets/noimage.png";
+            }
         } else {
-            data[field] = value;
-        }
-
-        appInstance.setState({ loading: true }, () => {
-            axios.post("/auth/" + switchCase[entity.category] + "?func=update", data).then((res) => {
-                appInstance.setState({ loading: false }, () => {
-                    if (typeof cb === "function") {
-                        cb(res.data, value)
-                    }
+            if (field === "location") {
+                if (entity.category !== "combatants") {
+                    data.localeId = value.locale.id;
+                }
+                data.x = value.x;
+                data.y = value.y;
+            } else {
+                data[field] = value;
+            }
+            appInstance.setState({ loading: true }, () => {
+                axios.post("/auth/" + switchCase[entity.category] + "?func=update", data).then((res) => {
+                    appInstance.setState({ loading: false }, () => {
+                        if (typeof cb === "function") {
+                            cb(res.data, value)
+                        }
+                    })
                 })
             })
-        })
+        }
     }
 
     static deleteEntity(entity, cb) {

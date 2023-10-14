@@ -109,13 +109,24 @@ export default class Entity {
         var oldValue = this.fields[field];
         this.fields[field] = value;
         if (field.slice(-3) === "Src") {
-            this[field.split("Src")[0]].src = value;
+            //this[field.split("Src")[0]].src = value;
+            this.testImage.src = value;
+            this.testImage.onload = () => {
+                this[field.split("Src")[0]].src = this.testImage.src;
+                this.fields[field] = this.testImage.src;
+                this.afterUpdate(field, oldValue, this.testImage.src);
+                this.refreshPanel();
+            }
+            this.testImage.onerror = () => {
+                this.testImage.src = "./assets/noimage.png";
+            }
+        } else {
+            if (field === "visible" || field === "location") {
+                this.game.app.getMarkerEntities();
+            }
+            this.afterUpdate(field, oldValue, value);
+            this.refreshPanel();
         }
-        if (field === "visible" || field === "location") {
-            this.game.app.getMarkerEntities();
-        }
-        this.afterUpdate(field, oldValue, value);
-        this.refreshPanel();
     }
 
     afterUpdate(field, oldValue, newValue) {

@@ -3,6 +3,8 @@ import "./style.css";
 import functions from "./functions";
 import draw from "./draw";
 
+export let mapInstance;
+
 export class Map extends Component {
 
     canvasRef = React.createRef();
@@ -21,6 +23,11 @@ export class Map extends Component {
         clicked: false,
         hoverEntity: null,
         animationFrame: null,
+    }
+
+    constructor(props) {
+        super(props);
+        mapInstance = this;
     }
 
     componentDidMount() {
@@ -47,6 +54,12 @@ export class Map extends Component {
             draw(this);
         }
         this.setState({ animationFrame: requestAnimationFrame(this.drawLoop.bind(this)) });
+    }
+
+    goToEntity(destination) {
+        if (destination.fields.location.locale !== null) {
+            functions.goToEntity(this, destination);
+        }
     }
 
     render() {

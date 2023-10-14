@@ -11,6 +11,10 @@ export class EntityButton extends Component {
     buttonInstance = this;
   }
 
+  handleVisibleClick() {
+    this.props.entity.set("visible", !this.props.entity.fields.visible);
+  }
+
   render() {
     return (
       <Button style={{ display: "flex", padding: 0 }} hoverable={false}>
@@ -19,7 +23,7 @@ export class EntityButton extends Component {
         </div>
         {this.props.entity.category !== "nativeItems" ?
           <div className="hoverable entity-button-visible-container">
-            <Center><img alt="visibility toggle" src="./assets/visible.png" /></Center>
+            <Center><img alt="visibility toggle" src={(this.props.entity.fields.visible ? "./assets/visible.png" : "./assets/invisible.png")} onClick={this.handleVisibleClick.bind(this)} /></Center>
           </div> : null}
       </Button>
     )
