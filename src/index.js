@@ -16,9 +16,8 @@ Array.prototype.removeById = function (id) {
   if (i < this.length) {
     this.splice(i, 1)
     return true;
-  } else {
-    return false;
   }
+  return false;
 };
 
 Array.prototype.indexOfId = function (id) {
