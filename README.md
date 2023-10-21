@@ -1,4 +1,4 @@
-[UNDER CONSTRUCTION]
+--UNDER CONSTRUCTION--
 ### npm start
 run the front end
 ### node index
