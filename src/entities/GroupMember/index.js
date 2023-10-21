@@ -50,7 +50,7 @@ export default class GroupMember extends Entity {
   }
 
   refreshPanel() {
-    this.panel = <GroupMemberPanel entity={this} />
+    this.panel = (this.fields.quantity > 0 ? <GroupMemberPanel entity={this} key={"group-member-" + this.id} /> : null);
     if (typeof panelInstance !== "undefined") {
       panelInstance.forceUpdate();
     }
@@ -65,6 +65,8 @@ export default class GroupMember extends Entity {
   cascadeDelete() {
     this.character.removeGroupMember(this);
     this.group.removeGroupMember(this);
+    this.group.updateNonMembers(this);
+    this.group.refreshPanel();
   }
 
   save() {

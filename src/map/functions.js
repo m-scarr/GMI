@@ -26,7 +26,6 @@ const functions = {
                 })
             }
         } else if (e.nativeEvent.which === 3 && map.props.app.state.droppingMarker !== null) {
-            console.log(map.props.app.state.currentLocale)
             map.props.app.state.droppingMarker.set("location", {
                 locale: map.props.app.state.currentLocale,
                 x: (map.state.mouseX - map.state.x) / map.state.zoom,
@@ -45,7 +44,6 @@ const functions = {
     handleMouseUp: (map) => { map.setState({ clicked: false }); },
     handleMouseOut: (map) => { map.setState({ clicked: false }); },
     goToEntity: (map, destination) => {
-        console.log(map, destination);
         if (map.props.app.state.currentLocale !== destination.fields.location.locale) {
             map.props.app.set("currentLocale", destination.fields.location.locale);
         }

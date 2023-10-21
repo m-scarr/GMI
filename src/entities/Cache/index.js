@@ -52,6 +52,10 @@ export default class Cache extends Entity {
         }
     }
 
+    isVisible() {
+        return (typeof this.fields.location!=="undefined" && this.game.app.state.currentLocale===this.fields.location.locale && this.fields.visible);
+    }
+
     refreshPanel() {
         this.panel = <CachePanel entity={this} />
         if (typeof panelInstance !== "undefined") {

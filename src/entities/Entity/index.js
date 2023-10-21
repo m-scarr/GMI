@@ -43,11 +43,13 @@ export default class Entity {
             }
         })
         this.refreshButton();
-        this.refreshPanel();
+        if (typeof this.refreshPanel === "function") {
+            this.refreshPanel();
+        }
     }
 
     refreshButton() {
-        this.button = <EntityButton entity={this} key={"entity-button-" + this.category + this.id} />
+        this.button = <EntityButton entity={this} key={"entity-button-" + this.category + this.id} />;
         if (typeof buttonInstance !== "undefined") {
             buttonInstance.forceUpdate();
         }
@@ -55,10 +57,11 @@ export default class Entity {
 
     addGroupMember(groupMember) {
         this.groupMembers.push(groupMember);
+        this.game.app.getMarkerEntities(); //works for now, probably inneficient
     }
 
     removeGroupMember(groupMember) {
-        this.groupMembers.removeById(groupMember.id)
+        this.groupMembers.removeById(groupMember.id);
     }
 
     addLog(log) {
@@ -116,18 +119,22 @@ export default class Entity {
                 this.fields[field] = this.testImage.src;
                 this.afterUpdate(field, oldValue, this.testImage.src);
                 this.refreshButton();
-                this.refreshPanel();
+                if (typeof this.refreshPanel === "function") {
+                    this.refreshPanel();
+                }
             }
             this.testImage.onerror = () => {
                 this.testImage.src = "./assets/noimage.png";
             }
         } else {
-            if (field === "visible" || field === "location") {
+            if (field === "visible" || field === "location" || (this.category !== "nativeItems" && field === "unique")) {
                 this.game.app.getMarkerEntities();
             }
             this.afterUpdate(field, oldValue, value);
             this.refreshButton();
-            this.refreshPanel();
+            if (typeof this.refreshPanel === "function") {
+                this.refreshPanel();
+            }
         }
     }
 
@@ -156,6 +163,7 @@ export default class Entity {
             this.category === "enemies" ||
             this.category === "npcs" ||
             this.category === "groups" ||
+            this.category === "groupMembers" ||
             this.category === "caches" ||
             this.category === "battlefields" ||
             this.category === "locales" ||

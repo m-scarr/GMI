@@ -78,6 +78,10 @@ export default class Character extends Entity {
         }
     }
 
+    isVisible() {
+        return (typeof this.fields.location !== "undefined" && this.game.app.state.currentLocale === this.fields.location.locale && this.fields.unique && this.fields.visible && (typeof this.groupMembers === "undefined" || this.groupMembers.length === 0));
+    }
+
     refreshPanel() {
         this.panel = <CharacterPanel entity={this} />
         if (typeof panelInstance !== "undefined") {
@@ -112,8 +116,10 @@ export default class Character extends Entity {
 
     afterUpdate(field, oldValue, newValue) {
         if (field === "unique") {
-            while (this.inventory.length > 0) {
-                this.inventory[0].forceDelete();
+            if (typeof this.inventory !== "undefined") {
+                while (this.inventory.length > 0) {
+                    this.inventory[0].forceDelete();
+                }
             }
             while (this.groupMembers.length > 0) {
                 this.groupMembers[0].forceDelete();

@@ -65,6 +65,10 @@ export default class Battlefield extends Entity {
         this.refreshPanel();
         //this.refreshModal();
     }
+    
+    isVisible() {
+        return (typeof this.fields.location!=="undefined" && this.game.app.state.currentLocale===this.fields.location.locale && this.fields.visible);
+    }
 
     refreshPanel() {
         this.panel = <BattlefieldPanel entity={this} />

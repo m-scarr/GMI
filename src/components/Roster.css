@@ -1,0 +1,9 @@
+.roster-title-container {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.roster-members-container {
+    height: 256px;
+    overflow-y: scroll;
+}

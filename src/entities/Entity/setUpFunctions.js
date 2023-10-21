@@ -54,10 +54,10 @@ const setUpFunctions = {
     },
 
     setUpGroupMembers: (entity) => {
-        if (typeof entity.protoData.groupMembers !== "undefined") {
+        if (typeof entity.protoData.members !== "undefined") {
             var newEntity;
             var foundEntity;
-            entity.protoData.groupMembers.forEach((groupMember) => {
+            entity.protoData.members.forEach((groupMember) => {
                 foundEntity = entity.game.groupMembers.findById(groupMember.id);
                 if (foundEntity === null) {
                     newEntity = new GroupMember({ ...groupMember, game: entity.game });
@@ -158,6 +158,7 @@ const setUpFunctions = {
 
     setUpCharacter: (entity) => {
         entity.character = [...entity.game.heroes, ...entity.game.npcs, ...entity.game.enemies].findById(entity.protoData.characterId);
+        console.log(entity.character)
         if (entity.category === "groupMembers") {
             entity.character.addGroupMember(entity);
         } else {

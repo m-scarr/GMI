@@ -59,6 +59,10 @@ export default class Event extends Entity {
         this.refreshPanel();
     }
 
+    isVisible() {
+        return (typeof this.fields.location!=="undefined" && this.game.app.state.currentLocale === this.fields.location.locale && this.fields.visible);
+    }
+
     refreshPanel() {
         this.panel = <EventPanel entity={this} />
         if (typeof panelInstance !== "undefined") {

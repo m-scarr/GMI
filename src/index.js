@@ -10,6 +10,12 @@ Array.prototype.findById = function (id) {
   return ((i === this.length) ? null : this[i]);
 }
 
+Array.prototype.findCharacter = function(id) {
+  var i = 0;
+  while (i < this.length && this[i].character.id !== id) { i++ }
+  return ((i === this.length) ? null : this[i]);
+}
+
 Array.prototype.removeById = function (id) {
   var i = 0;
   while (i < this.length && this[i].id !== id) { i++ }

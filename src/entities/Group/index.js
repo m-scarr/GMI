@@ -50,6 +50,22 @@ export default class Group extends Entity {
         }
     }
 
+    updateNonMembers() {
+        this.nonMembers = [];
+        var memberChar;
+        [...this.game.heroes, ...this.game.npcs, ...this.game.enemies].forEach((character) => {
+            memberChar = this.groupMembers.findCharacter(character.id);
+            if (memberChar === null) {
+                this.nonMembers.push(character);
+            }
+        })
+        this.refreshPanel();
+    }
+
+    isVisible() {
+        return (typeof this.fields.location!=="undefined" && this.game.app.state.currentLocale===this.fields.location.locale && this.fields.visible);
+    }
+
     setUp() {
         setUpFunctions.setUpFields(this);
         setUpFunctions.setUpLocation(this);
@@ -61,7 +77,7 @@ export default class Group extends Entity {
     }
 
     refreshPanel() {
-        this.panel = <GroupPanel entity={this} />
+        this.panel = <GroupPanel entity={this} />;
         if (typeof panelInstance !== "undefined") {
             panelInstance.forceUpdate();
         }

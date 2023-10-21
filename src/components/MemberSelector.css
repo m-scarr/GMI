@@ -1,0 +1,9 @@
+.member-selector-title-container {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.member-selector-members {
+    height: 256px;
+    overflow-y: scroll;
+}
