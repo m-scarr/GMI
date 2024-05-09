@@ -1,3 +1,10 @@
+import Battlefield from "./Battlefield";
+import Cache from "./Cache";
+import Event from "./Event";
+import Group from "./Group";
+import Hero from "./Hero";
+import Locale from "./Locale";
+
 export enum Category {
     Game,
     Hero,
@@ -15,19 +22,19 @@ export enum Category {
     Stat,
     Combatant,
     Log
-}
+};
 
-export const pluralizer = {
-    [Category.Hero]: "Heroes",
-    [Category.NPC]: "NPCs",
-    [Category.Enemy]: "Enemies",
-    [Category.Group]: "Groups",
-    [Category.NativeItem]: "Loot",
-    [Category.Cache]: "Caches",
-    [Category.Battlefield]: "Battlefields",
-    [Category.Locale]: "Locales",
-    [Category.Event]: "Events"
-}
+export const stringifier = {
+    [Category.Hero]: { plural: "Heroes", singular: "Hero" },
+    [Category.NPC]: { plural: "NPCs", singular: "NPC" },
+    [Category.Enemy]: { plural: "Enemies", singular: "Enemy" },
+    [Category.Group]: { plural: "Groups", singular: "Group" },
+    [Category.NativeItem]: { plural: "Loot", singular: "Item" },
+    [Category.Cache]: { plural: "Caches", singular: "Cache" },
+    [Category.Battlefield]: { plural: "Battlefields", singular: "Battlefield" },
+    [Category.Locale]: { plural: "Locales", singular: "Locale" },
+    [Category.Event]: { plural: "Events", singular: "Event" }
+};
 
 export const IdCounter = {
     [Category.Game]: 0,
@@ -46,9 +53,17 @@ export const IdCounter = {
     [Category.InventoryItem]: 0,
     [Category.Stat]: 0,
     [Category.Log]: 0
-}
+};
 
 export enum ModalType {
+    OnlineSelector,
     LogIn,
-    Register
-}
+    Register,
+    ModeSelector,
+    GameSelector,
+    PlayerSelector,
+    Item,
+    Battlefield,
+};
+
+export type VisibleEntity = (Hero | Group | Cache | Event | Battlefield | Locale);

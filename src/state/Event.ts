@@ -1,5 +1,7 @@
 import { $create, $delete, $update } from "../API/connector";
 import Entity from "./Entity";
+import EntityList from "./EntityList";
+import Log from "./Log";
 import { Category } from "./types";
 
 export default class Event {
@@ -7,6 +9,7 @@ export default class Event {
     public readonly id!: number;
     private _name: string = "";
 
+    public logs: EntityList<Log> = new EntityList<Log>();
 
     @$create
     public static create(): any { }

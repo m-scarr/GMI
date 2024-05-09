@@ -14,7 +14,7 @@ module.exports = {
         return;
       }
     },
-    readPlayer: async (req, res) => {
+    read: async (req, res) => {
       try {
         const character = await db.Character.findOne({
           where: { playerUserId: req.user.id, id: req.query.characterId },
@@ -43,6 +43,7 @@ module.exports = {
         const battlefieldIds = character.combatants.map(
           (combatant) => combatant.battlefieldId
         );
+        
         const battlefields = await db.Battlefield.findAll({
           where: { id: battlefieldIds },
           include: [
@@ -73,7 +74,7 @@ module.exports = {
         return;
       }
     },
-    readPlayerByUser: async (req, res) => {
+    readByUser: async (req, res) => {
       try {
         const characters = await db.Character.findAll({
           where: { playerUserId: req.user.id },

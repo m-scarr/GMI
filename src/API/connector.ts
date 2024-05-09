@@ -10,7 +10,6 @@ export function $create(target: any, propertyKey: string, descriptor: PropertyDe
             argObj[argName.replace('_', '')] = argValues[index];
         });
         const category = ((target.toString().split("Category.")[1]).split(";")[0]);
-        console.log(category);
         const newEntity = await API.create(category, argObj);
         return new target.prototype.constructor(newEntity);
     };
@@ -38,7 +37,6 @@ export function $delete(_target: any, _propertyKey: string, _descriptor: Propert
 }
 
 function getParamNames(func: Function) {
-    console.log(func);
     const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
     const ARGUMENT_NAMES = /([^\s,]+)/g;
     const fnStr = func.toString().replace(STRIP_COMMENTS, '');

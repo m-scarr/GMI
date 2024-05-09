@@ -1,5 +1,6 @@
 import { $create, $delete, $update } from "../API/connector";
 import Entity from "./Entity";
+import EntityList from "./EntityList";
 import InventoryItem from "./InventoryItem";
 import Log from "./Log";
 import { Category } from "./types";
@@ -17,8 +18,8 @@ export default class Cache {
     private _createdAt: string = "";
     private _updatedAt: string = "";
 
-    private _inventoryItems: InventoryItem[] = [];
-    private _logs: Log[] = [];
+    public inventoryItems: EntityList<InventoryItem> = new EntityList<InventoryItem>();
+    public logs: EntityList<Log> = new EntityList<Log>();
 
     @$create
     public static create(): any { }

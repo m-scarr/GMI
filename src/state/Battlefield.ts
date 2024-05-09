@@ -1,6 +1,7 @@
 import { $create, $delete, $update } from "../API/connector";
 import Combatant from "./Combatant";
 import Entity from "./Entity";
+import EntityList from "./EntityList";
 import Log from "./Log";
 import { Category } from "./types";
 
@@ -19,8 +20,8 @@ export default class Battlefield {
     private _createdAt: string = "";
     private _updatedAt: string = "";
 
-    private _combatants: Combatant[] = [];
-    private _logs: Log[] = [];
+    public combatants: EntityList<Combatant> = new EntityList<Combatant>();
+    public logs: EntityList<Log> = new EntityList<Log>();
 
     @$create
     public static create(): any { }

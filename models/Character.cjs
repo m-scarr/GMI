@@ -6,7 +6,7 @@ module.exports = (sequelize) => {
       defaultValue: "New Character",
       allowNull: false,
     },
-    typeName: {
+    category: {
       type: DataTypes.ENUM("Hero", "NPC", "Enemy"),
       allowNull: false,
     },

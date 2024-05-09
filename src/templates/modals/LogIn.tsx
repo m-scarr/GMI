@@ -13,14 +13,16 @@ function LogInModal({ }: Props) {
         AppState.instance.currentModal = ModalType.Register;
     }
     const handleLogInClick = () => {
-        API.user.logIn(logInName, password);
+        AppState.instance.logIn(logInName, password);
     }
     return (
-        <div className="modal" style={{display: "flex", flexDirection: "column"}}>
+        <div className="modal" style={{ display: "flex", flexDirection: "column" }} onClick={(e: any) => {
+            e.stopPropagation();
+        }}>
             Log In
             <hr />
-            <input value={logInName} placeholder="This is the username you will log in with" onInput={(e:any)=>{setLogInName(e.target.value)}} />
-            <input value={password} placeholder="Password" onInput={(e:any)=>{setPassword(e.target.value)}} />
+            <input value={logInName} placeholder="This is the username you will log in with" onInput={(e: any) => { setLogInName(e.target.value) }} />
+            <input value={password} placeholder="Password" onInput={(e: any) => { setPassword(e.target.value) }} />
             <button onClick={handleLogInClick}>Log In</button>
             <button onClick={handleRegisterClick}>I don't have an Account</button>
         </div>

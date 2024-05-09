@@ -6,7 +6,7 @@ module.exports = {
     isLoggedIn: (req, res) => {
       res.json(
         req.isAuthenticated()
-          ? { success: true, user: { ...req.user.dataValues } }
+          ? { success: true, user: req.user }
           : { success: false }
       );
     },
@@ -25,13 +25,12 @@ module.exports = {
       } catch (err) {
         console.error(err);
         res.json(false);
-        return;
       }
     },
     logIn: (req, res) => {
       res.json({
         success: true,
-        user: { ...req.user },
+        user: req.user,
       });
     },
   },
@@ -39,7 +38,6 @@ module.exports = {
     logOut: (req, res) => {
       req.logout();
       res.json(true);
-      return;
     },
   },
 };

@@ -89,10 +89,10 @@ router.post(
   permissionMiddleWare.create,
   characterController.authorized.create
 );
-router.get("/readPlayer", characterController.authorized.readPlayer);
+router.get("/read", characterController.authorized.read);
 router.get(
-  "/readPlayerByUser",
-  characterController.authorized.readPlayerByUser
+  "/readByUser",
+  characterController.authorized.readByUser
 );
 router.put(
   "/update",

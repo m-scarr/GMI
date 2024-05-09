@@ -42,3 +42,9 @@ input[type="range"]::-moz-range-thumb {
     background: rgba(0, 0, 0, .8);
     cursor: pointer;
 }
+
+.modal {
+    position: fixed;
+    background-color: white;
+    padding: 16px;
+}

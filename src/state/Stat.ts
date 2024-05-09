@@ -1,5 +1,6 @@
 import { $create, $delete, $update } from "../API/connector";
 import Entity from "./Entity";
+import Game from "./Game";
 import NativeItem from "./NativeItem";
 import { Category } from "./types";
 
@@ -21,6 +22,12 @@ export default class Stat {
 
     private constructor(data: any) {
         Entity.build(this, data);
+        this._nativeItem = Game.instance!.findEntity(Category.NativeItem, this._nativeItemId!);
+        this._nativeItem!.stats.add(this);
+    }
+
+    public get nativeItem() {
+        return this._nativeItem;
     }
 
     public get name(): string {
@@ -29,10 +36,6 @@ export default class Stat {
 
     public get value(): string {
         return this._value;
-    }
-
-    public get nativeItem(): NativeItem | null {
-        return this._nativeItem;
     }
 
     @$update

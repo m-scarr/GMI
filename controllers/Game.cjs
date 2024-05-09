@@ -83,7 +83,7 @@ module.exports = {
       try {
         const games = await db.Game.findAll({
           where: { userId: req.user.id },
-          attributes: ["name", "id"],
+          attributes: ["id", "name", "overworldId", "createdAt", "updatedAt"],
         });
         res.json(games);
       } catch (err) {

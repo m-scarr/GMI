@@ -1,7 +1,10 @@
 import { $create, $delete, $update } from "../API/connector";
 import Battlefield from "./Battlefield";
+import Enemy from "./Enemy";
 import Entity from "./Entity";
+import Game from "./Game";
 import Hero from "./Hero";
+import NPC from "./NPC";
 import { Category } from "./types";
 
 export default class Combatant {
@@ -19,7 +22,7 @@ export default class Combatant {
     private _createdAt: string = "";
     private _updatedAt: string = "";
 
-    private _character: Hero | null = null;
+    private _character: Hero | NPC | Enemy | null = null;
     private _battlefield: Battlefield | null = null;
 
     @$create
@@ -31,6 +34,18 @@ export default class Combatant {
 
     private constructor(data: any) {
         Entity.build(this, data);
+        this._character = Game.instance!.findCharacter(this._characterId!);
+        this._battlefield = Game.instance!.findEntity(Category.Battlefield, this._battlefieldId!);
+        this._character!.combatants.add(this);
+        this._battlefield!.combatants.add(this);
+    }
+
+    public get character() {
+        return this._character;
+    }
+
+    public get battlefield() {
+        return this._battlefield;
     }
 
     @$delete

@@ -44,11 +44,11 @@ passportConfig(app, db);
 
 app.use("/", routes);
 
-app.use(express.static(__dirname + "/build"));
+app.use(express.static(__dirname + "/dist"));
 
-/*app.route("/").get((req, res) => {
-      res.sendFile(path.join(__dirname, "build", "index.html"));
-    });*/
+app.route("/").get((req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
+});
 
 //routes(app, db, passport);
 const server = http.createServer(app);

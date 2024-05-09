@@ -1,5 +1,9 @@
 import { $create, $delete, $update } from "../API/connector";
 import Entity from "./Entity";
+import EntityList from "./EntityList";
+import InventoryItem from "./InventoryItem";
+import Log from "./Log";
+import Stat from "./Stat";
 import { Category } from "./types";
 
 export default class NativeItem {
@@ -7,6 +11,9 @@ export default class NativeItem {
     public readonly id!: number;
     private _name: string = "";
 
+    public logs: EntityList<Log> = new EntityList<Log>();
+    public stats: EntityList<Stat> = new EntityList<Stat>();
+    public inventoryItems: EntityList<InventoryItem> = new EntityList<InventoryItem>();
 
     @$create
     public static create(): any { }

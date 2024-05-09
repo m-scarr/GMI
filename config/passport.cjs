@@ -48,7 +48,6 @@ module.exports = function (app, db) {
       if (user == null) {
         done(new Error("Something went wrong!"));
       } else {
-        console.log(JSON.stringify(user));
         done(null, {
           id: user.id,
           logInName: user.logInName,
