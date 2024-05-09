@@ -8,6 +8,8 @@ export default class Locale {
     public readonly category: Category = Category.Locale;
     public readonly id!: number;
     private _name: string = "";
+    private _mapSrc: string = "./assets/noimage.png"
+    private _map: HTMLImageElement = new Image();
 
     public logs: EntityList<Log> = new EntityList<Log>();
 
@@ -20,12 +22,17 @@ export default class Locale {
 
     private constructor(data: any) {
         Entity.build(this, data);
+        this._map.src = this._mapSrc;
+
     }
 
     public get name(): string {
         return this._name;
     }
 
+    public get map() {
+        return this._map;
+    }
 
     @$update
     public set name(value: string) {

@@ -97,6 +97,7 @@ export default class Game {
         game.events.forEach((data: any) => {
             Entity[Category.Event].load(data);
         });
+        AppState.instance.currentLocale = this._overworldLocale;
         AppState.instance.currentModal = null;
     }
 

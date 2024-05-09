@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { draw } from './draw';
 import control from './control';
 import { VisibleEntity } from '../../state/types';
+import AppState from '../../state/AppState';
 
 type Props = {}
 
@@ -52,7 +53,9 @@ function Map({ }: Props) {
 
     useEffect(() => {
         const drawLoop = () => {
-            draw(getState(), setState);
+            if (AppState.instance.currentLocale !== null) {
+                draw(getState(), setState);
+            }
             animationFrameRef.current = requestAnimationFrame(() => { drawLoop(); });
         }
         drawLoop();

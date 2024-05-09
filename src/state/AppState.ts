@@ -83,4 +83,13 @@ export default class AppState {
     public get modals(): any {
         return { ...this._modals };
     }
+
+    public set currentLocale(newVal:Locale | null) {
+        console.log(newVal);
+        this._currentLocale = newVal;
+    }
+
+    public get currentLocale(): Locale | null {
+        return this._currentLocale;
+    }
 }
