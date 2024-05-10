@@ -13,13 +13,14 @@ export default class Cache {
     private _x: number | null = null;
     private _y: number | null = null;
     private _visible: boolean = true;
-    private _markerSrc: string = "./assets/battlefield.png";
+    private _markerSrc: string = "./assets/cache.png";
     private _notes: string = "";
     private _createdAt: string = "";
     private _updatedAt: string = "";
 
     public inventoryItems: EntityList<InventoryItem> = new EntityList<InventoryItem>();
     public logs: EntityList<Log> = new EntityList<Log>();
+    private _marker:HTMLImageElement = new Image();
 
     @$create
     public static create(): any { }
@@ -30,6 +31,15 @@ export default class Cache {
 
     private constructor(data: any) {
         Entity.build(this, data);
+        this._marker.src = this._markerSrc;
+    }
+
+    public get marker() {
+        return this._marker;
+    }
+
+    public get visible() {
+        return this._visible;
     }
 
     public get name(): string {

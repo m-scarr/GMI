@@ -97,6 +97,7 @@ export default function TextInput(props: Props) {
                 value={value}
                 onChange={handleInputChange}
                 disabled={locked || props.locked}
+                placeholder={props.placeholder}
                 style={{
                     borderWidth: 3,
                     borderStyle: "solid",

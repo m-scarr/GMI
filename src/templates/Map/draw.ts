@@ -1,4 +1,5 @@
 import AppState from "../../state/AppState";
+import Entity from "../../state/Entity";
 import Game from "../../state/Game";
 import { Category, VisibleEntity } from "../../state/types";
 
@@ -32,18 +33,18 @@ const mouseInside = (
     mouseX: number,
     mouseY: number,
     entity: VisibleEntity,
-    zoom: number
+    zoomFactor: number
 ) => {
-    /*if (entity.location.x !== null && entity.location.y !== null) {
-      return (
-        (mouseX - x) / zoom > entity.location.x - 48 / zoom &&
-        (mouseX - x) / zoom < entity.location.x + 48 / zoom &&
-        (mouseY - y) / zoom > entity.location.y - 96 / zoom &&
-        (mouseY - y) / zoom < entity.location.y
-      );
+    if (entity.location.x !== null && entity.location.y !== null) {
+        return (
+            (mouseX - x) / zoomFactor > entity.location.x - 48 / zoomFactor &&
+            (mouseX - x) / zoomFactor < entity.location.x + 48 / zoomFactor &&
+            (mouseY - y) / zoomFactor > entity.location.y - 96 / zoomFactor &&
+            (mouseY - y) / zoomFactor < entity.location.y
+        );
     } else {
-      return false;
-    }*/
+        return false;
+    }
 };
 
 const drawMarker = (
@@ -51,63 +52,63 @@ const drawMarker = (
     entity: VisibleEntity,
     x: number,
     y: number,
-    zoom: number,
+    zoomFactor: number,
     hover: boolean
 ) => {
-    /*if (entity.location.x !== null && entity.location.y !== null) {
-      if (!hover) {
-        context.save();
-        context.imageSmoothingEnabled = false;
-        context.drawImage(
-          entity.marker,
-          entity.location.x * zoom + x - 48,
-          entity.location.y * zoom + y - 104,
-          96,
-          96
-        );
-        drawTriangle(
-          context,
-          entity.location.x * zoom + x,
-          entity.location.y * zoom + y,
-          entity.location.x * zoom + x - 8,
-          entity.location.y * zoom + y - 8,
-          entity.location.x * zoom + x + 8,
-          entity.location.y * zoom + y - 8
-        );
-        context.restore();
-      } else {
-        context.save();
-        context.shadowColor = "white";
-        context.shadowBlur = 5;
-        drawText(
-          context,
-          entity.name,
-          entity.location.x,
-          entity.location.y,
-          x,
-          y,
-          zoom
-        );
-        context.imageSmoothingEnabled = false;
-        context.drawImage(
-          entity.marker,
-          entity.location.x * zoom + x - 56,
-          entity.location.y * zoom + y - 120,
-          112,
-          112
-        );
-        drawTriangle(
-          context,
-          entity.location.x * zoom + x,
-          entity.location.y * zoom + y,
-          entity.location.x * zoom + x - 8,
-          entity.location.y * zoom + y - 8,
-          entity.location.x * zoom + x + 8,
-          entity.location.y * zoom + y - 8
-        );
-        context.restore();
-      }
-    }*/
+    if (entity.location.x !== null && entity.location.y !== null) {
+        if (!hover) {
+            context.save();
+            context.imageSmoothingEnabled = false;
+            context.drawImage(
+                entity.marker,
+                entity.location.x * zoomFactor + x - 48,
+                entity.location.y * zoomFactor + y - 104,
+                96,
+                96
+            );
+            drawTriangle(
+                context,
+                entity.location.x * zoomFactor + x,
+                entity.location.y * zoomFactor + y,
+                entity.location.x * zoomFactor + x - 8,
+                entity.location.y * zoomFactor + y - 8,
+                entity.location.x * zoomFactor + x + 8,
+                entity.location.y * zoomFactor + y - 8
+            );
+            context.restore();
+        } else {
+            context.save();
+            context.shadowColor = "white";
+            context.shadowBlur = 5;
+            drawText(
+                context,
+                entity.name,
+                entity.location.x,
+                entity.location.y,
+                x,
+                y - 28,
+                zoomFactor
+            );
+            context.imageSmoothingEnabled = false;
+            context.drawImage(
+                entity.marker,
+                entity.location.x * zoomFactor + x - 72,
+                entity.location.y * zoomFactor + y - 152,
+                144,
+                144
+            );
+            drawTriangle(
+                context,
+                entity.location.x * zoomFactor + x,
+                entity.location.y * zoomFactor + y,
+                entity.location.x * zoomFactor + x - 8,
+                entity.location.y * zoomFactor + y - 8,
+                entity.location.x * zoomFactor + x + 8,
+                entity.location.y * zoomFactor + y - 8
+            );
+            context.restore();
+        }
+    }
 };
 
 const drawText = (
@@ -117,7 +118,7 @@ const drawText = (
     y: number,
     mapX: number,
     mapY: number,
-    zoom: number
+    zoomFactor: number
 ) => {
     context.save();
     context.imageSmoothingEnabled = false;
@@ -125,9 +126,9 @@ const drawText = (
     context.textAlign = "center";
     context.lineWidth = 4;
     context.strokeStyle = "black";
-    context.strokeText(text, x * zoom + mapX, y * zoom + mapY - 136);
+    context.strokeText(text, x * zoomFactor + mapX, y * zoomFactor + mapY - 136);
     context.fillStyle = "white";
-    context.fillText(text, x * zoom + mapX, y * zoom + mapY - 136);
+    context.fillText(text, x * zoomFactor + mapX, y * zoomFactor + mapY - 136);
     context.restore();
 };
 
@@ -142,7 +143,7 @@ export const draw = (state: any, setState: Function) => {
         AppState.instance.currentLocale!.map.width * state.zoomFactor,
         AppState.instance.currentLocale!.map.height * state.zoomFactor
     );
-    /*[
+    [
         ...Game.instance![Category.Hero].list,
         ...Game.instance![Category.NPC].list,
         ...Game.instance![Category.Enemy].list,
@@ -152,11 +153,11 @@ export const draw = (state: any, setState: Function) => {
         ...Game.instance![Category.Locale].list,
         ...Game.instance![Category.Event].list,
     ].forEach((entity: VisibleEntity) => {
-        if (AppState.instance.droppingMarker !== entity && entity.isVisible()) {
+        if (AppState.instance.droppingMarker !== entity && Entity.isVisible(entity)) {
             if (
                 mouseInside(
-                    state.x,
-                    state.y,
+                    state.mapX,
+                    state.mapY,
                     state.mouseX,
                     state.mouseY,
                     entity,
@@ -193,12 +194,12 @@ export const draw = (state: any, setState: Function) => {
     if (
         state.hoverEntity !== null &&
         !mouseInside(
-            state.x,
-            state.y,
+            state.mapX,
+            state.mapY,
             state.mouseX,
             state.mouseY,
             state.hoverEntity,
-            state.zoom
+            state.zoomFactor
         )
     ) {
         setState({ hoverEntity: null });
@@ -239,5 +240,5 @@ export const draw = (state: any, setState: Function) => {
             state.mouseX + 8,
             state.mouseY - 8
         );
-    }*/
+    }
 }

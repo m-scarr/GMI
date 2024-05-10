@@ -22,6 +22,7 @@ export default class Battlefield {
 
     public combatants: EntityList<Combatant> = new EntityList<Combatant>();
     public logs: EntityList<Log> = new EntityList<Log>();
+    private _marker:HTMLImageElement = new Image();
 
     @$create
     public static create(): any { }
@@ -32,6 +33,7 @@ export default class Battlefield {
 
     private constructor(data: any) {
         Entity.build(this, data);
+        this._marker.src = this._markerSrc;
     }
 
     public get name(): string {
@@ -42,6 +44,14 @@ export default class Battlefield {
         return { localeId: this._localeId, x: this._x, y: this._y }
     }
 
+    public get marker() {
+        return this._marker;
+    }
+
+    public get visible() {
+        return this._visible;
+    }
+    
     @$update
     public set location(value: { localeId: number, x: number, y: number }) {
         this._localeId = value.localeId;

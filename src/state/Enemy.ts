@@ -29,6 +29,7 @@ export default class Enemy {
     public inventoryItems: EntityList<InventoryItem> = new EntityList<InventoryItem>();
     public logs: EntityList<Log> = new EntityList<Log>();
 
+    public _marker: HTMLImageElement = new Image();
 
     @$create
     public static create(): any { }
@@ -39,6 +40,11 @@ export default class Enemy {
 
     private constructor(data: any) {
         Entity.build(this, data);
+        this._marker.src = this._markerSrc;
+    }
+
+    public get marker() {
+        return this._marker;
     }
 
     public get name(): string {

@@ -21,7 +21,7 @@ function LogInModal({ }: Props) {
         }}>
             Log In
             <hr />
-            <input value={logInName} placeholder="This is the username you will log in with" onInput={(e: any) => { setLogInName(e.target.value) }} />
+            <input value={logInName} placeholder="Username" onInput={(e: any) => { setLogInName(e.target.value) }} />
             <input value={password} placeholder="Password" onInput={(e: any) => { setPassword(e.target.value) }} />
             <button onClick={handleLogInClick}>Log In</button>
             <button onClick={handleRegisterClick}>I don't have an Account</button>

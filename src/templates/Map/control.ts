@@ -1,33 +1,44 @@
-export default {
+import AppState from "../../state/AppState";
+import Game from "../../state/Game";
+import { Category, VisibleEntity } from "../../state/types";
+
+export const getDistance = (
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number
+): number => {
+    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+};
+
+const controls = {
     mouseDown: (e: any, state: any, setState: (obj: any) => void) => {
         if (e.nativeEvent.button === 0) {
-            /*if (
+            if (
                 state.hoverEntity &&
                 state.hoverEntity !== null &&
-                state.timeout == null
+                state.intervalRef == null
             ) {
-                map.goToEntity(map.state.hoverEntity);
-                App.instance.setCurrentEntity(map.state.hoverEntity);
-            } else {*/
-            setState({
-                clicked: true,
-                clickX: state.mouseX - state.mapX,
-                clickY: state.mouseY - state.mapY,
-            });
-            //}
-        } /*else if (
+                AppState.instance.currentEntity = state.hoverEntity;
+            } else if (state.destX === null && state.destY === null) {
+                setState({
+                    clicked: true,
+                    clickX: state.mouseX - state.mapX,
+                    clickY: state.mouseY - state.mapY,
+                });
+            }
+        } else if (
             e.nativeEvent.button === 2 &&
-            App.instance.droppingMarker !== null
-          ) {
-            App.instance.droppingMarker.setLocation({
-              locale: App.instance.currentLocale,
-              mapX: (map.state.mouseX - map.state.mapX) / map.state.zoomFactor,
-              mapY: (map.state.mouseY - map.state.mapY) / map.state.zoomFactor,
-            });
-            App.instance.droppingMarker = null;
-          }*/
+            AppState.instance.droppingMarker !== null
+        ) {
+            AppState.instance.droppingMarker.location = {
+                localeId: AppState.instance.currentLocale!.id,
+                x: (state.mouseX - state.mapX) / state.zoomFactor,
+                y: (state.mouseY - state.mapY) / state.zoomFactor
+            };
+        }
     },
-    mouseUp: (e: any, state: any, setState: (obj: any) => void) => {
+    mouseUp: (_e: any, _state: any, setState: (obj: any) => void) => {
         setState({ clicked: false });
     },
     mouseMove: (e: any, state: any, setState: (obj: any) => void) => {
@@ -35,23 +46,23 @@ export default {
             mouseX: e.nativeEvent.offsetX * window.devicePixelRatio,
             mouseY: e.nativeEvent.offsetY * window.devicePixelRatio,
         });
-        if (state.clicked) {
+        if (state.clicked && state.destX === null && state.destY === null) {
             setState({
                 mapX: state.mouseX - state.clickX,
                 mapY: state.mouseY - state.clickY,
             });
         }
     },
-    mouseEnter: (e: any, state: any, setState: (obj: any) => void) => {
+    mouseEnter: (e: any, _state: any, setState: (obj: any) => void) => {
         setState({
             mouseX: e.nativeEvent.offsetX * window.devicePixelRatio,
             mouseY: e.nativeEvent.offsetY * window.devicePixelRatio,
         });
     },
-    mouseLeave: (e: any, state: any, setState: (obj: any) => void) => {
+    mouseLeave: (_e: any, _state: any, setState: (obj: any) => void) => {
         setState({ clicked: false });
     },
-    mouseOut: (e: any, state: any, setState: (obj: any) => void) => {
+    mouseOut: (_e: any, _state: any, setState: (obj: any) => void) => {
         setState({ clicked: false });
     },
     mouseWheel: (e: any, state: any, setState: (obj: any) => void) => {
@@ -70,3 +81,5 @@ export default {
         });
     }
 }
+
+export default controls;

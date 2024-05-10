@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import Game from "./Game";
-import { Category } from "./types";
+import { Category, VisibleEntity } from "./types";
 import Locale from "./Locale";
 import Log from "./Log";
 import Hero from "./Hero";
@@ -15,6 +15,7 @@ import GroupMember from "./GroupMember";
 import Event from "./Event";
 import Battlefield from "./Battlefield";
 import Combatant from "./Combatant";
+import AppState from "./AppState";
 
 export default abstract class Entity {
     static build(entity: any, data: any) {
@@ -159,6 +160,12 @@ export default abstract class Entity {
         refresh: () => {
 
         }
+    }
+
+    public static isVisible(entity:VisibleEntity) {
+        return (
+            entity.visible && entity.location.localeId === AppState.instance.currentLocale?.id
+          );
     }
 }
 //locales

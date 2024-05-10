@@ -1,9 +1,11 @@
 import Battlefield from "./Battlefield";
 import Cache from "./Cache";
+import Enemy from "./Enemy";
 import Event from "./Event";
 import Group from "./Group";
 import Hero from "./Hero";
 import Locale from "./Locale";
+import NPC from "./NPC";
 
 export enum Category {
     Game,
@@ -24,16 +26,16 @@ export enum Category {
     Log
 };
 
-export const stringifier = {
-    [Category.Hero]: { plural: "Heroes", singular: "Hero" },
-    [Category.NPC]: { plural: "NPCs", singular: "NPC" },
-    [Category.Enemy]: { plural: "Enemies", singular: "Enemy" },
-    [Category.Group]: { plural: "Groups", singular: "Group" },
-    [Category.NativeItem]: { plural: "Loot", singular: "Item" },
-    [Category.Cache]: { plural: "Caches", singular: "Cache" },
-    [Category.Battlefield]: { plural: "Battlefields", singular: "Battlefield" },
-    [Category.Locale]: { plural: "Locales", singular: "Locale" },
-    [Category.Event]: { plural: "Events", singular: "Event" }
+export const refData = {
+    [Category.Hero]: { plural: "Heroes", singular: "Hero", color: "green", defaultMarkerSrc:"./assets/hero.png" },
+    [Category.NPC]: { plural: "NPCs", singular: "NPC", color: "blue", defaultMarkerSrc:"./assets/npc.png" },
+    [Category.Enemy]: { plural: "Enemies", singular: "Enemy", color: "red", defaultMarkerSrc:"./assets/enemy.png" },
+    [Category.Group]: { plural: "Groups", singular: "Group", color: "darkorange", defaultMarkerSrc:"./assets/group.png" },
+    [Category.NativeItem]: { plural: "Loot", singular: "Item", color: "gold", defaultMarkerSrc:"./assets/loot.png" },
+    [Category.Cache]: { plural: "Caches", singular: "Cache", color: "saddlebrown", defaultMarkerSrc:"./assets/cache.png" },
+    [Category.Battlefield]: { plural: "Battlefields", singular: "Battlefield", color: "maroon", defaultMarkerSrc:"./assets/battlefield.png" },
+    [Category.Locale]: { plural: "Locales", singular: "Locale", color: "darkviolet", defaultMarkerSrc:"./assets/locale.png" },
+    [Category.Event]: { plural: "Events", singular: "Event", color: "hotpink", defaultMarkerSrc:"./assets/event.png" }
 };
 
 export const IdCounter = {
@@ -66,4 +68,4 @@ export enum ModalType {
     Battlefield,
 };
 
-export type VisibleEntity = (Hero | Group | Cache | Event | Battlefield | Locale);
+export type VisibleEntity = (Hero | NPC | Enemy | Group | Cache | Event | Battlefield | Locale);

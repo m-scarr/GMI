@@ -14,8 +14,10 @@ function GameSelectorModal({ }: Props) {
       <hr />
       {AppState.instance.modals.games.map((game: Game) => {
         return (
-          <div key={'game-button-' + game.id} onClick={() => { game.open(); }}>
-            {game.name}
+          <div key={'game-button-' + game.id}>
+            <button key={'game-button-' + game.id} onClick={() => { game.open(); }}>
+              {game.name}
+            </button>
           </div>
         );
       })}
