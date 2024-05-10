@@ -57,6 +57,7 @@ export default class AppState {
     }
 
     public set currentCategory(newVal: Category | null) {
+        this._searchValue = "";
         this._currentCategory = newVal;
     }
 

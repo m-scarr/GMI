@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 
-type Props = { value: string, placeholder?: string, onInput: (val: string) => void, onIdle?: (val: string) => void, idleLength?: number, locking?: boolean, fontSize?: number, locked?: boolean, onLock?: (val: boolean) => void }
+type Props = { color?: string, value: string, placeholder?: string, onInput: (val: string) => void, onIdle?: (val: string) => void, idleLength?: number, locking?: boolean, fontSize?: number, locked?: boolean, onLock?: (val: boolean) => void }
 
 export default function TextInput(props: Props) {
+    //props.color = "red";
     const [value, setValue] = useState<string>(props.value);
     const [locked, setLocked] = useState(props.locking || false);
     const [lineHeight, setLineHeight] = useState(0);
@@ -108,26 +109,36 @@ export default function TextInput(props: Props) {
                     fontSize: props.fontSize || 16,
                     width: `calc(100% - ${props.locking || props.locked ? Math.max(lineHeight, 16) / 2 + 24 : 2}px)`,
                     minHeight: props.fontSize || 16,
-                    textAlign: "center"
+                    textAlign: "center",
+                    textShadow: `1px 1px 1px black, -1px -1px 1px black, -1px 1px 1px black, 1px -1px 1px black, ` +
+                        `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `-1px 1px 2px ${props.color ? props.color : 'white'}, 1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `-1px 1px 2px ${props.color ? props.color : 'white'}, 1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `-1px 1px 2px ${props.color ? props.color : 'white'}, 1px -1px 2px ${props.color ? props.color : 'white'}`,
+                    borderColor: props.color ? props.color : "rgb(112, 112, 112)",
                 }}>
             </textarea>
-            {props.locking || props.locked ?
-                <div style={{
-                    position: "relative",
-                    width: 0,
-                    height: 0,
-                    right: Math.max(lineHeight, 16) / 2 + 7,
-                    top: totalHeight / 2 - Math.max(lineHeight, 16) / 2
-                }}>
-                    <img style={{ height: Math.max(lineHeight, 16) }}
-                        alt="lock/unlock" src={`./assets/${locked || props.locked ? '' : 'un'}locked.png`} onClick={() => {
-                            if (props.onLock) {
-                                props.onLock(!locked);
-                            }
-                            setLocked(!locked);
-                        }} />
-                </div>
-                : null}
-        </div>
+            {
+                props.locking || props.locked ?
+                    <div style={{
+                        position: "relative",
+                        width: 0,
+                        height: 0,
+                        right: Math.max(lineHeight, 16) / 2 + 7,
+                        top: totalHeight / 2 - Math.max(lineHeight, 16) / 2,
+                    }}>
+                        <img style={{ height: Math.max(lineHeight, 16) }}
+                            alt="lock/unlock" src={`./assets/${locked || props.locked ? '' : 'un'}locked.png`} onClick={() => {
+                                if (props.onLock) {
+                                    props.onLock(!locked);
+                                }
+                                setLocked(!locked);
+                            }} />
+                    </div>
+                    : null
+            }
+        </div >
     )
 }
