@@ -27,7 +27,7 @@ function MenuHeader({ }: Props) {
                 justifyContent: "center",
                 backgroundColor: AppState.instance.currentCategory === null ? "dimgray" : (refData as any)[AppState.instance.currentCategory].color as string
             }} >{AppState.instance.currentCategory === null ? "Options" : (refData as any)[AppState.instance.currentCategory].plural}</div>
-            <div style={{ display: "flex", flexDirection: "row", borderBottom: AppState.instance.currentCategory === null ? "2px solid white" : "" }}>
+            <div style={{ display: "flex", flexDirection: "row" }}>
                 <div key={"key-Option"} style={{ backgroundColor: "dimgray" }}>
                     <div
                         style={{ backgroundColor: `rgb(255, 255, 255, ${hoverOptions ? ".3" : "0"})`, height: 36, paddingTop: 2 }}
@@ -61,12 +61,31 @@ function MenuHeader({ }: Props) {
                             <div
 
                                 style={{
-                                    backgroundColor: `rgb(255, 255, 255, ${(hover as any)[category][0] ? ".3" : "0"})`,
+                                    backgroundColor: `rgb(255, 255, 255, ${(hover as any)[category][0] ? category === Category.NativeItem ? ".9" : ".3" : "0"})`,
                                     height: 36,
                                     paddingTop: 2,
+                                    width: 32
                                 }}
-                                onClick={() => { AppState.instance.currentCategory = category; }}>
-                                <img src={(refData as any)[category].defaultMarkerSrc} />
+                                onClick={() => { AppState.instance.currentCategory = category; }}
+                                onMouseEnter={() => {
+                                    (hover as any)[category][1](true);
+                                }}
+                                onMouseLeave={() => {
+                                    (hover as any)[category][1](false);
+                                }}
+                                onMouseOut={() => {
+                                    (hover as any)[category][1](false);
+                                }}>
+                                <img src={(refData as any)[category].defaultMarkerSrc}
+                                    onMouseEnter={() => {
+                                        (hover as any)[category][1](true);
+                                    }}
+                                    onMouseLeave={() => {
+                                        (hover as any)[category][1](false);
+                                    }}
+                                    onMouseOut={() => {
+                                        (hover as any)[category][1](false);
+                                    }} />
                             </div>
                         </div>
                     )

@@ -7,12 +7,8 @@ import { refData } from '../state/types';
 type Props = {}
 
 const SearchBar = (_props: Props) => {
-    //const [searchValue, setSearchValue] = useState(AppState.instance.searchValue);
-    //useEffect(() => {
-    //    AppState.instance.searchValue = searchValue;
-    //}, [searchValue]);
     return AppState.instance.currentCategory === null ? null : (
-        <div style={{ padding: 1, borderBottom: "2px solid white", backgroundColor: (refData as any)[AppState.instance.currentCategory].color }}>
+        <div style={{ padding: 1, backgroundColor: (refData as any)[AppState.instance.currentCategory].color }}>
             <TextInput
                 placeholder={`Search ${(refData as any)[AppState.instance.currentCategory].plural}`}
                 color={(refData as any)[AppState.instance.currentCategory].color}

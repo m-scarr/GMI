@@ -44,6 +44,14 @@ export default class AppState {
         this.user = await API.user.logIn(logInName, password);
     }
 
+    public get gameMasterMode() {
+        return this._gameMasterMode;
+    }
+
+    public set gameMasterMode(newVal:boolean) {
+        this._gameMasterMode = newVal;
+    }
+
     public set searchValue(newVal:any) {
         this._searchValue = newVal;
     }

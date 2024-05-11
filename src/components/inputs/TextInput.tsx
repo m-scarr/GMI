@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from 'react'
 type Props = { color?: string, value: string, placeholder?: string, onInput: (val: string) => void, onIdle?: (val: string) => void, idleLength?: number, locking?: boolean, fontSize?: number, locked?: boolean, onLock?: (val: boolean) => void }
 
 export default function TextInput(props: Props) {
-    //props.color = "red";
     const [value, setValue] = useState<string>(props.value);
     const [locked, setLocked] = useState(props.locking || false);
     const [lineHeight, setLineHeight] = useState(0);
@@ -111,6 +110,16 @@ export default function TextInput(props: Props) {
                     minHeight: props.fontSize || 16,
                     textAlign: "center",
                     textShadow: `1px 1px 1px black, -1px -1px 1px black, -1px 1px 1px black, 1px -1px 1px black, ` +
+                        `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `-1px 1px 2px ${props.color ? props.color : 'white'}, 1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `-1px 1px 2px ${props.color ? props.color : 'white'}, 1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `-1px 1px 2px ${props.color ? props.color : 'white'}, 1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `-1px 1px 2px ${props.color ? props.color : 'white'}, 1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `-1px 1px 2px ${props.color ? props.color : 'white'}, 1px -1px 2px ${props.color ? props.color : 'white'}, ` +
                         `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +
                         `-1px 1px 2px ${props.color ? props.color : 'white'}, 1px -1px 2px ${props.color ? props.color : 'white'}, ` +
                         `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +

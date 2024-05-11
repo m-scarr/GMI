@@ -13,11 +13,11 @@ module.exports = function (app, db) {
           where: {
             logInName: username,
           },
-        }).then(function (user) {
+        }).then(async function (user) {
           if (user == null) {
             return done(null, false, { message: "Wrong Username or Password" });
           } else {
-            if (bcrypt.compare(password, user.password)) {
+            if (await bcrypt.compare(password, user.dataValues.password)) {
               return done(null, {
                 id: user.id,
                 logInName: user.logInName,

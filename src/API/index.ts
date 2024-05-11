@@ -1,5 +1,15 @@
 import axios from "axios";
 import { Category } from "../state/types";
+import AppState from "../state/AppState";
+import Game from "../state/Game";
+
+
+const getRouteCategory = (category: string) => {
+    if (category === "Hero" || category === "NPC" || category === "Enemy") {
+        return "Character"
+    }
+    return category;
+}
 
 export default class API {
     static async init() {
@@ -10,7 +20,21 @@ export default class API {
 
     static async create(category: Category, data: any) {
         try {
-            const result = await axios.post(`/auth/${typeof category === "string" ? category : Category[category]}/create`, data);
+            if (typeof category === "string") {
+                data.category = category;
+            } else {
+                if (category == Category.Hero) {
+                    data.category = "Hero";
+                } else if (category == Category.NPC) {
+                    data.category = "NPC";
+                } else if (category == Category.Enemy) {
+                    data.category = "Enemy";
+                }
+            }
+            data.gameMasterMode = AppState.instance.gameMasterMode;
+            data.gameId = Game.instance?.id;
+            const result = await axios.post(`/auth/${getRouteCategory(typeof category === "string" ? category : Category[category])}/create`, data);
+            console.log(result.data);
             return result.data;
         } catch (err) {
             console.error(err);
@@ -41,8 +65,9 @@ export default class API {
 
     static async update(category: Category, id: number, data: any) {
         try {
-            console.log(`/auth/${Category[category]}/update?id=${id}`);
-            const result = await axios.put(`/auth/${Category[category]}/update?id=${id}`, data);
+            console.log(`/auth/${getRouteCategory(typeof category === "string" ? category : Category[category])}/update?id=${id}`);
+            data.gameMasterMode = AppState.instance.gameMasterMode;
+            const result = await axios.put(`/auth/${getRouteCategory(typeof category === "string" ? category : Category[category])}/update?id=${id}`, data);
             return result.data
         } catch (err) {
             console.error(err);
@@ -52,7 +77,7 @@ export default class API {
 
     static async delete(category: Category, id: number) {
         try {
-            const result = await axios.delete(`/auth/${Category[category]}/delete?id=${id}`);
+            const result = await axios.delete(`/auth/${getRouteCategory(typeof category === "string" ? category : Category[category])}/delete?id=${id}`);
             return result.data
         } catch (err) {
             console.error(err);

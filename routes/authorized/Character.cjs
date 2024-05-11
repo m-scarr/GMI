@@ -5,22 +5,23 @@ const router = require("express").Router();
 
 const permissionMiddleWare = {
   create: async (req, res, next) => {
+    console.log(req.body);
     if (!req.body.gameMasterMode) {
       res.json(false);
       return;
     }
     req.preparedData = permissionsController.limitAttributes(req.body, [
       "gameId",
-      "typeName",
+      "category",
     ]);
     const permissionRequest = await permissionsController.verifyPermission(
       req.user.id,
       req.body.gameMasterMode,
       [{ type: "Game", id: req.preparedData.gameId }]
     );
-    req.preparedData.name = "New " + req.preparedData.typeName;
+    req.preparedData.name = "New " + req.preparedData.category;
     req.preparedData.markerSrc =
-      "./assets/" + req.preparedData.typeName.toLowerCase() + ".png";
+      "./assets/" + req.preparedData.category.toLowerCase() + ".png";
     if (!permissionRequest.permitted) {
       res.json(false);
       return;

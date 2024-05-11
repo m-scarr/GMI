@@ -1,5 +1,6 @@
 import API from ".";
 import { runInAction } from "mobx"
+import { Category } from "../state/types";
 
 export function $create(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const argNames = getParamNames(target[propertyKey]);

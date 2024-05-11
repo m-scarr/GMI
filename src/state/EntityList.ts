@@ -1,6 +1,9 @@
-import { runInAction } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 
 export default class EntityList<T> {
+    public constructor() {
+        makeAutoObservable(this);
+    }
     private _list: T[] = [];
     public get list() {
         return [...this._list];

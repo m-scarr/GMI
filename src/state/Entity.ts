@@ -18,6 +18,31 @@ import Combatant from "./Combatant";
 import AppState from "./AppState";
 
 export default abstract class Entity {
+    static create(category: Category) {
+        console.log(category);
+        if (category == Category.Hero) {
+            Hero.create();
+        } else if (category == Category.NPC) {
+            NPC.create();
+        } else if (category == Category.Enemy) {
+            Enemy.create();
+        } else if (category == Category.Group) {
+            Group.create();
+        } else if (category == Category.NativeItem) {
+            NativeItem.create();
+        } else if (category == Category.Cache) {
+            Cache.create();
+        } else if (category == Category.Battlefield) {
+            Battlefield.create();
+        } else if (category == Category.Locale) {
+            Locale.create();
+        } else if (category == Category.Event) {
+            Event.create();
+        } else {
+            console.warn("not yet surpported for create");
+        }
+    }
+
     static build(entity: any, data: any) {
         makeAutoObservable(entity);
         runInAction(() => {
@@ -104,7 +129,7 @@ export default abstract class Entity {
 
         }
     }
-    
+
     public static [Category.Cache]: any = {
         load: (data: any) => {
             Cache.load(data);
@@ -119,7 +144,7 @@ export default abstract class Entity {
 
         }
     }
-    
+
     public static [Category.Group]: any = {
         load: (data: any) => {
             Group.load(data);
@@ -149,7 +174,7 @@ export default abstract class Entity {
 
         }
     }
-    
+
     public static [Category.Event]: any = {
         load: (data: any) => {
             Event.load(data);
@@ -162,10 +187,10 @@ export default abstract class Entity {
         }
     }
 
-    public static isVisible(entity:VisibleEntity) {
+    public static isVisible(entity: VisibleEntity) {
         return (
             entity.visible && entity.location.localeId === AppState.instance.currentLocale?.id
-          );
+        );
     }
 }
 //locales
