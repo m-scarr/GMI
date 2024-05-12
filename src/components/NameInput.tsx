@@ -10,8 +10,10 @@ const NameInput = (_props: Props) => {
     const [name, setName] = useState(AppState.instance.currentEntity!.name)
     return AppState.instance.currentCategory === null ? null : (
         <div style={{ backgroundColor: (refData as any)[AppState.instance.currentCategory].color, display: "flex", flexDirection: "row" }}>
-            <div style={{ padding: 1, alignSelf: "stretch", alignContent:"center" }} onClick={() => { AppState.instance.currentEntity = null }} >
-                <img src="./assets/back.png" />
+            <div className='hoverable' style={{ padding: 1, alignSelf: "stretch", alignContent: "center" }}>
+                <div style={{ alignSelf: "stretch", alignContent: "center" }} onClick={() => { AppState.instance.currentEntity = null }} >
+                    <img src="./assets/back.png" />
+                </div>
             </div>
             <div style={{ width: "100%", padding: 1 }}>
                 <TextInput

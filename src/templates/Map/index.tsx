@@ -73,7 +73,8 @@ function Map({ }: Props) {
     }, [width, height, mapX, mapY, zoomFactor, mouseX, mouseY, clickX, clickY]);
 
     useEffect(() => {
-        if (AppState.instance.goToEntity) {
+        if (AppState.instance.goToEntity && AppState.instance.goToEntity.location.localeId !== null) {
+            AppState.instance.currentLocale = Game.instance!.findEntity(Category.Locale, AppState.instance.goToEntity.location.localeId);
             setDestX(-AppState.instance.goToEntity.location.x);
             setDestY(-AppState.instance.goToEntity.location.y);
         }

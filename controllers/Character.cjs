@@ -43,7 +43,7 @@ module.exports = {
         const battlefieldIds = character.combatants.map(
           (combatant) => combatant.battlefieldId
         );
-        
+
         const battlefields = await db.Battlefield.findAll({
           where: { id: battlefieldIds },
           include: [
@@ -105,6 +105,7 @@ module.exports = {
         }
       } else {
         try {
+          console.log(JSON.stringify(req.preparedData));
           await req.entity.update(req.preparedData);
           res.json(true);
         } catch (err) {

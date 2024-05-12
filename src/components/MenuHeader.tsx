@@ -25,6 +25,7 @@ function MenuHeader({ }: Props) {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                fontSize: 40,
                 backgroundColor: AppState.instance.currentCategory === null ? "dimgray" : (refData as any)[AppState.instance.currentCategory].color as string
             }} >{AppState.instance.currentCategory === null ? "Options" : (refData as any)[AppState.instance.currentCategory].plural}</div>
             <div style={{ display: "flex", flexDirection: "row" }}>
