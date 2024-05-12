@@ -65,9 +65,9 @@ export default class API {
 
     static async update(category: Category, id: number, data: any) {
         try {
-            console.log(`/auth/${getRouteCategory(typeof category === "string" ? category : Category[category])}/update?id=${id}`);
+            data.id = id;
             data.gameMasterMode = AppState.instance.gameMasterMode;
-            const result = await axios.put(`/auth/${getRouteCategory(typeof category === "string" ? category : Category[category])}/update?id=${id}`, data);
+            const result = await axios.put(`/auth/${getRouteCategory(typeof category === "string" ? category : Category[category])}/update`, data);
             return result.data
         } catch (err) {
             console.error(err);

@@ -65,6 +65,7 @@ export default class AppState {
     }
 
     public set currentCategory(newVal: Category | null) {
+        this._currentEntity = null;
         this._searchValue = "";
         this._currentCategory = newVal;
     }
@@ -90,7 +91,7 @@ export default class AppState {
     }
 
     public set currentEntity(newVal: VisibleEntity | NativeItem | null) {
-        if (newVal !== null) {
+        if (newVal !== null && newVal.category !== Category.NativeItem) {
             this.goToEntity = newVal;
         }
         this._currentEntity = newVal;

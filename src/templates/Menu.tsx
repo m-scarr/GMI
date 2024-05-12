@@ -8,6 +8,17 @@ import Hero from '../state/Hero';
 import Game from '../state/Game';
 import { Category } from '../state/types';
 import Entity from '../state/Entity';
+import Options from './Options';
+import HeroPanel from './HeroPanel';
+import NPCPanel from './NPCPanel';
+import EnemyPanel from './EnemyPanel';
+import GroupPanel from './GroupPanel';
+import NativeItemPanel from './NativeItemPanel';
+import CachePanel from './CachePanel';
+import BattlefieldPanel from './BattlefieldPanel';
+import LocalePanel from './LocalePanel';
+import EventPanel from './EventPanel';
+import NameInput from '../components/NameInput';
 
 type Props = {}
 
@@ -17,6 +28,19 @@ function Menu({ }: Props) {
     const [height, setHeight] = useState<number>(window.innerHeight);
     const contentRef = useRef<any>(null);
     const intervalRef = useRef<any>(null);
+
+    const panelSwitchCase = {
+        [Category.Hero]: <HeroPanel />,
+        [Category.NPC]: <NPCPanel />,
+        [Category.Enemy]: <EnemyPanel />,
+        [Category.Group]: <GroupPanel />,
+        [Category.NativeItem]: <NativeItemPanel />,
+        [Category.Cache]: <CachePanel />,
+        [Category.Battlefield]: <BattlefieldPanel />,
+        [Category.Locale]: <LocalePanel />,
+        [Category.Event]: <EventPanel />
+    }
+
     useEffect(() => {
         if (intervalRef.current === null) {
             intervalRef.current = setInterval(() => {
@@ -45,14 +69,14 @@ function Menu({ }: Props) {
                 id="menu"
             >
                 <MenuHeader />
-                <SearchBar />
+                {AppState.instance.currentEntity === null ? <SearchBar /> : <NameInput />}
                 <div ref={contentRef} style={{ width: "100%", height: height - contentTop, overflowY: "scroll" }}>
                     {
-                        AppState.instance.currentCategory === null ? <div>options</div> :
+                        AppState.instance.currentCategory === null ? <Options /> : AppState.instance.currentEntity !== null ? (panelSwitchCase as any)[AppState.instance.currentCategory] :
                             <>
                                 {
                                     (Game.instance as any)[AppState.instance.currentCategory!].list.map((entity: any) => {
-                                        return <Button hoverable={true} key={Category[entity.category] + "-" + entity.id}>{entity.name}</Button>
+                                        return <Button hoverable={true} key={Category[entity.category] + "-" + entity.id} onClick={() => { AppState.instance.currentEntity = entity; }}>{entity.name}</Button>
                                     })
                                 }
                                 <Button hoverable={true} onClick={() => {

@@ -14,7 +14,7 @@ const SearchBar = (_props: Props) => {
                 color={(refData as any)[AppState.instance.currentCategory].color}
                 value={AppState.instance.searchValue}
                 onInput={(val: any) => { AppState.instance.searchValue = val; }}
-                fontSize={24} />
+                fontSize={28} />
         </div>
     )
 }

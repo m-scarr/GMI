@@ -19,7 +19,6 @@ import AppState from "./AppState";
 
 export default abstract class Entity {
     static create(category: Category) {
-        console.log(category);
         if (category == Category.Hero) {
             Hero.create();
         } else if (category == Category.NPC) {

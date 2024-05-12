@@ -97,7 +97,7 @@ module.exports = {
             res.json(false);
             return;
           }
-          req.entity.update({ playerUserId: playerUser.dataValues.id });
+          await req.entity.update({ playerUserId: playerUser.dataValues.id });
           res.json(true);
         } catch (err) {
           console.error(err);

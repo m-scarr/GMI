@@ -11,8 +11,7 @@ function App() {
     <Menu />
     <Modals />
     <LogOut />
-  </>)
-
+  </>);
 }
 
 export default observer(App);
