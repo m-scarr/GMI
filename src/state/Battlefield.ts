@@ -23,6 +23,7 @@ export default class Battlefield {
     public combatants: EntityList<Combatant> = new EntityList<Combatant>();
     public logs: EntityList<Log> = new EntityList<Log>();
     private _marker:HTMLImageElement = new Image();
+    private _map:HTMLImageElement = new Image();
 
     @$create
     public static create(): any { }
@@ -34,6 +35,7 @@ export default class Battlefield {
     private constructor(data: any) {
         Entity.build(this, data);
         this._marker.src = this._markerSrc;
+        this._map.src = this._mapSrc;
     }
 
     public get name(): string {
@@ -48,10 +50,39 @@ export default class Battlefield {
         return this._marker;
     }
 
+    public get markerSrc() {
+        return this._markerSrc;
+    }
+    
+    @$update
+    public set markerSrc(value: string) {
+        this._markerSrc = value;
+        this._marker.src = value;
+    }
+
+    public get map() {
+        return this._map;
+    }
+
+    public get mapSrc() {
+        return this._mapSrc;
+    }
+    
+    @$update
+    public set mapSrc(value: string) {
+        this._mapSrc = value;
+        this._map.src = value;
+    }
+
     public get visible() {
         return this._visible;
     }
-    
+        
+    @$update
+    public set visible(newVal: boolean) {
+        this._visible = newVal;
+    }
+
     @$update
     public set location(value: { localeId: number, x: number, y: number }) {
         this._localeId = value.localeId;

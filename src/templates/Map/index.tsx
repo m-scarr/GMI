@@ -23,12 +23,8 @@ function Map({ }: Props) {
     const [clickY, setClickY] = useState<number>(0);
     const [clicked, setClicked] = useState<boolean>(false);
     const [hoverEntity, setHoverEntity] = useState<VisibleEntity | null>(null);
-    const [movementActive, setMovementActive] = useState<boolean>(false);
-    const intervalRef = useRef<any>(null);
-
     const switchCase: { [key: string]: any } = {
         "canvasRef": [canvasRef, (val: any) => { canvasRef.current = val; }],
-        "intervalRef": [intervalRef.current, (val: any) => { intervalRef.current = val; }],
         "width": [width, setWidth],
         "height": [height, setHeight],
         "mapX": [mapX, setMapX],
@@ -59,20 +55,6 @@ function Map({ }: Props) {
     }
 
     useEffect(() => {
-        return () => {
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-            }
-        }
-    }, [])
-
-    useEffect(() => {
-        if (AppState.instance.currentLocale !== null) {
-            draw(getState(), setState);
-        }
-    }, [width, height, mapX, mapY, zoomFactor, mouseX, mouseY, clickX, clickY]);
-
-    useEffect(() => {
         if (AppState.instance.goToEntity && AppState.instance.goToEntity.location.localeId !== null) {
             AppState.instance.currentLocale = Game.instance!.findEntity(Category.Locale, AppState.instance.goToEntity.location.localeId);
             setDestX(-AppState.instance.goToEntity.location.x);
@@ -81,15 +63,10 @@ function Map({ }: Props) {
     }, [AppState.instance.goToEntity]);
 
     useEffect(() => {
-        if (destX && destY && intervalRef.current === null) {
-            intervalRef.current = setInterval(() => {
-                setMovementActive(true);
-            }, 16);
+        if (AppState.instance.currentLocale !== null) {
+            draw(getState(), setState);
         }
-    }, [destX])
-
-    useEffect(() => {
-        if (movementActive && destX && destY) {
+        if (destX && destY) {
             var centerX = width / 2;
             var centerY = height / 2;
             if (
@@ -107,12 +84,9 @@ function Map({ }: Props) {
                 setDestY(null);
                 setMapX(destX * zoomFactor + centerX);
                 setMapY(destY * zoomFactor + centerY);
-                clearInterval(intervalRef.current);
-                intervalRef.current = null;
             }
-            setMovementActive(false);
         }
-    }, [movementActive]);
+    }, [AppState.instance.tick]);
 
     window.addEventListener('resize', () => {
         setWidth(window.innerWidth - (AppState.instance.showMenu ? AppState.instance.menuWidth : 0));
@@ -137,6 +111,11 @@ function Map({ }: Props) {
                 top: 0,
                 bottom: 0
             }}
+            onContextMenu={(e: any) => {
+                if (AppState.instance.droppingMarker !== null) {
+                    e.preventDefault();
+                }
+            }}
             onMouseDown={(e: any) => {
                 control.mouseDown(e, getState(), setState);
             }}
@@ -157,11 +136,6 @@ function Map({ }: Props) {
             }}
             onWheel={(e: any) => {
                 control.mouseWheel(e, getState(), setState);
-            }}
-            onContextMenu={(e: any) => {
-                if (AppState.instance.droppingMarker !== null) {
-                    e.preventDefault();
-                }
             }}
         />
     )

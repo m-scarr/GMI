@@ -19,17 +19,17 @@ export function $create(target: any, propertyKey: string, descriptor: PropertyDe
 
 export function $update(_target: any, propertyKey: string, descriptor: PropertyDescriptor) {
     const originalSetter = descriptor.set!;
-    descriptor.set = async function (...args: any) {
+    descriptor.set = async function (val: any) {
         let updateObj: any = {};
         if (propertyKey === "location") {
-            updateObj = args[0];
+            updateObj = val;
         } else {
-            updateObj[propertyKey] = args[0];
+            updateObj[propertyKey] = val;
         }
         const currentVal = (this as any)[`_${propertyKey}`];
-        runInAction(() => { originalSetter.call(this, args); });
+        runInAction(() => { originalSetter.call(this, val); });
         const result = await API.update((this as any).category, (this as any).id, updateObj);
-        runInAction(() => { originalSetter.call(this, result ? args : [currentVal]); });
+        runInAction(() => { originalSetter.call(this, result ? val : [currentVal]); });
     }
     return descriptor;
 }

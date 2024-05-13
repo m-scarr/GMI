@@ -1,7 +1,7 @@
 import { ReactNode, useState } from "react";
 import AppState from "../state/AppState";
 
-type Props = { hoverable?: boolean, children?: ReactNode; onClick?: Function }
+type Props = { hoverable?: boolean, children?: ReactNode, onClick?: Function }
 
 export default function Button(props: Props) {
     const [hover, setHover] = useState(false);

@@ -5,6 +5,27 @@ import Hero from "./Hero";
 import API from "../API";
 import Game from "./Game";
 import NativeItem from "./NativeItem";
+
+export async function wait(ms: number) {
+    return new Promise<void>(resolve => {
+        setTimeout(() => {
+            resolve();
+        }, ms);
+    });
+}
+
+export async function checkImageSrc(source: string) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve(true);
+        img.onerror = () => {
+            alert("There is no image at this location!");
+            resolve(false);
+        }
+        img.src = source;
+    });
+}
+
 export default class AppState {
     public static readonly instance = new AppState();
     public readonly menuWidth = 320;
@@ -21,6 +42,15 @@ export default class AppState {
     private _showMenu: boolean = false;
     private _serverAccess: boolean = false;
     private _selectedPlayerCharacter: Hero | null = null;
+    private _tick: boolean = false;
+    private _tickInterval: NodeJS.Timeout = setInterval(async () => {
+        runInAction(() => {
+            this._tick = !this.tick;
+            if (this._goToEntity !== null) {
+                this._goToEntity = null
+            }
+        });
+    }, 16);
     private _searchValue: string = "";
     private _modals: any = {
         item: { id: null, content: null },
@@ -44,15 +74,19 @@ export default class AppState {
         this.user = await API.user.logIn(logInName, password);
     }
 
+    public get tick() {
+        return this._tick;
+    }
+
     public get gameMasterMode() {
         return this._gameMasterMode;
     }
 
-    public set gameMasterMode(newVal:boolean) {
+    public set gameMasterMode(newVal: boolean) {
         this._gameMasterMode = newVal;
     }
 
-    public set searchValue(newVal:any) {
+    public set searchValue(newVal: any) {
         this._searchValue = newVal;
     }
 
@@ -91,11 +125,15 @@ export default class AppState {
     }
 
     public set currentEntity(newVal: VisibleEntity | NativeItem | null) {
-        if (newVal !== null && newVal.category !== Category.NativeItem) {
-            this.goToEntity = newVal;
+        if (newVal !== null) {
+            /*if (newVal.category !== Category.NativeItem) {
+                this.goToEntity = newVal;
+            }*/
+            this._currentCategory = newVal.category;
         }
         this._currentEntity = newVal;
     }
+
 
     public get currentEntity() {
         return this._currentEntity;
@@ -103,7 +141,7 @@ export default class AppState {
 
     public set goToEntity(newVal: any) {
         this._goToEntity = newVal;
-        const temp = setTimeout(() => { runInAction(() => { this._goToEntity = null; }); clearTimeout(temp); }, 1);
+        //const temp = setTimeout(() => { runInAction(() => { this._goToEntity = null; }); clearTimeout(temp); }, 1);
     }
 
     public get goToEntity() {
@@ -155,7 +193,6 @@ export default class AppState {
     }
 
     public set currentLocale(newVal: Locale | null) {
-        console.log(newVal);
         this._currentLocale = newVal;
     }
 

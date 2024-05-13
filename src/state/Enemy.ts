@@ -128,7 +128,9 @@ export default class Enemy {
     @$update
     public set markerSrc(value: string) {
         this._markerSrc = value;
+        this._marker.src = value;
     }
+
 
     @$delete
     public delete() {

@@ -37,6 +37,11 @@ export default class Event {
     public get visible() {
         return this._visible;
     }
+        
+    @$update
+    public set visible(newVal: boolean) {
+        this._visible = newVal;
+    }
     
     public get name(): string {
         return this._name;
@@ -49,7 +54,9 @@ export default class Event {
     @$update
     public set markerSrc(value: string) {
         this._markerSrc = value;
+        this._marker.src = value;
     }
+
 
     public get location(): { localeId: number | null, x: number | null, y: number | null } {
         return { localeId: this._localeId, x: this._x, y: this._y }

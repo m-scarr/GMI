@@ -1,4 +1,4 @@
-import AppState from "../../state/AppState";
+import AppState, { wait } from "../../state/AppState";
 import Game from "../../state/Game";
 import { Category, VisibleEntity } from "../../state/types";
 
@@ -16,10 +16,10 @@ const controls = {
         if (e.nativeEvent.button === 0) {
             if (
                 state.hoverEntity &&
-                state.hoverEntity !== null &&
-                state.intervalRef == null
+                state.hoverEntity !== null
             ) {
                 AppState.instance.currentEntity = state.hoverEntity;
+                AppState.instance.goToEntity = state.hoverEntity;
             } else if (state.destX === null && state.destY === null) {
                 setState({
                     clicked: true,
@@ -27,7 +27,10 @@ const controls = {
                     clickY: state.mouseY - state.mapY,
                 });
             }
-        } else if (
+        }
+    },
+    mouseUp: async (e: any, state: any, setState: (obj: any) => void) => {
+        if (
             e.nativeEvent.button === 2 &&
             AppState.instance.droppingMarker !== null
         ) {
@@ -36,9 +39,9 @@ const controls = {
                 x: (state.mouseX - state.mapX) / state.zoomFactor,
                 y: (state.mouseY - state.mapY) / state.zoomFactor
             };
+            await wait(10);
+            AppState.instance.droppingMarker = null;
         }
-    },
-    mouseUp: (_e: any, _state: any, setState: (obj: any) => void) => {
         setState({ clicked: false });
     },
     mouseMove: (e: any, state: any, setState: (obj: any) => void) => {

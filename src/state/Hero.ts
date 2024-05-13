@@ -128,6 +128,7 @@ export default class Hero {
     @$update
     public set markerSrc(value: string) {
         this._markerSrc = value;
+        this._marker.src = value;
     }
 
     @$delete

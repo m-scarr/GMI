@@ -42,10 +42,25 @@ export default class Locale {
         return this._marker;
     }
 
+    public get markerSrc() {
+        return this._markerSrc;
+    }
+
+    @$update
+    public set markerSrc(value: string) {
+        this._markerSrc = value;
+        this._marker.src = value;
+    }
+
     public get visible() {
         return this._visible;
     }
-    
+
+    @$update
+    public set visible(newVal: boolean) {
+        this._visible = newVal;
+    }
+
     public get location(): { localeId: number | null, x: number | null, y: number | null } {
         return { localeId: this._localeId, x: this._x, y: this._y }
     }
@@ -56,8 +71,19 @@ export default class Locale {
         this._x = value.x;
         this._y = value.y;
     }
+
     public get map() {
         return this._map;
+    }
+
+    public get mapSrc() {
+        return this._mapSrc;
+    }
+    
+    @$update
+    public set mapSrc(value: string) {
+        this._mapSrc = value;
+        this._map.src = value;
     }
 
     @$update

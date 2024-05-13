@@ -42,20 +42,11 @@ function Menu({ }: Props) {
     }
 
     useEffect(() => {
-        if (intervalRef.current === null) {
-            intervalRef.current = setInterval(() => {
-                if (contentRef.current) {
-                    setContentTop(contentRef.current.getBoundingClientRect().top);
-                    setHeight(window.innerHeight);
-                }
-            }, 16);
+        if (contentRef.current) {
+            setContentTop(contentRef.current.getBoundingClientRect().top);
+            setHeight(window.innerHeight);
         }
-        return () => {
-            if (intervalRef.current) {
-                clearInterval(intervalRef.current);
-            }
-        }
-    }, []);
+    }, [AppState.instance.tick]);
     return <>
         {AppState.instance.showMenu ?
             <div style={{

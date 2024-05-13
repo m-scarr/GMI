@@ -8,6 +8,12 @@ type Props = {}
 
 const NameInput = (_props: Props) => {
     const [name, setName] = useState(AppState.instance.currentEntity!.name)
+    useEffect(() => {
+        if (AppState.instance.currentEntity) {
+            setName(AppState.instance.currentEntity.name);
+        }
+    }, [AppState.instance.currentEntity, AppState.instance.currentEntity?.name]);
+
     return AppState.instance.currentCategory === null ? null : (
         <div style={{ backgroundColor: (refData as any)[AppState.instance.currentCategory].color, display: "flex", flexDirection: "row" }}>
             <div className='hoverable' style={{ padding: 1, alignSelf: "stretch", alignContent: "center" }}>

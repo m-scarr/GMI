@@ -75,7 +75,7 @@ export default class Game {
         const game = await API.read(Category.Game, this.id);
         game.locales.forEach((data: any) => {
             Entity[Category.Locale].load(data);
-            if (data.id===this._overworldId) {
+            if (data.id === this._overworldId) {
                 this._overworldLocale = this[Category.Locale].list[this[Category.Locale].list.length - 1]
             }
         });
@@ -110,20 +110,23 @@ export default class Game {
     }
 
     public findEntity(category: Category, id: number) {
-        (this as any)[category].list.forEach((entity: any) => {
-            if (entity.id === id) {
+        for (let i = 0; i < (this as any)[category].list.length; i++) {
+            const entity = (this as any)[category].list[i];
+            if (entity.id == id) {
                 return entity;
             }
-        });
+        }
         return null;
     }
 
     public findCharacter(id: number) {
-        [...(this as any)[Category.Hero].list, ...(this as any)[Category.NPC].list, ...(this as any)[Category.Enemy].list].forEach((entity: any) => {
-            if (entity.id === id) {
+        const list = [...(this as any)[Category.Hero].list, ...(this as any)[Category.NPC].list, ...(this as any)[Category.Enemy].list];
+        for (let i = 0; i < list.length; i++) {
+            const entity = list[i];
+            if (entity.id == id) {
                 return entity;
             }
-        });
+        }
         return null;
     }
 

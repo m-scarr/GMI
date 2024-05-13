@@ -1,84 +1,38 @@
 import { useEffect, useRef, useState } from 'react'
+import AppState from '../../state/AppState';
+import { observer } from 'mobx-react-lite';
 
-type Props = { value: number, placeholder?: string, onInput: (val: number) => void, onIdle?: (val: number) => void, idleLength?: number, locking?: boolean, fontSize?: number, locked?: boolean, onLock?: (val: boolean) => void, min?: number, max?: number }
+type Props = { color?: string, value: number, placeholder?: string, onInput: (val: number) => void, onIdle?: (val: number) => void, idleLength?: number, locking?: boolean, fontSize?: number, locked?: boolean, onLock?: (val: boolean) => void, min?: number, max?: number }
 
-export default function NumberInput(props: Props) {
+function NumberInput(props: Props) {
     const [value, setValue] = useState<number>(props.value);
-    const idleTimeout = useRef<NodeJS.Timeout | null>(null);
     const [locked, setLocked] = useState(props.locking || false);
     const [lineHeight, setLineHeight] = useState(0);
-    const [totalHeight, setTotalHeight] = useState(0);
-    const [idleCountDown, setIdleCountDown] = useState(false);
-    const rendered = useRef<boolean>(false);
     const inputRef = useRef<any>(null);
+    const idleCountdown = useRef<number>(0);
 
     useEffect(() => {
-        return () => {
-            if (idleTimeout.current !== null) {
-                clearTimeout(idleTimeout.current!);
-                idleTimeout.current = null;
+        if (idleCountdown.current > 0) {
+            idleCountdown.current -= 16;
+            if (idleCountdown.current < 1 && props.onIdle) {
+                props.onIdle(inputRef.current.value)
             }
         }
-    }, [])
+    }, [AppState.instance.tick])
 
     useEffect(() => {
         setValue(props.value);
     }, [props.value]);
 
-    useEffect(() => {
-        let startingTimeout: any = null;
-        if (!rendered.current) {
-            startingTimeout = setTimeout(() => {
-                rendered.current = true;
-                clearTimeout(startingTimeout);
-                startingTimeout = null;
-            }, 100);
-        }
-        const textArea = inputRef.current;
-        if (textArea) {
-            textArea.style.height = "16px";
-            while (
-                textArea.scrollHeight &&
-                textArea.clientHeight &&
-                textArea.scrollHeight > textArea.clientHeight
-            ) {
-                textArea.style.height = parseInt(textArea.style.height.split("px")[0]) + 1 + "px";
-            }
-        }
-        setTotalHeight(inputRef.current.clientHeight);
-        return () => {
-            if (startingTimeout !== null) {
-                clearTimeout(startingTimeout);
-                startingTimeout = null;
-            }
-        }
-    }, [value])
 
     useEffect(() => {
-        setTotalHeight(inputRef.current.clientHeight);
         setLineHeight(parseInt(window.getComputedStyle(inputRef.current).fontSize));
     }, [inputRef])
 
-    useEffect(() => {
-        if (idleCountDown) {
-            if (typeof props !== "undefined" && typeof props.onIdle !== "undefined" && rendered.current) {
-                if (idleTimeout.current !== null) {
-                    clearTimeout(idleTimeout.current);
-                    idleTimeout.current = null;
-                }
-                idleTimeout.current = setTimeout(() => {
-                    props.onIdle!(Math.max(props.min || 0, Math.min(value, props.max || 100)));
-                    clearTimeout(idleTimeout.current!);
-                    idleTimeout.current = null;
-                }, props.idleLength || 1000);
-            }
-            setIdleCountDown(false);
-        }
-    }, [idleCountDown]);
 
     const handleInputChange = (e: any) => {
         props.onInput!(Math.max(props.min || 0, Math.min(e.target.value, props.max || 100)));
-        setIdleCountDown(true);
+        idleCountdown.current = props.idleLength || 1000;
     }
 
     return (
@@ -97,13 +51,29 @@ export default function NumberInput(props: Props) {
                     overflow: "hidden",
                     resize: "none",
                     padding: 2,
-                    paddingRight: props.locking || props.locked ? Math.max(lineHeight, 16) / 2 + 16 : 2,
-                    paddingTop: 5,
-                    paddingBottom: 4,
+                    paddingRight: (props.locking || props.locked ? Math.max(lineHeight, 16) / 2 + 8 : 2),
                     fontSize: props.fontSize || 16,
-                    width: `calc(100% - ${props.locking || props.locked ? Math.max(lineHeight, 16) / 2 + 24 : 2}px)`,
-                    minHeight: props.fontSize || 16,
-                    textAlign: "center"
+                    width: `calc(100% - ${props.locking || props.locked ? Math.max(lineHeight, 16) / 2 + 8 : 2}px)`,
+                    height: (props.fontSize || 16) + 4,
+                    textAlign: "center",
+                    textShadow: `1px 1px 1px black, -1px -1px 1px black, -1px 1px 1px black, 1px -1px 1px black, ` +
+                        `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `-1px 1px 2px ${props.color ? props.color : 'white'}, 1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `-1px 1px 2px ${props.color ? props.color : 'white'}, 1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `-1px 1px 2px ${props.color ? props.color : 'white'}, 1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `-1px 1px 2px ${props.color ? props.color : 'white'}, 1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `-1px 1px 2px ${props.color ? props.color : 'white'}, 1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `-1px 1px 2px ${props.color ? props.color : 'white'}, 1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `-1px 1px 2px ${props.color ? props.color : 'white'}, 1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +
+                        `-1px 1px 2px ${props.color ? props.color : 'white'}, 1px -1px 2px ${props.color ? props.color : 'white'}`,
+                    borderColor: props.color ? props.color : "rgb(112, 112, 112)",
                 }} />
             {props.locking || props.locked ?
                 <div style={{
@@ -111,9 +81,13 @@ export default function NumberInput(props: Props) {
                     width: 0,
                     height: 0,
                     right: Math.max(lineHeight, 16) / 2 + 7,
-                    top: totalHeight / 2 - Math.max(lineHeight, 16) / 2
+                    top: 6,
                 }}>
-                    <img style={{ height: Math.max(lineHeight, 16) }}
+                    <img style={{
+                        height: Math.max(lineHeight, 16),
+                        filter: "drop-shadow(0 0 1px rgba(255, 255, 255, .6)) drop-shadow(0 0 1px rgba(255, 255, 255, .6))",
+                        position: "absolute"
+                    }}
                         alt="lock/unlock" src={`./assets/${locked || props.locked ? '' : 'un'}locked.png`} onClick={() => {
                             if (props.onLock) {
                                 props.onLock(!locked);
@@ -125,3 +99,5 @@ export default function NumberInput(props: Props) {
         </div>
     )
 }
+
+export default observer(NumberInput);
