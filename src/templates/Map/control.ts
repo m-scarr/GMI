@@ -1,6 +1,4 @@
 import AppState, { wait } from "../../state/AppState";
-import Game from "../../state/Game";
-import { Category, VisibleEntity } from "../../state/types";
 
 export const getDistance = (
     x1: number,
@@ -14,10 +12,7 @@ export const getDistance = (
 const controls = {
     mouseDown: (e: any, state: any, setState: (obj: any) => void) => {
         if (e.nativeEvent.button === 0) {
-            if (
-                state.hoverEntity &&
-                state.hoverEntity !== null
-            ) {
+            if (state.hoverEntity !== null) {
                 AppState.instance.currentEntity = state.hoverEntity;
                 AppState.instance.goToEntity = state.hoverEntity;
             } else if (state.destX === null && state.destY === null) {
@@ -30,10 +25,8 @@ const controls = {
         }
     },
     mouseUp: async (e: any, state: any, setState: (obj: any) => void) => {
-        if (
-            e.nativeEvent.button === 2 &&
-            AppState.instance.droppingMarker !== null
-        ) {
+        if (e.nativeEvent.button === 2 &&
+            AppState.instance.droppingMarker !== null) {
             AppState.instance.droppingMarker.location = {
                 localeId: AppState.instance.currentLocale!.id,
                 x: (state.mouseX - state.mapX) / state.zoomFactor,
