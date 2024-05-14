@@ -12,6 +12,7 @@ export default class Log {
     private _ownerId: number | null = null;
     private _text: string = "";
     private _owner: VisibleEntity | NativeItem | null = null;
+    private _createdAt: string = "";
 
     @$create
     public static create(_ownerCategory: Category, _ownerId: number, _text: string): any { }
@@ -24,6 +25,10 @@ export default class Log {
         Entity.build(this, data);
         this._owner = Game.instance!.findEntity(this._ownerCategory!, this._ownerId!);
         (this._owner as any).logs.add(this);
+    }
+
+    public get createdAt() {
+        return this._createdAt;
     }
 
     public get owner() {

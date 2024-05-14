@@ -1,3 +1,4 @@
+import LogPanel from '../components/LogPanel';
 import MapPanel from '../components/MapPanel';
 import MarkerPanel from '../components/MarkerPanel';
 import NotePanel from '../components/NotePanel';
@@ -11,6 +12,7 @@ function LocalePanel({ }: Props) {
             <MarkerPanel />
             <MapPanel />
             <NotePanel />
+            <LogPanel />
         </>
     )
 }

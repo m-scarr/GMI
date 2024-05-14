@@ -52,7 +52,11 @@ export default abstract class Entity {
                 }
             });
             if (typeof entity._ownerCategory !== "undefined") {
-                entity._ownerCategory = Category[entity._ownerCategory];
+                if (data.ownerCategory === "Character") {
+                    entity._ownerCategory = Game.instance?.findCharacter(data.ownerId).category;
+                } else {
+                    entity._ownerCategory = Category[entity._ownerCategory];
+                }
             }
         });
         (Game.instance as any)[entity.category].add(entity);

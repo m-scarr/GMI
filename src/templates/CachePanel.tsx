@@ -1,3 +1,4 @@
+import LogPanel from '../components/LogPanel';
 import MarkerPanel from '../components/MarkerPanel';
 import NotePanel from '../components/NotePanel';
 import { observer } from 'mobx-react-lite';
@@ -9,6 +10,7 @@ function CachePanel({ }: Props) {
         <>
             <MarkerPanel />
             <NotePanel />
+            <LogPanel />
         </>
     )
 }

@@ -4,6 +4,7 @@ import UniqueButton from '../components/UniqueButton';
 import CurrencyButton from '../components/CurrencyButton';
 import EquippableButton from '../components/EquippableButton';
 import { observer } from 'mobx-react-lite';
+import LogPanel from '../components/LogPanel';
 
 type Props = {}
 
@@ -15,6 +16,7 @@ function NativeItemPanel({ }: Props) {
             <CurrencyButton />
             <EquippableButton />
             <NotePanel />
+            <LogPanel />
         </>
     )
 }

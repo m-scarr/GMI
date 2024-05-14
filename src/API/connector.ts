@@ -9,6 +9,13 @@ export function $create(target: any, propertyKey: string, descriptor: PropertyDe
         const argObj: { [key: string]: any } = {};
         argNames.forEach((argName: string, index: number) => {
             argObj[argName.replace('_', '')] = argValues[index];
+            if (argName === "_ownerCategory") {
+                if (argValues[index] == Category.Hero || argValues[index] == Category.NPC || argValues[index] == Category.Enemy) {
+                    argObj[argName.replace('_', '')] = "Character";
+                } else {
+                    argObj[argName.replace('_', '')] = (Category as any)[argValues[index]];
+                }
+            }
         });
         const category = ((target.toString().split("Category.")[1]).split(";")[0]);
         const newEntity = await API.create(category, argObj);

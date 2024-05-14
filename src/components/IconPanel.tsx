@@ -19,9 +19,6 @@ function IconPanel({ }: Props) {
         paddingRight: 1,
         paddingLeft: 1
     }
-    useEffect(()=>{
-        console.log(AppState.instance.modals.iconSelector);
-    })
     return (
         <Button>
             <div style={{ display: "flex", flexDirection: "row" }}>

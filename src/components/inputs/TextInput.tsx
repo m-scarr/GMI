@@ -2,7 +2,19 @@ import { useEffect, useRef, useState } from 'react'
 import AppState from '../../state/AppState';
 import { observer } from 'mobx-react-lite';
 
-type Props = { color?: string, value: string, placeholder?: string, onInput: (val: string) => void, onIdle?: (val: string) => void, idleLength?: number, locking?: boolean, fontSize?: number, locked?: boolean, onLock?: (val: boolean) => void }
+type Props = {
+    color?: string,
+    value: string,
+    placeholder?: string,
+    onInput: (val: string) => void,
+    onIdle?: (val: string) => void,
+    idleLength?: number,
+    locking?: boolean,
+    fontSize?: number,
+    locked?: boolean,
+    onLock?: (val: boolean) => void,
+    minRows?: number
+}
 
 function TextInput(props: Props) {
     const [value, setValue] = useState<string>(props.value);
@@ -76,7 +88,7 @@ function TextInput(props: Props) {
                     paddingRight: props.locking || props.locked ? Math.max(lineHeight, 16) / 2 + 16 : 2,
                     fontSize: props.fontSize || 16,
                     width: `calc(100% - ${props.locking || props.locked ? Math.max(lineHeight, 16) / 2 + 24 : 2}px)`,
-                    minHeight: props.fontSize || 16,
+                    minHeight: props.minRows ? props.minRows * (props.fontSize || 16) : (props.fontSize || 16),
                     textAlign: "center",
                     textShadow: `1px 1px 1px black, -1px -1px 1px black, -1px 1px 1px black, 1px -1px 1px black, ` +
                         `1px 1px 2px ${props.color ? props.color : 'white'}, -1px -1px 2px ${props.color ? props.color : 'white'}, ` +

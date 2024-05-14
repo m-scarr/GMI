@@ -34,7 +34,6 @@ export default class API {
             data.gameMasterMode = AppState.instance.gameMasterMode;
             data.gameId = Game.instance?.id;
             const result = await axios.post(`/auth/${getRouteCategory(typeof category === "string" ? category : Category[category])}/create`, data);
-            console.log(result.data);
             return result.data;
         } catch (err) {
             console.error(err);
