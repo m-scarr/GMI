@@ -14,7 +14,7 @@ export default class Stat {
     private _nativeItem: NativeItem | null = null;
 
     @$create
-    public static create(_nativeItemId: number): any { }
+    public static create(_nativeItemId: number, _name: string, _value: string): any { }
 
     public static load(data: any): Stat {
         return new Stat(data);
