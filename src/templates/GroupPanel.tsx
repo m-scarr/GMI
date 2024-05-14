@@ -1,14 +1,16 @@
-import React from 'react'
-import NotePanel from '../components/NotePanel'
-import MarkerPanel from '../components/MarkerPanel'
+import NotePanel from '../components/NotePanel';
+import MarkerPanel from '../components/MarkerPanel';
+import { observer } from 'mobx-react-lite';
 
 type Props = {}
 
-export default function GroupPanel({ }: Props) {
+function GroupPanel({ }: Props) {
     return (
-        <div>
+        <>
             <MarkerPanel />
             <NotePanel />
-        </div>
+        </>
     )
 }
+
+export default observer(GroupPanel);

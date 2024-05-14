@@ -1,10 +1,9 @@
 import { observer } from "mobx-react-lite";
-import AppState, { checkImageSrc } from "../state/AppState"
+import AppState from "../state/AppState"
 import Button from "./Button"
-import { Category, VisibleEntity } from "../state/types";
-import Battlefield from "../state/Battlefield";
-import Locale from "../state/Locale";
 import NativeItem from "../state/NativeItem";
+import { ModalType } from "../state/types";
+import { useEffect } from "react";
 
 type Props = {}
 
@@ -20,6 +19,9 @@ function IconPanel({ }: Props) {
         paddingRight: 1,
         paddingLeft: 1
     }
+    useEffect(()=>{
+        console.log(AppState.instance.modals.iconSelector);
+    })
     return (
         <Button>
             <div style={{ display: "flex", flexDirection: "row" }}>
@@ -30,6 +32,7 @@ function IconPanel({ }: Props) {
                     <img src="./assets/edit.png"
                         onClick={() => {
                             //open icon modal
+                            AppState.instance.currentModal = ModalType.IconSelector;
                         }}
                     />
                 </div>

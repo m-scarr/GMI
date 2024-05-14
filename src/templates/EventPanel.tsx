@@ -1,9 +1,16 @@
-import React from 'react'
+import { observer } from 'mobx-react-lite';
+import MarkerPanel from '../components/MarkerPanel';
+import NotePanel from '../components/NotePanel';
 
 type Props = {}
 
-export default function EventPanel({ }: Props) {
+function EventPanel({ }: Props) {
     return (
-        <div>EventPanel</div>
+        <>
+            <MarkerPanel />
+            <NotePanel />
+        </>
     )
 }
+
+export default observer(EventPanel);

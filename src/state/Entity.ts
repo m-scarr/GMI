@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction, toJS } from "mobx";
 import Game from "./Game";
 import { Category, VisibleEntity } from "./types";
 import Locale from "./Locale";

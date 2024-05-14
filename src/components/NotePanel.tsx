@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Button from './Button'
 import TextInput from './inputs/TextInput';
 import AppState from '../state/AppState';
-import Group from '../state/Group';
 
 type Props = {}
 

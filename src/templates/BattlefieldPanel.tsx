@@ -1,9 +1,18 @@
-import React from 'react'
+import MarkerPanel from '../components/MarkerPanel';
+import MapPanel from '../components/MapPanel';
+import NotePanel from '../components/NotePanel';
+import { observer } from 'mobx-react-lite';
 
 type Props = {}
 
-export default function BattlefieldPanel({ }: Props) {
+function BattlefieldPanel({ }: Props) {
     return (
-        <div>BattlefieldPanel</div>
+        <>
+            <MarkerPanel />
+            <MapPanel />
+            <NotePanel />
+        </>
     )
 }
+
+export default observer(BattlefieldPanel);

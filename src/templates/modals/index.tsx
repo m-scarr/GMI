@@ -6,6 +6,8 @@ import AppState from "../../state/AppState"
 import API from "../../API"
 import ModeSelectorModal from "./ModeSelector"
 import GameSelectorModal from "./GameSelector"
+import ItemModal from "./Item"
+import IconSelector from "./IconSelector"
 
 type Props = {}
 
@@ -14,12 +16,16 @@ function Modals({ }: Props) {
         [ModalType.Register]: <RegisterModal />,
         [ModalType.LogIn]: <LogInModal />,
         [ModalType.ModeSelector]: <ModeSelectorModal />,
-        [ModalType.GameSelector]: <GameSelectorModal />
+        [ModalType.GameSelector]: <GameSelectorModal />,
+        [ModalType.Item]: <ItemModal />,
+        [ModalType.IconSelector]: <IconSelector />
     }
     return (AppState.instance.currentModal === null ? null :
         <div style={{ position: "fixed", left: 0, right: 0, top: 0, bottom: 0, display: "flex", justifyContent: "center", alignItems: "center" }}
             onClick={() => {
-                //AppState.instance.currentModal = null;
+                if (AppState.instance.currentModal === ModalType.IconSelector) {
+                    AppState.instance.currentModal = null;
+                }
             }}>
             {switchCase[AppState.instance.currentModal]}
         </div>

@@ -56,8 +56,36 @@ export default class AppState {
         item: { id: null, content: null },
         battlefield: { id: null, content: null },
         games: [],
-        playerCharacters: []
+        playerCharacters: [],
+        iconSelector: {
+            iconType: "accessory",
+            icons: {
+                accessory: { name: "Accessories", sources: [] },
+                armor: { name: "Armor", sources: [] },
+                boot: { name: "Boots", sources: [] },
+                drops: { name: "Drops", sources: [] },
+                food: { name: "Food", sources: [] },
+                glove: { name: "Gloves", sources: [] },
+                helmet: { name: "Helms", sources: [] },
+                material: { name: "Materials", sources: [] },
+                potion: { name: "Potions", sources: [] },
+                quest: { name: "Various", sources: [] },
+                ring: { name: "Rings", sources: [] },
+                weapon: { name: "Weapons", sources: [] },
+                shield: { name: "Shields", sources: [] },
+            },
+        },
     };
+
+    public setModalData(modalType: string, fields: string[], data: any) {
+        if (fields.length === 1) {
+            this._modals[modalType][fields[0]] = data;
+        } else if (fields.length === 2) {
+            this._modals[modalType][fields[0]][fields[1]] = data;
+        } else if (fields.length === 3) {
+            this._modals[modalType][fields[0]][fields[1]][fields[2]] = data;
+        }
+    }
 
     private constructor() {
         makeAutoObservable(this);
@@ -68,6 +96,7 @@ export default class AppState {
         const result = await API.init();
         this.user = result.user;
         this._serverAccess = result.serverAccess;
+        this.setIconSources();
     }
 
     public async logIn(logInName: string, password: string) {
@@ -126,9 +155,6 @@ export default class AppState {
 
     public set currentEntity(newVal: VisibleEntity | NativeItem | null) {
         if (newVal !== null) {
-            /*if (newVal.category !== Category.NativeItem) {
-                this.goToEntity = newVal;
-            }*/
             this._currentCategory = newVal.category;
         }
         this._currentEntity = newVal;
@@ -141,7 +167,6 @@ export default class AppState {
 
     public set goToEntity(newVal: any) {
         this._goToEntity = newVal;
-        //const temp = setTimeout(() => { runInAction(() => { this._goToEntity = null; }); clearTimeout(temp); }, 1);
     }
 
     public get goToEntity() {
@@ -198,5 +223,73 @@ export default class AppState {
 
     public get currentLocale(): Locale | null {
         return this._currentLocale;
+    }
+
+    private setIconSources() {
+        var i;
+        var weaponRefObj = [
+            { name: "arrow", count: 20 },
+            { name: "axe", count: 30 },
+            { name: "bow", count: 30 },
+            { name: "claw", count: 30 },
+            { name: "dagger", count: 36 },
+            { name: "katar", count: 20 },
+            { name: "mace", count: 36 },
+            { name: "spear", count: 20 },
+            { name: "staff", count: 30 },
+            { name: "star", count: 20 },
+            { name: "sword", count: 36 },
+            { name: "wand", count: 30 },
+        ];
+        for (i = 1; i <= 56; i++) {
+            this._modals.iconSelector.icons.accessory.sources.push("./assets/icons/accessory/accessory_" + (i < 10 ? "0" : "") + i + ".png");
+        }
+        for (i = 1; i <= 108; i++) {
+            this._modals.iconSelector.icons.armor.sources.push(
+                "./assets/icons/armor/armor_" + (i < 10 ? "0" : "") + (i < 100 ? "0" : "") + i + ".png"
+            );
+        }
+        for (i = 1; i <= 29; i++) {
+            this._modals.iconSelector.icons.boot.sources.push("./assets/icons/boot/boot_" + (i < 10 ? "0" : "") + i + ".png");
+        }
+        for (i = 1; i <= 64; i++) {
+            this._modals.iconSelector.icons.drops.sources.push("./assets/icons/drops/drops_" + (i < 10 ? "0" : "") + i + ".png");
+        }
+        for (i = 1; i <= 72; i++) {
+            this._modals.iconSelector.icons.food.sources.push("./assets/icons/food/food_" + (i < 10 ? "0" : "") + i + ".png");
+        }
+        for (i = 1; i <= 41; i++) {
+            this._modals.iconSelector.icons.glove.sources.push("./assets/icons/glove/glove_" + (i < 10 ? "0" : "") + i + ".png");
+        }
+        for (i = 1; i <= 72; i++) {
+            this._modals.iconSelector.icons.helmet.sources.push("./assets/icons/helmet/helmet_" + (i < 10 ? "0" : "") + i + ".png");
+        }
+        for (i = 1; i <= 100; i++) {
+            this._modals.iconSelector.icons.material.sources.push("./assets/icons/material/material_" + (i < 10 ? "0" : "") + i + ".png");
+        }
+        for (i = 1; i <= 224; i++) {
+            this.modals.iconSelector.icons.potion.sources.push("./assets/icons/potion/potion_" + (i < 10 ? "0" : "") + i + ".png");
+        }
+        for (i = 1; i <= 216; i++) {
+            this.modals.iconSelector.icons.quest.sources.push(
+                "./assets/icons/quest/quest_" + (i < 10 ? "0" : "") + (i < 100 ? "0" : "") + i + ".png"
+            );
+        }
+        for (i = 1; i <= 106; i++) {
+            this._modals.iconSelector.icons.ring.sources.push(
+                "./assets/icons/ring/ring_" + (i < 10 ? "0" : "") + (i < 100 ? "0" : "") + i + ".png"
+            );
+        }
+        for (i = 1; i <= 43; i++) {
+            this._modals.iconSelector.icons.shield.sources.push("./assets/icons/shield/shield_" + (i < 10 ? "0" : "") + i + ".png");
+        }
+        var j;
+        for (i = 0; i < weaponRefObj.length; i++) {
+            for (j = 1; j < weaponRefObj[i].count; j++) {
+                this._modals.iconSelector.icons.weapon.sources.push(
+                    "./assets/icons/weapon/weapon_" + weaponRefObj[i].name + "_" + ((j < 10 ? "0" : "") + j) + ".png"
+                );
+            }
+        }
     }
 }

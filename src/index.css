@@ -87,11 +87,21 @@ textarea:disabled {
 }
 
 .modal {
-    background-color: rgba(32, 32, 32, .8) !important;
+    background-color: rgba(32, 32, 32, .95) !important;
+    border-radius: 16px;
 }
 
 input::placeholder {
     opacity: .75
+}
+
+.modal input {
+    margin: 8px;
+}
+
+.modal button {
+    margin: 8px;
+    width: calc(100% - 16px);
 }
 
 input[type="range"] {

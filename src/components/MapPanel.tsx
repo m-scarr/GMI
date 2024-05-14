@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import AppState, { checkImageSrc } from "../state/AppState"
 import Button from "./Button"
-import { Category, VisibleEntity } from "../state/types";
+import { Category } from "../state/types";
 import Battlefield from "../state/Battlefield";
 import Locale from "../state/Locale";
 

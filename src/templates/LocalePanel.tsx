@@ -1,10 +1,18 @@
-import React from 'react'
-import MapPanel from '../components/MapPanel'
+import MapPanel from '../components/MapPanel';
+import MarkerPanel from '../components/MarkerPanel';
+import NotePanel from '../components/NotePanel';
+import { observer } from 'mobx-react-lite';
 
 type Props = {}
 
-export default function LocalePanel({ }: Props) {
+function LocalePanel({ }: Props) {
     return (
-        <div><MapPanel /></div>
+        <>
+            <MarkerPanel />
+            <MapPanel />
+            <NotePanel />
+        </>
     )
 }
+
+export default observer(LocalePanel);

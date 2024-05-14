@@ -24,8 +24,8 @@ function RegisterModal({ }: Props) {
         }}>
             Register
             <hr />
-            <input value={logInName} placeholder="This is the username you will log in with" onInput={(e: any) => { setLogInName(e.target.value) }} />
-            <input value={displayName} placeholder="This is the username others will see you as" onInput={(e: any) => { setDisplayName(e.target.value) }} />
+            <input value={logInName} placeholder="Username" onInput={(e: any) => { setLogInName(e.target.value) }} />
+            <input value={displayName} placeholder="Display Name" onInput={(e: any) => { setDisplayName(e.target.value) }} />
             <input value={email} placeholder="E-mail" onInput={(e: any) => { setEmail(e.target.value) }} />
             <input value={password} placeholder="Password" onInput={(e: any) => { setPassword(e.target.value) }} />
             <input value={verifyPassword} placeholder="Verify Password" onInput={(e: any) => { setVerifyPassword(e.target.value) }} />

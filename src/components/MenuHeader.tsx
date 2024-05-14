@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Category, refData } from '../state/types'
 import AppState from '../state/AppState'
 import { observer } from 'mobx-react-lite'

@@ -1,10 +1,22 @@
-import React from 'react'
-import IconPanel from '../components/IconPanel'
+import IconPanel from '../components/IconPanel';
+import NotePanel from '../components/NotePanel';
+import UniqueButton from '../components/UniqueButton';
+import CurrencyButton from '../components/CurrencyButton';
+import EquippableButton from '../components/EquippableButton';
+import { observer } from 'mobx-react-lite';
 
 type Props = {}
 
-export default function NativeItemPanel({ }: Props) {
+function NativeItemPanel({ }: Props) {
     return (
-        <div><IconPanel /></div>
+        <>
+            <IconPanel />
+            <UniqueButton />
+            <CurrencyButton />
+            <EquippableButton />
+            <NotePanel />
+        </>
     )
 }
+
+export default observer(NativeItemPanel);

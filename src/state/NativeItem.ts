@@ -6,12 +6,38 @@ import Log from "./Log";
 import Stat from "./Stat";
 import { Category } from "./types";
 
+/*models.NativeItem.afterUpdate((item) => {
+    if (item.dataValues.unique !== item._previousDataValues.unique) {
+        models.InventoryItem.destroy({
+            where: { nativeItemId: item.dataValues.id },
+        });
+        if (item.dataValues.unique) {
+            item.update({ currency: false });
+        }
+    }
+    if (
+        item.dataValues.currency !== item._previousDataValues.currency &&
+        item.dataValues.currency
+    ) {
+        item.update({ equippable: false, unique: false });
+    }
+    if (
+        item.dataValues.equippable !== item._previousDataValues.equippable &&
+        item.dataValues.equippable
+    ) {
+        item.update({ currency: false });
+    }
+});*/
+
 export default class NativeItem {
     public readonly category: Category = Category.NativeItem;
     public readonly id!: number;
     private _name: string = "";
     private _iconSrc: string = "./assets/loot.png";
     private _icon: HTMLImageElement = new Image();
+    private _currency: boolean = false;
+    private _unique: boolean = true;
+    private _equippable: boolean = false;
 
     public logs: EntityList<Log> = new EntityList<Log>();
     public stats: EntityList<Stat> = new EntityList<Stat>();
@@ -33,6 +59,48 @@ export default class NativeItem {
         return this._name;
     }
 
+    @$update
+    public set name(value: string) {
+        this._name = value;
+    }
+
+    public get currency(): boolean {
+        return this._currency;
+    }
+
+    @$update
+    public set currency(value: boolean) {
+        if (value) {
+            this._equippable = false;
+            this._unique = false;
+        }
+        this._currency = value;
+    }
+
+    public get equippable(): boolean {
+        return this._equippable;
+    }
+
+    @$update
+    public set equippable(value: boolean) {
+        if (value) {
+            this._currency = false;
+        }
+        this._equippable = value;
+    }
+
+    public get unique(): boolean {
+        return this._unique;
+    }
+
+    @$update
+    public set unique(value: boolean) {
+        if (value) {
+            this._currency = false;
+            //delete all inventory items of this item
+        }
+        this._unique = value;
+    }
     public get icon() {
         return this._icon;
     }
@@ -45,11 +113,6 @@ export default class NativeItem {
     public set iconSrc(value: string) {
         this._iconSrc = value;
         this._icon.src = value;
-    }
-
-    @$update
-    public set name(value: string) {
-        this._name = value;
     }
 
     @$delete

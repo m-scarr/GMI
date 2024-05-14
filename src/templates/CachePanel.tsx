@@ -1,9 +1,16 @@
-import React from 'react'
+import MarkerPanel from '../components/MarkerPanel';
+import NotePanel from '../components/NotePanel';
+import { observer } from 'mobx-react-lite';
 
 type Props = {}
 
-export default function CachePanel({ }: Props) {
+function CachePanel({ }: Props) {
     return (
-        <div>CachePanel</div>
+        <>
+            <MarkerPanel />
+            <NotePanel />
+        </>
     )
 }
+
+export default observer(CachePanel);
