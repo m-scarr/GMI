@@ -19,11 +19,16 @@ function SliderInput(props: Props) {
     }, [AppState.instance.tick])
 
     useEffect(() => {
-    }, [])
+        return () => {
+            if (props.onIdle) {
+                //props.onIdle(props.value)
+            } 
+        }
+    }, []);
 
     const handleInputChange = (e: any) => {
         props.onInput!(e.target.value);
-        idleCountdown.current = props.idleLength || 1000;
+        idleCountdown.current = props.idleLength || 500;
     }
     
     return (

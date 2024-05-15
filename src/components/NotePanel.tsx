@@ -13,8 +13,10 @@ export default function NotePanel({ }: Props) {
     return (
         <Button>
             <div>Notes</div>
-            <TextInput value={text} onInput={setText} minRows={10} locking={true} fontSize={24} onIdle={(val: string) => {
-                (AppState.instance.currentEntity as any).notes = val;
+            <TextInput value={text} onInput={setText} minRows={10} locking={true} fontSize={24} onLock={(lock:boolean) => {
+                if (AppState.instance.currentEntity && lock) {
+                    (AppState.instance.currentEntity as any).notes = text;
+                }
             }} />
         </Button>
     )

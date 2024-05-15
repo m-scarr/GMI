@@ -62,6 +62,16 @@ export default abstract class Entity {
         (Game.instance as any)[entity.category].add(entity);
     }
 
+    public static hasItem(owner: Hero | NPC | Enemy | Cache, item: NativeItem) {
+        const inventoryItems = owner.inventoryItems.list;
+        for (let i = 0; i < inventoryItems.length; i++) {
+            if (item.id === inventoryItems[i].nativeItem!.id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static [Category.Locale]: any = {
         load: (data: any) => {
             Locale.load(data);

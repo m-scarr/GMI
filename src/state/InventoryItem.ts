@@ -7,6 +7,7 @@ import Hero from "./Hero";
 import NPC from "./NPC";
 import Enemy from "./Enemy";
 import Game from "./Game";
+import AppState from "./AppState";
 
 export default class InventoryItem {
     public readonly category: Category = Category.InventoryItem;
@@ -15,6 +16,8 @@ export default class InventoryItem {
     private _ownerCategory: Category | null = null;
     private _ownerId: number | null = null;
     private _nativeItemId: number | null = null;
+    private _quantity: number = 1;
+    private _equipped: boolean = false;
 
     private _owner: Hero | NPC | Enemy | Cache | null = null;
     private _nativeItem: NativeItem | null = null;
@@ -30,9 +33,37 @@ export default class InventoryItem {
         Entity.build(this, data);
         this._owner = Game.instance!.findEntity(this._ownerCategory!, this._ownerId!);
         this._nativeItem = Game.instance!.findEntity(Category.NativeItem, this._nativeItemId!);
+        if (this._nativeItem!.unique) {
+            while (this._nativeItem!.inventoryItems.list.length > 0) {
+                this._nativeItem!.inventoryItems.list[0].forceDelete();
+            }
+        }
         this._owner!.inventoryItems.add(this);
         this._nativeItem!.inventoryItems.add(this);
     }
+
+    public get quantity() {
+        return this._quantity;
+    }
+
+    @$update
+    public set quantity(value: number) {
+        this._quantity = value;
+        if (value < 1) {
+            AppState.instance.currentModal = null;
+            this.forceDelete();
+        }
+    }
+
+    public get equipped() {
+        return this._equipped;
+    }
+
+    @$update
+    public set equipped(value: boolean) {
+        this._equipped = value;
+    }
+
 
     public get owner() {
         return this._owner;
@@ -42,7 +73,8 @@ export default class InventoryItem {
         return this._nativeItem;
     }
 
-    @$delete
-    public delete() {
+    public forceDelete() {
+        this._owner!.inventoryItems.remove(this);
+        this._nativeItem!.inventoryItems.remove(this);
     }
 }

@@ -16,11 +16,12 @@ function StatPanel({ }: Props) {
       <div style={{ marginBottom: 8 }}>
         {writingStat ?
           <div style={{ position: "relative" }}>
-            <div className='hoverable' style={{ position: "absolute", left: 0, top: -6, paddingBottom: 8, transform: "translateX(-6px)" }} onClick={() => {
-              setWritingStat(false);
-              setStatName("");
-              setStatValue("");
-            }}>
+            <div className='hoverable' style={{ position: "absolute", left: 0, top: -6, paddingBottom: 8, transform: "translateX(-6px)" }}
+              onClick={() => {
+                setWritingStat(false);
+                setStatName("");
+                setStatValue("");
+              }}>
               <img alt="" src="./assets/back.png" style={{ transform: "translateY(8px)" }} />
             </div>
           </div>
@@ -65,13 +66,17 @@ function IndividualStat(props: { stat: Stat }) {
   const [statName, setStatName] = useState<string>(props.stat.name);
   const [statValue, setStatValue] = useState<string>(props.stat.value);
   return (
-    <Button key={'stat-' + props.stat.id} hoverable={true}>
+    <Button key={'stat-' + props.stat.id}>
       <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-        <div><TextInput value={statName} onInput={setStatName} fontSize={20} onIdle={(val: string) => { props.stat.name = val; }} /></div>
+        <div>
+          <TextInput value={statName} onInput={setStatName} fontSize={20} onIdle={(val: string) => { props.stat.name = val; }} />
+        </div>
         :
-        <div><TextInput value={statValue} onInput={setStatValue} fontSize={20} onIdle={(val: string) => { props.stat.value = val; }} /></div>
+        <div>
+          <TextInput value={statValue} onInput={setStatValue} fontSize={20} onIdle={(val: string) => { props.stat.value = val; }} />
+        </div>
         <div className="hoverable" style={{ alignSelf: "stretch", alignContent: "center", padding: 1 }}>
-          <img alt="" src="./assets/trashcan.png" />
+          <img alt="Delete Stat" src="./assets/trashcan.png" />
         </div>
       </div>
     </Button>

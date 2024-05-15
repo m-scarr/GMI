@@ -8,9 +8,11 @@ import AppState from './state/AppState';
 
 
 function App() {
-  /*useEffect(() => {
-    console.log("!");
-  }, [AppState.instance.tick]);*/
+  useEffect(() => {
+    return () => {
+      clearInterval((AppState.instance as any)._tickInterval);
+    }
+  }, []);
 
   return (<>
     <Map />

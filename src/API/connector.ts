@@ -34,7 +34,7 @@ export function $update(_target: any, propertyKey: string, descriptor: PropertyD
             updateObj[propertyKey] = val;
         }
         const currentVal = (this as any)[`_${propertyKey}`];
-        runInAction(() => { originalSetter.call(this, val); });
+        //runInAction(() => { originalSetter.call(this, val); });
         const result = await API.update((this as any).category, (this as any).id, updateObj);
         runInAction(() => { originalSetter.call(this, result ? val : [currentVal]); });
     }

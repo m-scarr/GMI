@@ -21,7 +21,7 @@ function Modals({ }: Props) {
         [ModalType.IconSelector]: <IconSelector />
     }
     return (AppState.instance.currentModal === null ? null :
-        <div style={{ position: "fixed", left: 0, right: 0, top: 0, bottom: 0, display: "flex", justifyContent: "center", alignItems: "center" }}
+        <div style={{ pointerEvents: AppState.instance.currentModal === ModalType.Item ? 'none' : 'auto', position: "fixed", left: 0, right: 0, top: 0, bottom: 0, display: "flex", justifyContent: "center", alignItems: "center" }}
             onClick={() => {
                 if (AppState.instance.currentModal === ModalType.IconSelector) {
                     AppState.instance.currentModal = null;

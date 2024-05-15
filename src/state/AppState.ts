@@ -8,7 +8,8 @@ import NativeItem from "./NativeItem";
 
 export async function wait(ms: number) {
     return new Promise<void>(resolve => {
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
+            clearTimeout(timeout);
             resolve();
         }, ms);
     });
@@ -53,8 +54,8 @@ export default class AppState {
     }, 16);
     private _searchValue: string = "";
     private _modals: any = {
-        item: { id: null, content: null },
-        battlefield: { id: null, content: null },
+        item: { content: null, equipped: false },
+        battlefield: { content: null },
         games: [],
         playerCharacters: [],
         iconSelector: {

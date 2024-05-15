@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import AppState from '../../state/AppState';
+import AppState, { wait } from '../../state/AppState';
 import { observer } from 'mobx-react-lite';
 
 type Props = {
@@ -24,6 +24,23 @@ function TextInput(props: Props) {
     const [cursor, setCursor] = useState(null);
     const inputRef = useRef<any>(null);
     const idleCountdown = useRef<number>(0);
+
+    useEffect(() => {
+        wait(10).then(() => {
+            const textArea = inputRef.current;
+            if (textArea) {
+                textArea.style.height = "16px";
+                while (
+                    textArea.scrollHeight &&
+                    textArea.clientHeight &&
+                    textArea.scrollHeight > textArea.clientHeight
+                ) {
+                    textArea.style.height = parseInt(textArea.style.height.split("px")[0]) + 1 + "px";
+                }
+            }
+            setTotalHeight(inputRef.current.clientHeight);
+        });
+    }, []);
 
     useEffect(() => {
         if (idleCountdown.current > 0) {
@@ -68,7 +85,7 @@ function TextInput(props: Props) {
     const handleInputChange = (e: any) => {
         setCursor(e.target.selectionStart);
         props.onInput!(e.target.value);
-        idleCountdown.current = props.idleLength || 1000;
+        idleCountdown.current = props.idleLength || 500;
     }
 
     return (

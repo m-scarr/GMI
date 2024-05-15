@@ -25,8 +25,8 @@ const NameInput = (_props: Props) => {
                 <TextInput
                     locking={true}
                     onLock={(locked: boolean) => {
-                        if (locked) {
-                            AppState.instance.currentEntity!.name = name;
+                        if (locked && AppState.instance.currentEntity) {
+                            AppState.instance.currentEntity.name = name;
                         }
                     }}
                     color={(refData as any)[AppState.instance.currentCategory].color}

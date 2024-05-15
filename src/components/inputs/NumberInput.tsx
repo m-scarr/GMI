@@ -12,6 +12,14 @@ function NumberInput(props: Props) {
     const idleCountdown = useRef<number>(0);
 
     useEffect(() => {
+        return () => {
+            if (props.onIdle) {
+                //props.onIdle(props.value)
+            } 
+        }
+    }, []);
+
+    useEffect(() => {
         if (idleCountdown.current > 0) {
             idleCountdown.current -= 16;
             if (idleCountdown.current < 1 && props.onIdle) {
@@ -32,7 +40,7 @@ function NumberInput(props: Props) {
 
     const handleInputChange = (e: any) => {
         props.onInput!(Math.max(props.min || 0, Math.min(e.target.value, props.max || 100)));
-        idleCountdown.current = props.idleLength || 1000;
+        idleCountdown.current = props.idleLength || 500;
     }
 
     return (

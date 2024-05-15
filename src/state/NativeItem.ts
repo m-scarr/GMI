@@ -38,6 +38,7 @@ export default class NativeItem {
     private _currency: boolean = false;
     private _unique: boolean = true;
     private _equippable: boolean = false;
+    private _notes:string = "";
 
     public logs: EntityList<Log> = new EntityList<Log>();
     public stats: EntityList<Stat> = new EntityList<Stat>();
@@ -53,6 +54,15 @@ export default class NativeItem {
     private constructor(data: any) {
         Entity.build(this, data);
         this._icon.src = this._iconSrc;
+    }
+
+    public get notes() {
+        return this._notes;
+    }
+
+    @$update
+    public set notes(value:string) {
+        this._notes = value;
     }
 
     public get name(): string {
@@ -73,6 +83,9 @@ export default class NativeItem {
         if (value) {
             this._equippable = false;
             this._unique = false;
+            while (this.inventoryItems.list.length > 0) {
+                this.inventoryItems.list[0].forceDelete();
+            }
         }
         this._currency = value;
     }
@@ -97,10 +110,13 @@ export default class NativeItem {
     public set unique(value: boolean) {
         if (value) {
             this._currency = false;
-            //delete all inventory items of this item
+        }
+        while (this.inventoryItems.list.length > 0) {
+            this.inventoryItems.list[0].forceDelete();
         }
         this._unique = value;
     }
+    
     public get icon() {
         return this._icon;
     }

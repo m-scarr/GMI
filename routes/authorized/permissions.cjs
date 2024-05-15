@@ -23,7 +23,6 @@ const permissions = {
         )
       ) {
         try {
-          console.log(entityList[i])
           currentEntity = await db[entityList[i].type].findOne({
             where: {
               id:

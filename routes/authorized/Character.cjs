@@ -5,7 +5,6 @@ const router = require("express").Router();
 
 const permissionMiddleWare = {
   create: async (req, res, next) => {
-    console.log(req.body);
     if (!req.body.gameMasterMode) {
       res.json(false);
       return;
