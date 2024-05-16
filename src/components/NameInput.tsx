@@ -8,9 +8,11 @@ type Props = {}
 
 const NameInput = (_props: Props) => {
     const [name, setName] = useState(AppState.instance.currentEntity!.name)
+    const [entity, setEntity] = useState(AppState.instance.currentEntity as any);
     useEffect(() => {
         if (AppState.instance.currentEntity) {
             setName(AppState.instance.currentEntity.name);
+            setEntity(AppState.instance.currentEntity as any);
         }
     }, [AppState.instance.currentEntity, AppState.instance.currentEntity?.name]);
 
@@ -26,7 +28,7 @@ const NameInput = (_props: Props) => {
                     locking={true}
                     onLock={(locked: boolean) => {
                         if (locked && AppState.instance.currentEntity) {
-                            AppState.instance.currentEntity.name = name;
+                            entity.name = name;
                         }
                     }}
                     color={(refData as any)[AppState.instance.currentCategory].color}

@@ -7,6 +7,7 @@ import NPC from "./NPC";
 import { Category } from "./types";
 import EntityList from "./EntityList";
 import GroupMember from "./GroupMember";
+import Game from "./Game";
 
 export default class Group {
     public readonly category: Category = Category.Group;
@@ -87,9 +88,19 @@ export default class Group {
     public set name(value: string) {
         this._name = value;
     }
-
+    
     @$delete
     public delete() {
+        this.forceDelete();
+    }
 
+    public forceDelete() {
+        while (this.groupMembers.list.length > 0) {
+            this.groupMembers.list[0].forceDelete();
+        }
+        while (this.logs.list.length > 0) {
+            this.logs.list[0].forceDelete();
+        }
+        (Game.instance as any)[this.category].remove(this);
     }
 }

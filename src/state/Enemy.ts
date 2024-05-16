@@ -2,6 +2,7 @@ import { $create, $delete, $update } from "../API/connector";
 import Combatant from "./Combatant";
 import Entity from "./Entity";
 import EntityList from "./EntityList";
+import Game from "./Game";
 import GroupMember from "./GroupMember";
 import InventoryItem from "./InventoryItem";
 import Log from "./Log";
@@ -73,6 +74,13 @@ export default class Enemy {
 
     @$update
     public set unique(value: boolean) {
+        while (this.groupMembers.list.length > 0) {
+            this.groupMembers.list[0].forceDelete();
+        }
+        //destroy combatants
+        while (this.inventoryItems.list.length > 0) {
+            this.inventoryItems.list[0].forceDelete();
+        }
         this._unique = value;
     }
 
@@ -134,6 +142,22 @@ export default class Enemy {
 
     @$delete
     public delete() {
+        this.forceDelete();
+    }
 
+    public forceDelete() {
+        while (this.groupMembers.list.length > 0) {
+            this.groupMembers.list[0].forceDelete();
+        }
+        while (this.inventoryItems.list.length > 0) {
+            this.inventoryItems.list[0].forceDelete();
+        }
+        while (this.combatants.list.length > 0) {
+            this.combatants.list[0].forceDelete();
+        }
+        while (this.logs.list.length > 0) {
+            this.logs.list[0].forceDelete();
+        }
+        (Game.instance as any)[this.category].remove(this);
     }
 }

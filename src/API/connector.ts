@@ -42,6 +42,17 @@ export function $update(_target: any, propertyKey: string, descriptor: PropertyD
 }
 
 export function $delete(_target: any, _propertyKey: string, _descriptor: PropertyDescriptor) {
+    const originalMethod = _descriptor.value;
+
+    _descriptor.value = async function (...args: any[]) {
+        const category = (this as any).category; // Assuming this property exists on the object
+        const id = (this as any).id; // Assuming this property exists on the object
+        if (await API.delete(category, id)) {
+            return originalMethod.apply(this, args);
+        }
+    };
+
+    return _descriptor;
 }
 
 function getParamNames(func: Function) {

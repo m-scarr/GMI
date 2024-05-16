@@ -2,6 +2,7 @@ import { $create, $delete, $update } from "../API/connector";
 import Combatant from "./Combatant";
 import Entity from "./Entity";
 import EntityList from "./EntityList";
+import Game from "./Game";
 import Log from "./Log";
 import { Category } from "./types";
 
@@ -97,6 +98,16 @@ export default class Battlefield {
 
     @$delete
     public delete() {
+        this.forceDelete();
+    }
 
+    public forceDelete() {
+        while (this.combatants.list.length > 0) {
+            this.combatants.list[0].forceDelete();
+        }
+        while (this.logs.list.length > 0) {
+            this.logs.list[0].forceDelete();
+        }
+        (Game.instance as any)[this.category].remove(this);
     }
 }

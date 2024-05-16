@@ -60,7 +60,7 @@ const permissionMiddleWare = {
       req.user.id,
       req.query.gameMasterMode,
       [
-        { type: "Stat", id: req.body.id },
+        { type: "Stat", id: req.query.id },
         { type: "NativeItem", idField: "nativeItemId" },
       ]
     );

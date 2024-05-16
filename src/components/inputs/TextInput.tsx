@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import AppState, { wait } from '../../state/AppState';
 import { observer } from 'mobx-react-lite';
+import InputManager from '../../state/InputManager';
 
 type Props = {
     color?: string,
@@ -17,13 +18,13 @@ type Props = {
 }
 
 function TextInput(props: Props) {
+    const [timerId, setTimerId] = useState<string | null>(null);
     const [value, setValue] = useState<string>(props.value);
     const [locked, setLocked] = useState(props.locking || false);
     const [lineHeight, setLineHeight] = useState(0);
     const [totalHeight, setTotalHeight] = useState(0);
     const [cursor, setCursor] = useState(null);
     const inputRef = useRef<any>(null);
-    const idleCountdown = useRef<number>(0);
 
     useEffect(() => {
         wait(10).then(() => {
@@ -37,19 +38,10 @@ function TextInput(props: Props) {
                 ) {
                     textArea.style.height = parseInt(textArea.style.height.split("px")[0]) + 1 + "px";
                 }
+                setTotalHeight(textArea.clientHeight);
             }
-            setTotalHeight(inputRef.current.clientHeight);
         });
     }, []);
-
-    useEffect(() => {
-        if (idleCountdown.current > 0) {
-            idleCountdown.current -= 16;
-            if (idleCountdown.current < 1 && props.onIdle) {
-                props.onIdle(inputRef.current.value)
-            }
-        }
-    }, [AppState.instance.tick])
 
     useEffect(() => {
         setValue(props.value);
@@ -85,7 +77,16 @@ function TextInput(props: Props) {
     const handleInputChange = (e: any) => {
         setCursor(e.target.selectionStart);
         props.onInput!(e.target.value);
-        idleCountdown.current = props.idleLength || 500;
+        if (props.onIdle) {
+            if (timerId === null) {
+                setTimerId(InputManager.createTimer(props.idleLength || 1000, e.target.value, (val: string) => {
+                    setTimerId(null);
+                    props.onIdle!(val);
+                }));
+            } else {
+                InputManager.setTimer(timerId, props.idleLength || 1000, e.target.value);
+            }
+        }
     }
 
     return (

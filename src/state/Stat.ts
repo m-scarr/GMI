@@ -50,6 +50,10 @@ export default class Stat {
 
     @$delete
     public delete() {
+        this.forceDelete();
+    }
 
+    public forceDelete() {
+        this._nativeItem!.stats.remove(this);
     }
 }

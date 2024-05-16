@@ -30,6 +30,11 @@ export default class GroupMember {
         Entity.build(this, data);
         this._group = Game.instance!.findEntity(Category.Group, this._groupId!);
         this._character = Game.instance!.findCharacter(this._characterId!);
+        if (this._character!.unique) {
+            while (this._character!.groupMembers.list.length > 0) {
+                this._character!.groupMembers.list[0].forceDelete();
+            }
+        }
         this._group!.groupMembers.add(this);
         this._character!.groupMembers.add(this);
     }
@@ -45,6 +50,9 @@ export default class GroupMember {
     @$update
     public set quantity(value: number) {
         this._quantity = value;
+        if (value < 1) {
+            this.forceDelete();
+        }
     }
 
     public get quantity(): number {
@@ -53,5 +61,12 @@ export default class GroupMember {
 
     @$delete
     public delete() {
+        this.forceDelete();
+    }
+
+    public forceDelete() {
+        this._group!.groupMembers.remove(this);
+        this._character!.groupMembers.remove(this);
+        (Game.instance as any)[this.category].remove(this);
     }
 }

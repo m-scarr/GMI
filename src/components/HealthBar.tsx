@@ -10,11 +10,11 @@ import { observer } from 'mobx-react-lite';
 type Props = {}
 
 function HealthBar({ }: Props) {
-    const entity = AppState.instance.currentEntity as (Hero | NPC | Enemy);
+    const [entity, setEntity] = useState(AppState.instance.currentEntity as (Hero | NPC | Enemy));
     const [hp, setHp] = useState<number>(entity.hp);
     const [maxHp, setMaxHp] = useState<number>(entity.maxHp);
     useEffect(() => {
-        const entity = AppState.instance.currentEntity as (Hero | NPC | Enemy);
+        setEntity(AppState.instance.currentEntity as (Hero | NPC | Enemy));
         setHp(entity.hp);
         setMaxHp(entity.maxHp);
     }, [AppState.instance.currentEntity, (AppState.instance.currentEntity as (Hero | NPC | Enemy))?.hp, (AppState.instance.currentEntity as (Hero | NPC | Enemy))?.maxHp]);
@@ -37,19 +37,19 @@ function HealthBar({ }: Props) {
                         value={hp}
                         max={9999}
                         onInput={setHp}
-                        onIdle={() => {
-                            entity.hp = hp;
+                        onIdle={(val: number) => {
+                            entity.hp = val;
                         }}
                         fontSize={24} />
                 </div>
                 /
                 <div style={{ width: 96 }}>
-                <NumberInput
+                    <NumberInput
                         value={maxHp}
                         max={9999}
                         onInput={setMaxHp}
-                        onIdle={() => {
-                            entity.maxHp = maxHp;
+                        onIdle={(val: number) => {
+                            entity.maxHp = val;
                         }}
                         fontSize={24} />
                 </div>

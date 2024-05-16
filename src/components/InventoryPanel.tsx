@@ -1,14 +1,10 @@
 import { observer } from "mobx-react-lite"
 import AppState from "../state/AppState"
-import Entity from "../state/Entity"
-import Game from "../state/Game"
 import InventoryItem from "../state/InventoryItem"
-import NativeItem from "../state/NativeItem"
-import { Category, ModalType } from "../state/types"
+import { ModalType } from "../state/types"
 import Button from "./Button"
 import NumberInput from "./inputs/NumberInput"
 import { useEffect, useState } from "react"
-import { toJS } from "mobx"
 
 type Props = {}
 
@@ -92,7 +88,7 @@ const InventoryItemPanel = observer(function InventoryItemPanel(props: { invento
                     {props.inventoryItem.nativeItem!.name}
                 </div>
                 <div style={{ alignSelf: "stretch", alignContent: "center", transform: "translateX(6px)", width: 96 }}>
-                    <NumberInput value={quantity} onInput={setQuantity} onIdle={() => { props.inventoryItem.quantity = quantity; }} fontSize={24} />
+                    <NumberInput value={quantity} onInput={setQuantity} onIdle={(val: number) => { props.inventoryItem.quantity = val; }} fontSize={24} />
                 </div>
             </div>
         ) : (
@@ -101,7 +97,7 @@ const InventoryItemPanel = observer(function InventoryItemPanel(props: { invento
                     {props.inventoryItem.nativeItem!.name}
                 </div>
                 <div style={{ alignSelf: "stretch", alignContent: "center", transform: "translateX(6px)", width: 96 }}>
-                    <NumberInput value={quantity} onInput={setQuantity} onIdle={() => { props.inventoryItem.quantity = quantity; }} fontSize={24} />
+                    <NumberInput value={quantity} onInput={setQuantity} onIdle={(val: number) => { props.inventoryItem.quantity = val; }} fontSize={24} />
                 </div>
             </div>
         )}

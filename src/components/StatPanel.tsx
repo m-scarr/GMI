@@ -75,7 +75,7 @@ function IndividualStat(props: { stat: Stat }) {
         <div>
           <TextInput value={statValue} onInput={setStatValue} fontSize={20} onIdle={(val: string) => { props.stat.value = val; }} />
         </div>
-        <div className="hoverable" style={{ alignSelf: "stretch", alignContent: "center", padding: 1 }}>
+        <div className="hoverable" style={{ alignSelf: "stretch", alignContent: "center", padding: 1 }} onClick={() => { props.stat.delete(); }}>
           <img alt="Delete Stat" src="./assets/trashcan.png" />
         </div>
       </div>

@@ -76,7 +76,7 @@ export default class API {
 
     static async delete(category: Category, id: number) {
         try {
-            const result = await axios.delete(`/auth/${getRouteCategory(typeof category === "string" ? category : Category[category])}/delete?id=${id}`);
+            const result = await axios.delete(`/auth/${getRouteCategory(typeof category === "string" ? category : Category[category])}/delete?id=${id}&gameMasterMode=${AppState.instance.gameMasterMode}`);
             return result.data
         } catch (err) {
             console.error(err);

@@ -41,6 +41,10 @@ export default class Log {
 
     @$delete
     public delete() {
+        this.forceDelete();
+    }
 
+    public forceDelete() {
+        (this._owner as any).logs.remove(this);
     }
 }

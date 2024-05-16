@@ -1,15 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import AppState from '../../state/AppState';
 import { observer } from 'mobx-react-lite';
+import InputManager from '../../state/InputManager';
 
 type Props = { color?: string, value: number, placeholder?: string, onInput: (val: number) => void, onIdle?: (val: number) => void, idleLength?: number, locking?: boolean, fontSize?: number, locked?: boolean, onLock?: (val: boolean) => void, min?: number, max?: number }
 
 function NumberInput(props: Props) {
+    const [timerId, setTimerId] = useState<string | null>(null);
     const [value, setValue] = useState<number>(props.value);
     const [locked, setLocked] = useState(props.locking || false);
     const [lineHeight, setLineHeight] = useState(0);
     const inputRef = useRef<any>(null);
-    const idleCountdown = useRef<number>(0);
 
     useEffect(() => {
         return () => {
@@ -18,15 +19,6 @@ function NumberInput(props: Props) {
             } 
         }
     }, []);
-
-    useEffect(() => {
-        if (idleCountdown.current > 0) {
-            idleCountdown.current -= 16;
-            if (idleCountdown.current < 1 && props.onIdle) {
-                props.onIdle(inputRef.current.value)
-            }
-        }
-    }, [AppState.instance.tick])
 
     useEffect(() => {
         setValue(props.value);
@@ -40,7 +32,16 @@ function NumberInput(props: Props) {
 
     const handleInputChange = (e: any) => {
         props.onInput!(Math.max(props.min || 0, Math.min(e.target.value, props.max || 100)));
-        idleCountdown.current = props.idleLength || 500;
+        if (props.onIdle) {
+            if (timerId === null) {
+                setTimerId(InputManager.createTimer(props.idleLength || 1000, e.target.value, (val: number) => {
+                    setTimerId(null);
+                    props.onIdle!(val);
+                }));
+            } else {
+                InputManager.setTimer(timerId, props.idleLength || 1000, e.target.value);
+            }
+        }
     }
 
     return (

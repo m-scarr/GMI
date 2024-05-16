@@ -15,14 +15,13 @@ function ItemModal({ }: Props) {
     setEquipped(AppState.instance.modals.item.equipped);
   }, [AppState.instance.modals.item.content, AppState.instance.modals.item.equipped]);
   return (
-    <div className="modal" style={{ display: "flex", flexDirection: "column", minWidth: 360, width: "calc(100% - 704px)" }} onClick={(e: any) => {
+    <div className="modal" style={{ display: "flex", flexDirection: "column", minWidth: 360, width: "calc(100% - 704px)", maxWidth: 540 }} onClick={(e: any) => {
       e.stopPropagation();
     }}>
       <div
         style={{
           display: "flex",
           flexDirection: "row",
-
         }}>
         <div style={{ alignSelf: "stretch", alignContent: "center" }}><img alt="" src={nativeItem.iconSrc} style={{ width: 96, imageRendering: "pixelated" }} /></div>
         <div style={{ alignSelf: "stretch", alignContent: "center", width: "100%" }}>{nativeItem.name}

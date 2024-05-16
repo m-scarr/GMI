@@ -1,6 +1,7 @@
 import { $create, $delete, $update } from "../API/connector";
 import Entity from "./Entity";
 import EntityList from "./EntityList";
+import Game from "./Game";
 import InventoryItem from "./InventoryItem";
 import Log from "./Log";
 import { Category } from "./types";
@@ -79,6 +80,16 @@ export default class Cache {
 
     @$delete
     public delete() {
+        this.forceDelete();
+    }
 
+    public forceDelete() {
+        while (this.inventoryItems.list.length > 0) {
+            this.inventoryItems.list[0].forceDelete();
+        }
+        while (this.logs.list.length > 0) {
+            this.logs.list[0].forceDelete();
+        }
+        (Game.instance as any)[this.category].remove(this);
     }
 }

@@ -5,6 +5,7 @@ import Hero from "./Hero";
 import API from "../API";
 import Game from "./Game";
 import NativeItem from "./NativeItem";
+import InputManager from "./InputManager";
 
 export async function wait(ms: number) {
     return new Promise<void>(resolve => {
@@ -45,6 +46,7 @@ export default class AppState {
     private _selectedPlayerCharacter: Hero | null = null;
     private _tick: boolean = false;
     private _tickInterval: NodeJS.Timeout = setInterval(async () => {
+        InputManager.decrementTimers(16);
         runInAction(() => {
             this._tick = !this.tick;
             if (this._goToEntity !== null) {

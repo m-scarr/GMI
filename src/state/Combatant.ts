@@ -50,6 +50,12 @@ export default class Combatant {
 
     @$delete
     public delete() {
+        this.forceDelete();
+    }
 
+    public forceDelete() {
+        this._battlefield!.combatants.remove(this);
+        this._character!.combatants.remove(this);
+        (Game.instance as any)[this.category].remove(this);
     }
 }

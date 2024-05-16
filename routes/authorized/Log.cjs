@@ -1,5 +1,5 @@
 const logController = require("../../controllers/Log.cjs");
-const { default: db } = require("../../models/index.cjs");
+const db = require("../../models/index.cjs");
 const permissionsController = require("./permissions.cjs");
 
 const router = require("express").Router();
@@ -42,8 +42,8 @@ const permissionMiddleWare = {
       req.entity = await db.Log.findByPk(req.query.id);
       const permissionRequest = await permissionsController.verifyPermission(
         req.user.id,
-        req.body.gameMasterMode,
-        [{ type: log.dataValues.ownerCategory, id: log.dataValues.ownerId }]
+        req.query.gameMasterMode,
+        [{ type: req.entity.ownerCategory, id: req.entity.ownerId }]
       );
       if (!permissionRequest.permitted) {
         res.json(false);

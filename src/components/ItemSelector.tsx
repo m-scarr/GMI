@@ -6,14 +6,21 @@ import Button from './Button';
 import Entity from '../state/Entity';
 import AppState from '../state/AppState';
 import InventoryItem from '../state/InventoryItem';
+import TextInput from './inputs/TextInput';
+import { useState } from 'react';
 
 type Props = {}
 
 function ItemSelector({ }: Props) {
+    const [searchValue, setSearchValue] = useState<string>("");
+
     return (
         <Button>
-            <div>
+            <div style={{ paddingBottom: 8 }}>
                 Add Items
+            </div>
+            <div style={{ width: "calc(100% + 12px)", transform: "translateX(-6px)" }}>
+                <TextInput value={searchValue} onInput={setSearchValue} fontSize={24} placeholder={`Search Items...`} />
             </div>
             <div style={{ transform: "translateX(-6px)", width: "calc(100% + 11px)", height: 250, overflowY: "scroll" }}>
                 {

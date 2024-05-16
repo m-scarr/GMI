@@ -72,6 +72,16 @@ export default abstract class Entity {
         return false;
     }
 
+    public static hasMember(group: Group, member: Hero | NPC | Enemy | Cache) {
+        const members = [...group.groupMembers.list];
+        for (let i = 0; i < members.length; i++) {
+            if (member.id === members[i].character!.id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static [Category.Locale]: any = {
         load: (data: any) => {
             Locale.load(data);

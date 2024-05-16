@@ -57,11 +57,11 @@ function IndividualLog(props: { log: Log }) {
     const [open, setOpen] = useState<boolean>(false);
     return (
         <Button key={'log-' + props.log.id} onClick={() => { setOpen(!open) }} hoverable={true}>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-around", alignItems: "center", pointerEvents: "none" }}>
+            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-around", alignItems: "center" }}>
                 <div>
                     {props.log.createdAt}
                 </div>
-                <img alt="delete" src="./assets/trashcan.png" />
+                <img alt="delete" src="./assets/trashcan.png" onClick={() => { props.log.delete(); }} />
             </div>
             {open ?
                 <>
