@@ -1,3 +1,4 @@
+import DeleteButton from '../components/DeleteButton';
 import LogPanel from '../components/LogPanel';
 import MapPanel from '../components/MapPanel';
 import MarkerPanel from '../components/MarkerPanel';
@@ -13,6 +14,7 @@ function LocalePanel({ }: Props) {
             <MapPanel />
             <NotePanel />
             <LogPanel />
+            <DeleteButton />
         </>
     )
 }

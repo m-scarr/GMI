@@ -7,14 +7,15 @@ import Entity from '../state/Entity';
 import AppState from '../state/AppState';
 import InventoryItem from '../state/InventoryItem';
 import TextInput from './inputs/TextInput';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-type Props = {}
-
-function ItemSelector({ }: Props) {
+function ItemSelector() {
     const [searchValue, setSearchValue] = useState<string>("");
-
-    return (
+    const [entity, setEntity] = useState<any>(AppState.instance.currentEntity);
+    useEffect(() => {
+        setEntity(AppState.instance.currentEntity);
+    }, [AppState.instance.currentEntity])
+    return (typeof entity.unique === "undefined" || entity.unique ? (
         <Button>
             <div style={{ paddingBottom: 8 }}>
                 Add Items
@@ -25,7 +26,7 @@ function ItemSelector({ }: Props) {
             <div style={{ transform: "translateX(-6px)", width: "calc(100% + 11px)", height: 250, overflowY: "scroll" }}>
                 {
                     Game.instance![Category.NativeItem].list.map((item: NativeItem) => {
-                        return Entity.hasItem(AppState.instance.currentEntity as any, item) ? null :
+                        return Entity.hasItem(entity, item) ? null :
                             <div
                                 key={`item-button-${item.id}`}
                                 onMouseEnter={() => {
@@ -37,7 +38,7 @@ function ItemSelector({ }: Props) {
                                     AppState.instance.currentModal = null;
                                 }}>
                                 <Button hoverable={true} onClick={() => {
-                                    InventoryItem.create(AppState.instance.currentEntity!.category, AppState.instance.currentEntity!.id, item.id);
+                                    InventoryItem.create(entity.category, entity.id, item.id);
                                     AppState.instance.currentModal = null;
                                 }}>
                                     {item.name}
@@ -47,7 +48,7 @@ function ItemSelector({ }: Props) {
                 }
             </div>
         </Button>
-    )
+    ) : null);
 }
 
 export default observer(ItemSelector);

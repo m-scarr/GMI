@@ -10,7 +10,6 @@ import NPC from '../state/NPC';
 import Enemy from '../state/Enemy';
 import GroupMember from '../state/GroupMember';
 import AppState from '../state/AppState';
-import Group from '../state/Group';
 import Entity from '../state/Entity';
 
 type Props = {}
@@ -18,6 +17,11 @@ type Props = {}
 function MemberSelector({ }: Props) {
     const [category, setCategory] = useState<Category.Hero | Category.NPC | Category.Enemy>(Category.Hero);
     const [searchValue, setSearchValue] = useState<string>("");
+    const [entity, setEntity] = useState<any>(AppState.instance.currentEntity);
+
+    useEffect(() => {
+        setEntity(AppState.instance.currentEntity);
+    }, [AppState.instance.currentEntity]);
 
     useEffect(() => {
         setSearchValue("");
@@ -51,12 +55,12 @@ function MemberSelector({ }: Props) {
             <div style={{ transform: "translateX(-6px)", width: "calc(100% + 11px)", height: 250, overflowY: "scroll" }}>
                 {
                     Game.instance![category].list.map((character: Hero | NPC | Enemy) => {
-                        return Entity.hasMember(AppState.instance.currentEntity as Group, character) ? null :
+                        return Entity.hasMember(entity, character) ? null :
                             <Button
                                 key={`member-selector-button-${character.id}`}
                                 hoverable={true}
                                 onClick={() => {
-                                    GroupMember.create(character.id, AppState.instance.currentEntity!.id);
+                                    GroupMember.create(character.id, entity.id);
                                 }}>
                                 {character.name}
                             </Button>

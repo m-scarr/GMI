@@ -4,17 +4,19 @@ import { observer } from 'mobx-react-lite';
 import LogPanel from '../components/LogPanel';
 import MemberSelector from '../components/MemberSelector';
 import Roster from '../components/Roster';
+import DeleteButton from '../components/DeleteButton';
 
 type Props = {}
 
 function GroupPanel({ }: Props) {
     return (
         <>
+            <MarkerPanel />
             <Roster />
             <MemberSelector />
-            <MarkerPanel />
             <NotePanel />
             <LogPanel />
+            <DeleteButton />
         </>
     )
 }

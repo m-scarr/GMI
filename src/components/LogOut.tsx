@@ -3,9 +3,7 @@ import API from '../API'
 import AppState from '../state/AppState'
 import { observer } from 'mobx-react-lite'
 
-type Props = {}
-
-function LogOut({ }: Props) {
+function LogOut() {
     const [hover, setHover] = useState<boolean>(false);
     return AppState.instance.user === null ? null : (
         <img style={{

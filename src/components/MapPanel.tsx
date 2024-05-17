@@ -2,13 +2,14 @@ import { observer } from "mobx-react-lite";
 import AppState, { checkImageSrc } from "../state/AppState"
 import Button from "./Button"
 import { Category } from "../state/types";
-import Battlefield from "../state/Battlefield";
 import Locale from "../state/Locale";
+import { useEffect, useState } from "react";
 
-type Props = {}
-
-function MapPanel({ }: Props) {
-    const entity = AppState.instance.currentEntity as (Battlefield | Locale);
+function MapPanel() {
+    const [entity, setEntity] = useState(AppState.instance.currentEntity as any);
+    useEffect(() => {
+        setEntity(AppState.instance.currentEntity as any);
+    }, [AppState.instance.currentEntity]);
     const iconStyle = {
         transform: "translateY(-6px) translateX(6px)",
         paddingTop: 6,
@@ -38,8 +39,8 @@ function MapPanel({ }: Props) {
                 <div className="hoverable" style={iconStyle}>
                     <img src="./assets/goto.png"
                         onClick={() => {
-                            if (AppState.instance.currentEntity?.category === Category.Locale) {
-                                AppState.instance.currentLocale = AppState.instance.currentEntity as Locale;
+                            if (entity.category === Category.Locale) {
+                                entity.currentLocale = entity.currentEntity as Locale;
                             } else {
                                 //open the battlefield modal
                             }

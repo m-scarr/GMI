@@ -9,6 +9,12 @@ import NumberInput from './inputs/NumberInput'
 type Props = {}
 
 function Roster({ }: Props) {
+    const [entity, setEntity] = useState<any>(AppState.instance.currentEntity);
+
+    useEffect(() => {
+        setEntity(AppState.instance.currentEntity);
+    }, [AppState.instance.currentEntity]);
+
     return (
         <Button>
             <div>
@@ -16,7 +22,7 @@ function Roster({ }: Props) {
             </div>
             <div style={{ transform: "translateX(-6px)", width: "calc(100% + 11px)", height: 250, overflowY: "scroll" }}>
                 {
-                    (AppState.instance.currentEntity as Group).groupMembers.list.map((groupMember: GroupMember) => {
+                    entity.groupMembers.list.map((groupMember: GroupMember) => {
                         return <MemberPanel key={`roster-member-button-${groupMember.id}`} groupMember={groupMember} />;
                     })
                 }

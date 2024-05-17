@@ -2,15 +2,17 @@ import { observer } from 'mobx-react-lite';
 import AppState from '../state/AppState';
 import Log from '../state/Log';
 import Button from './Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TextInput from './inputs/TextInput';
 
-type Props = {}
-
-function LogPanel({ }: Props) {
+function LogPanel() {
     const [writingLog, setWritingLog] = useState<boolean>(false);
     const [logText, setLogText] = useState<string>("");
-    return (
+    const [entity, setEntity] = useState<any>(AppState.instance.currentEntity);
+    useEffect(() => {
+        setEntity(AppState.instance.currentEntity);
+    }, [AppState.instance.currentEntity])
+    return (typeof entity.unique === "undefined" || entity.unique ? (
         <Button>
             <div style={{ marginBottom: 8 }}>
                 {writingLog ?
@@ -27,7 +29,7 @@ function LogPanel({ }: Props) {
             </div>
             {writingLog ? <TextInput value={logText} onInput={setLogText} fontSize={24} minRows={10} /> :
                 <div style={{ height: 250, overflowY: "scroll", overflowX: "hidden", margin: 0, padding: 0, transform: "translateX(-6px)", width: "calc(100% + 11px)", fontSize: 24 }}>
-                    {(AppState.instance.currentEntity as any).logs.list.map((log: Log) => {
+                    {entity.logs.list.map((log: Log) => {
                         return <IndividualLog key={"log-" + log.id} log={log} />
                     })}
                 </div>}
@@ -42,7 +44,7 @@ function LogPanel({ }: Props) {
                 }}
                 onClick={() => {
                     if (writingLog && logText !== "") {
-                        Log.create(AppState.instance.currentEntity!.category, AppState.instance.currentEntity!.id, logText);
+                        Log.create(entity.category, entity.id, logText);
                     }
                     setLogText("");
                     setWritingLog(!writingLog);
@@ -50,7 +52,7 @@ function LogPanel({ }: Props) {
                 Create New Log
             </div>
         </Button>
-    )
+    ) : null)
 }
 
 function IndividualLog(props: { log: Log }) {

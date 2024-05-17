@@ -1,28 +1,33 @@
-import { observer } from "mobx-react-lite"
-import AppState from "../state/AppState"
-import InventoryItem from "../state/InventoryItem"
-import { ModalType } from "../state/types"
-import Button from "./Button"
-import NumberInput from "./inputs/NumberInput"
-import { useEffect, useState } from "react"
+import { observer } from "mobx-react-lite";
+import AppState from "../state/AppState";
+import InventoryItem from "../state/InventoryItem";
+import { ModalType } from "../state/types";
+import Button from "./Button";
+import NumberInput from "./inputs/NumberInput";
+import { useEffect, useState } from "react";
 
-type Props = {}
+function InventoryPanel() {
+    const [entity, setEntity] = useState<any>(AppState.instance.currentEntity);
 
-function InventoryPanel({ }: Props) {
-    return (
+    useEffect(() => {
+        setEntity(AppState.instance.currentEntity);
+    }, [AppState.instance.currentEntity]);
+
+    return (typeof entity.unique === "undefined" || entity.unique ? (
         <Button>
             <div>
                 Inventory
             </div>
             <div style={{ transform: "translateX(-6px)", width: "calc(100% + 11px)", height: 250, overflowY: "scroll" }}>
                 {
-                    (AppState.instance.currentEntity as any).inventoryItems.list.map((inventoryItem: InventoryItem) => {
+                    entity.inventoryItems.list.map((inventoryItem: InventoryItem) => {
                         return <InventoryItemPanel key={`inventory-item-button-${inventoryItem.id}`} inventoryItem={inventoryItem} />
                     })
                 }
             </div>
         </Button>
-    )
+    ) : null
+    );
 }
 
 export default observer(InventoryPanel)
@@ -42,65 +47,33 @@ const InventoryItemPanel = observer(function InventoryItemPanel(props: { invento
         onMouseLeave={() => {
             AppState.instance.currentModal = null;
         }}>
-        <Button>{unique && !equippable ? (
+        <Button>
             <div style={{ display: "flex", flexDirection: "row" }}>
+                {equippable ?
+                    <div className="hoverable" style={{ alignSelf: "stretch", alignContent: "center", transform: "translateX(-6px)" }}
+                        onClick={() => {
+                            const newVal = !props.inventoryItem.equipped;
+                            props.inventoryItem.equipped = newVal;
+                            AppState.instance.setModalData("item", ["equipped"], newVal);
+                        }}>
+                        <img alt="" src={`./assets/checkbox_${props.inventoryItem.equipped ? 'filled' : 'empty'}.png`} />
+                    </div> : null
+                }
                 <div style={{ width: "100%" }}>
                     {props.inventoryItem.nativeItem!.name}
                 </div>
-                <div className="hoverable" style={{ alignSelf: "stretch", alignContent: "center", transform: "translateX(6px)" }}
-                    onClick={() => {
-                        props.inventoryItem.quantity = 0;
-                    }}>
-                    <img alt="" src="./assets/x.png" />
-                </div>
+                {unique ?
+                    <div className="hoverable" style={{ alignSelf: "stretch", alignContent: "center", transform: "translateX(6px)" }}
+                        onClick={() => {
+                            props.inventoryItem.quantity = 0;
+                        }}>
+                        <img alt="" src="./assets/x.png" />
+                    </div> :
+                    <div style={{ alignSelf: "stretch", alignContent: "center", transform: "translateX(6px)", width: 96 }}>
+                        <NumberInput value={quantity} onInput={setQuantity} onIdle={(val: number) => { props.inventoryItem.quantity = val; }} fontSize={24} />
+                    </div>
+                }
             </div>
-        ) : unique && equippable ? (
-            <div style={{ display: "flex", flexDirection: "row" }}>
-                <div className="hoverable" style={{ alignSelf: "stretch", alignContent: "center", transform: "translateX(-6px)" }}
-                    onClick={() => {
-                        const newVal = !props.inventoryItem.equipped;
-                        props.inventoryItem.equipped = newVal;
-                        AppState.instance.setModalData("item", ["equipped"], newVal);
-                    }}>
-                    <img alt="" src={`./assets/checkbox_${props.inventoryItem.equipped ? 'filled' : 'empty'}.png`} />
-                </div>
-                <div style={{ width: "100%" }}>
-                    {props.inventoryItem.nativeItem!.name}
-                </div>
-                <div className="hoverable" style={{ alignSelf: "stretch", alignContent: "center", transform: "translateX(6px)" }}
-                    onClick={() => {
-                        props.inventoryItem.quantity = 0;
-                    }}>
-                    <img alt="" src="./assets/x.png" />
-                </div>
-            </div>
-        ) : !unique && equippable ? (
-            <div style={{ display: "flex", flexDirection: "row" }}>
-                <div className="hoverable" style={{ alignSelf: "stretch", alignContent: "center", transform: "translateX(-6px)" }}
-                    onClick={() => {
-                        const newVal = !props.inventoryItem.equipped;
-                        props.inventoryItem.equipped = newVal;
-                        AppState.instance.setModalData("item", ["equipped"], newVal);
-                    }}>
-                    <img alt="" src={`./assets/checkbox_${props.inventoryItem.equipped ? 'filled' : 'empty'}.png`} />
-                </div>
-                <div style={{ width: "100%" }}>
-                    {props.inventoryItem.nativeItem!.name}
-                </div>
-                <div style={{ alignSelf: "stretch", alignContent: "center", transform: "translateX(6px)", width: 96 }}>
-                    <NumberInput value={quantity} onInput={setQuantity} onIdle={(val: number) => { props.inventoryItem.quantity = val; }} fontSize={24} />
-                </div>
-            </div>
-        ) : (
-            <div style={{ display: "flex", flexDirection: "row" }}>
-                <div style={{ width: "100%" }}>
-                    {props.inventoryItem.nativeItem!.name}
-                </div>
-                <div style={{ alignSelf: "stretch", alignContent: "center", transform: "translateX(6px)", width: 96 }}>
-                    <NumberInput value={quantity} onInput={setQuantity} onIdle={(val: number) => { props.inventoryItem.quantity = val; }} fontSize={24} />
-                </div>
-            </div>
-        )}
         </Button>
     </div>
 });

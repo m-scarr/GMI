@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 import AppState from '../state/AppState';
 import Stat from '../state/Stat';
 import Button from './Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TextInput from './inputs/TextInput';
 
 type Props = {}
@@ -11,7 +11,12 @@ function StatPanel({ }: Props) {
   const [writingStat, setWritingStat] = useState<boolean>(false);
   const [statName, setStatName] = useState<string>("");
   const [statValue, setStatValue] = useState<string>("");
-  return (
+  const [entity, setEntity] = useState<any>(AppState.instance.currentEntity);
+  useEffect(() => {
+    setEntity(AppState.instance.currentEntity);
+  }, [AppState.instance.currentEntity])
+
+  return (typeof entity.currency === "undefined" || !entity.currency ? (
     <Button>
       <div style={{ marginBottom: 8 }}>
         {writingStat ?
@@ -35,7 +40,7 @@ function StatPanel({ }: Props) {
           <div style={{ display: "flex", flexDirection: "column" }}>Value<TextInput value={statValue} onInput={setStatValue} fontSize={20} minRows={5} /></div>
         </div> :
         <div style={{ height: 250, overflowY: "scroll", overflowX: "hidden", margin: 0, padding: 0, transform: "translateX(-6px)", width: "calc(100% + 11px)", fontSize: 24 }}>
-          {(AppState.instance.currentEntity as any).stats.list.map((stat: Stat) => {
+          {entity.stats.list.map((stat: Stat) => {
             return <IndividualStat key={"stat-" + stat.id} stat={stat} />
           })}
         </div>}
@@ -50,7 +55,7 @@ function StatPanel({ }: Props) {
         }}
         onClick={() => {
           if (writingStat && statName !== "" && statValue !== "") {
-            Stat.create(AppState.instance.currentEntity!.id, statName, statValue);
+            Stat.create(entity.id, statName, statValue);
           }
           setStatName("");
           setStatValue("");
@@ -59,7 +64,7 @@ function StatPanel({ }: Props) {
         Create New Stat
       </div>
     </Button >
-  )
+  ) : null)
 }
 
 function IndividualStat(props: { stat: Stat }) {

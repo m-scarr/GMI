@@ -15,8 +15,8 @@ function HealthBar({ }: Props) {
     const [maxHp, setMaxHp] = useState<number>(entity.maxHp);
     useEffect(() => {
         setEntity(AppState.instance.currentEntity as (Hero | NPC | Enemy));
-        setHp(entity.hp);
-        setMaxHp(entity.maxHp);
+        setHp((AppState.instance.currentEntity as (Hero | NPC | Enemy)).hp);
+        setMaxHp((AppState.instance.currentEntity as (Hero | NPC | Enemy)).maxHp);
     }, [AppState.instance.currentEntity, (AppState.instance.currentEntity as (Hero | NPC | Enemy))?.hp, (AppState.instance.currentEntity as (Hero | NPC | Enemy))?.maxHp]);
     return (
         <Button>
@@ -30,16 +30,17 @@ function HealthBar({ }: Props) {
                     flexDirection: "row",
                     justifyContent: "center",
                     alignItems: "center",
-                    background: `linear-gradient(to right, green ${hp * 100 / maxHp}%, red ${hp * 100 / maxHp}%)`
+                    background: entity.unique ? `linear-gradient(to right, green ${hp * 100 / maxHp}%, red ${hp * 100 / maxHp}%)` : `green`
                 }}>
                 <div style={{ width: 96 }}>
                     <NumberInput
-                        value={hp}
+                        value={entity.unique ? hp : maxHp}
                         max={9999}
                         onInput={setHp}
                         onIdle={(val: number) => {
                             entity.hp = val;
                         }}
+                        locked={!entity.unique}
                         fontSize={24} />
                 </div>
                 /

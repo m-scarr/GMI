@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import TextInput from './TextInput';
 
-type Props = { value: number | null, options: { id: number, name: string }[], searchValuePlaceHolder?: string, onInput: (val: number) => void, fontSize?: number }
+type Props = { value: number | null, options: { id: number | null, name: string }[], searchValuePlaceHolder?: string, onInput: (val: number | null) => void, fontSize?: number }
 
 export default function DropDown(props: Props) {
     const [searchValue, setSearchValue] = useState<string>("");
@@ -21,13 +21,13 @@ export default function DropDown(props: Props) {
         setValue(findSelectedOption());
     }, [props.value])
 
-    const [value, setValue] = useState<{ id: number, name: string } | null>(findSelectedOption());
+    const [value, setValue] = useState<{ id: number | null, name: string } | null>(findSelectedOption());
 
 
     return (
         <>
             <div style={{ display: "flex", flexDirection: "row", backgroundColor: "rgba(0, 0, 0, .5)", border: "4px solid rgba(255, 255, 255, .4)" }} onClick={() => { setShowDropDown(!showDropDown) }}>
-                <div style={{ width: "100%", fontSize: props.fontSize || 24, alignContent: "center" }}>{value ? value.name : 'none'}</div>
+                <div style={{ width: "100%", fontSize: props.fontSize || 24, alignContent: "center" }}>{value ? value.name : 'None'}</div>
                 <img alt="" src={`./assets/${showDropDown ? 'up' : 'down'}.png`} />
             </div>
             {showDropDown ?
@@ -46,7 +46,7 @@ export default function DropDown(props: Props) {
                                 <TextInput value={searchValue} onInput={setSearchValue} fontSize={props.fontSize || 24} placeholder={props.searchValuePlaceHolder ? props.searchValuePlaceHolder : 'Search...'} />
                             </div>
                             <div style={{ height: 240, overflowY: "scroll" }}>
-                                {props.options.map((option: { id: number, name: string }) => {
+                                {props.options.map((option: { id: number | null, name: string }) => {
                                     return option.name.includes(searchValue) ? <div key={option.name + "-" + option.id} className="hoverable">
                                         <div style={{
                                             backgroundColor: "rgba(255, 255, 255, .15)",
@@ -58,7 +58,7 @@ export default function DropDown(props: Props) {
                                             paddingBottom: 4,
                                             fontSize: props.fontSize || 24
                                         }}
-                                            onClick={() => { props.onInput(option.id); setShowDropDown(false); }}
+                                            onClick={() => { console.log(option); props.onInput(option.id); setShowDropDown(false); }}
                                         >
                                             {option.name}
                                         </div>
