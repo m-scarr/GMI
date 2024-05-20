@@ -2,7 +2,7 @@ import { makeAutoObservable, runInAction } from "mobx";
 import { $create, $update, $delete } from "../API/connector";
 //import Entity from "./Entity";
 import Hero from "./Hero";
-import { Category, VisibleEntity } from "./types";
+import { Category, ModalType, VisibleEntity } from "./types";
 import Group from "./Group";
 import Cache from "./Cache";
 import Locale from "./Locale";
@@ -51,6 +51,35 @@ export default class Game {
     public [Category.GroupMember]: EntityList<GroupMember> = new EntityList<GroupMember>();
     public [Category.Stat]: EntityList<Stat> = new EntityList<Stat>();
 
+    public clear() {
+        this[Category.Hero].clear();
+        this[Category.NPC].clear();
+        this[Category.Enemy].clear();
+        this[Category.Group].clear();
+        this[Category.NativeItem].clear();
+        this[Category.Cache].clear();
+        this[Category.Battlefield].clear();
+        this[Category.Locale].clear();
+        this[Category.Event].clear();
+        this[Category.Log].clear();
+        this[Category.InventoryItem].clear();
+        this[Category.Combatant].clear();
+        this[Category.GroupMember].clear();
+        this[Category.Stat].clear();
+    }
+
+    public async refresh() {
+        const snapshot = AppState.instance.save();
+
+        AppState.instance.clear();
+
+        this.clear();
+
+        await this.open();
+
+        AppState.instance.restore(snapshot);
+    }
+
     @$create
     public static create(): any { }
 
@@ -73,6 +102,12 @@ export default class Game {
     public async open() {
         Game._instance = this;
         const game = await API.read(Category.Game, this.id);
+        runInAction(() => {
+            this._name = game.name;
+            this._createdAt = game.createdAt;
+            this._updatedAt = game.updatedAt;
+            this._overworldId = game.overworldId;
+        });
         game.locales.forEach((data: any) => {
             Entity[Category.Locale].load(data);
             if (data.id === this._overworldId) {
@@ -137,6 +172,12 @@ export default class Game {
 
     @$delete
     public delete() {
+        this.forceDelete();
+    }
 
+    public forceDelete() {
+        AppState.instance.clear();
+        Game.instance!.clear();
+        AppState.instance.currentModal = ModalType.GameSelector;
     }
 }

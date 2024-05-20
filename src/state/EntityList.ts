@@ -23,4 +23,7 @@ export default class EntityList<T> {
             }
         });
     }
+    public clear() {
+        this._list.length = 0;
+    }
 }

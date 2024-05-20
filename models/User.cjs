@@ -5,8 +5,8 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING(255),
       unique: true,
     },
-    displayName: { type: DataTypes.STRING(255) },
-    email: { type: DataTypes.STRING(255) },
+    //displayName: { type: DataTypes.STRING(255) },
+    //email: { type: DataTypes.STRING(255) },
     password: { type: DataTypes.STRING },
     status: {
       type: DataTypes.ENUM("active", "inactive"),

@@ -15,15 +15,13 @@ module.exports = {
         const salt = bcrypt.genSaltSync(10);
         const newUser = await db.User.create({
           logInName: req.body.logInName,
-          displayName: req.body.displayName,
           password: bcrypt.hashSync(req.body.password, salt),
-          email: req.body.email,
         });
         const newUserForSend = newUser.toJSON();
         delete newUserForSend.password;
         res.json(newUserForSend);
       } catch (err) {
-        console.error(err);
+        console.error("Error: User failed to register, likely due to a username that is already in use.");
         res.json(false);
       }
     },

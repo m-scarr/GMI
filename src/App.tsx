@@ -5,6 +5,7 @@ import LogOut from './components/LogOut';
 import Menu from './templates/Menu';
 import { useEffect } from 'react';
 import AppState from './state/AppState';
+import RefreshButton from './components/RefreshButton';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
     <Menu />
     <Modals />
     <LogOut />
+    <RefreshButton />
   </>);
 }
 

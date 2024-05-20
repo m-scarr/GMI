@@ -20,8 +20,7 @@ module.exports = function (app, db) {
             if (await bcrypt.compare(password, user.dataValues.password)) {
               return done(null, {
                 id: user.id,
-                logInName: user.logInName,
-                displayName: user.displayName,
+                logInName: user.logInName
               });
             } else {
               return done(null, false, {
@@ -50,8 +49,7 @@ module.exports = function (app, db) {
       } else {
         done(null, {
           id: user.id,
-          logInName: user.logInName,
-          displayName: user.displayName,
+          logInName: user.logInName
         });
       }
     });

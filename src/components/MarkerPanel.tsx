@@ -3,12 +3,13 @@ import AppState, { checkImageSrc } from "../state/AppState";
 import Button from "./Button";
 import { useEffect, useState } from "react";
 import { Category } from "../state/types";
+import Game from "../state/Game";
 
 type Props = {}
 
 function MarkerPanel({ }: Props) {
-    //const entity = AppState.instance.currentEntity as VisibleEntity;
     const [entity, setEntity] = useState<any>(AppState.instance.currentEntity);
+
     const [visibilityEnabled, setVisibilityEnabled] =
         useState<boolean>(typeof (AppState.instance.currentEntity as any).unique === "undefined" || ((AppState.instance.currentEntity as any).unique &&
             (typeof (AppState.instance.currentEntity as any).groupMembers === "undefined" || (AppState.instance.currentEntity as any).groupMembers.list.length < 1)));
@@ -50,7 +51,8 @@ function MarkerPanel({ }: Props) {
             setGoToEnabled(typeof (AppState.instance.currentEntity as any).unique === "undefined" || (AppState.instance.currentEntity as any).unique);
         }, [(AppState.instance.currentEntity as any).groupMembers.list]);
     }
-    return (
+
+    return entity.category === Category.Locale && Game.instance!.overworldLocale!.id === entity.id ? null : (
         <Button>
             <div style={{ display: "flex", flexDirection: "row" }}>
                 <div style={{ width: "100%" }}>
@@ -90,7 +92,11 @@ function MarkerPanel({ }: Props) {
                         style={{ opacity: goToEnabled ? 1 : .5 }}
                         onClick={() => {
                             if (goToEnabled) {
-                                AppState.instance.goToEntity = entity;
+                                if (typeof entity.groupMembers === "undefined" || entity.groupMembers.list.length === 0) {
+                                    AppState.instance.goToEntity = entity;
+                                } else {
+                                    AppState.instance.goToEntity = entity.groupMembers.list[0].group;
+                                }
                             }
                         }}
                     />

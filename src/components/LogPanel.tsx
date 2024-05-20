@@ -57,20 +57,40 @@ function LogPanel() {
 
 function IndividualLog(props: { log: Log }) {
     const [open, setOpen] = useState<boolean>(false);
+    const [hover, setHover] = useState<boolean>(false);
     return (
-        <Button key={'log-' + props.log.id} onClick={() => { setOpen(!open) }} hoverable={true}>
-            <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-around", alignItems: "center" }}>
-                <div>
-                    {props.log.createdAt}
+        <div style={{ cursor: "pointer", backgroundColor: "rgba(255, 255, 255, .1)", marginTop: 16, marginBottom: 16, borderTop: "1px solid white", borderBottom: "1px solid white" }}
+            onClick={() => {
+                setOpen(!open);
+            }}
+        >
+            <div style={{ backgroundColor: `rgba(255, 255, 255, ${hover ? '.15' : '0'})`, padding: 6 }}
+                onMouseMove={() => {
+                    setHover(true);
+                }}
+                onMouseLeave={() => {
+                    setHover(false);
+                }}
+                onMouseOut={() => {
+                    setHover(false);
+                }}>
+                <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-around", alignItems: "center" }}>
+                    <div>
+                        {props.log.createdAt}
+                    </div>
+                    <div className='hoverable' style={{ borderRadius: 4, padding: 4 }}>
+                        <img alt="delete" src="./assets/trashcan.png" onClick={() => {
+                            props.log.delete();
+                        }} />
+                    </div>
                 </div>
-                <img alt="delete" src="./assets/trashcan.png" onClick={() => { props.log.delete(); }} />
+                {open ?
+                    <>
+                        <hr style={{ transform: "translateX(-2px)", pointerEvents: "none" }} />
+                        {props.log.text}
+                    </> : null}
             </div>
-            {open ?
-                <>
-                    <hr style={{ transform: "translateX(-2px)", pointerEvents: "none" }} />
-                    {props.log.text}
-                </> : null}
-        </Button>
+        </div>
     )
 }
 

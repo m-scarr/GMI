@@ -88,8 +88,6 @@ export default abstract class Entity {
             data.logs.forEach((log: any) => {
                 Log.load(log);
             });
-        },
-        refresh: () => {
         }
     }
 
@@ -102,9 +100,6 @@ export default abstract class Entity {
             data.stats.forEach((stat: any) => {
                 Stat.load(stat);
             })
-        },
-        refresh: () => {
-
         }
     }
 
@@ -117,9 +112,6 @@ export default abstract class Entity {
             data.inventoryItems.forEach((inventoryItem: any) => {
                 InventoryItem.load(inventoryItem);
             });
-        },
-        refresh: () => {
-
         }
     }
 
@@ -132,9 +124,6 @@ export default abstract class Entity {
             data.inventoryItems.forEach((inventoryItem: any) => {
                 InventoryItem.load(inventoryItem);
             });
-        },
-        refresh: () => {
-
         }
     }
 
@@ -147,9 +136,6 @@ export default abstract class Entity {
             data.inventoryItems.forEach((inventoryItem: any) => {
                 InventoryItem.load(inventoryItem);
             });
-        },
-        refresh: () => {
-
         }
     }
 
@@ -162,9 +148,6 @@ export default abstract class Entity {
             data.inventoryItems.forEach((inventoryItem: any) => {
                 InventoryItem.load(inventoryItem);
             })
-        },
-        refresh: () => {
-
         }
     }
 
@@ -177,9 +160,6 @@ export default abstract class Entity {
             data.groupMembers.forEach((groupMember: any) => {
                 GroupMember.load(groupMember);
             })
-        },
-        refresh: () => {
-
         }
     }
 
@@ -192,9 +172,6 @@ export default abstract class Entity {
             data.combatants.forEach((combatant: any) => {
                 Combatant.load(combatant);
             })
-        },
-        refresh: () => {
-
         }
     }
 
@@ -204,16 +181,15 @@ export default abstract class Entity {
             data.logs.forEach((log: any) => {
                 Log.load(log);
             });
-        },
-        refresh: () => {
-
         }
     }
 
     public static isVisible(entity: VisibleEntity) {
-        return (
-            entity.visible && entity.location.localeId === AppState.instance.currentLocale?.id
-        );
+        if (entity.category === Category.Hero || entity.category === Category.NPC || entity.category === Category.Enemy)  {
+            return entity.location.localeId === AppState.instance.currentLocale!.id && entity.visible && (entity as any).unique && (entity as any).groupMembers.list.length === 0;
+        } else {
+            return entity.location.localeId === AppState.instance.currentLocale!.id && entity.visible;
+        }        
     }
 }
 //locales

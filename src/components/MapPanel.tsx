@@ -40,9 +40,10 @@ function MapPanel() {
                     <img src="./assets/goto.png"
                         onClick={() => {
                             if (entity.category === Category.Locale) {
-                                entity.currentLocale = entity.currentEntity as Locale;
+                                AppState.instance.currentLocale = entity as Locale;
                             } else {
                                 //open the battlefield modal
+                                alert("This feature is not yet implemented.")
                             }
                         }}
                     />

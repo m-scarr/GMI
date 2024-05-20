@@ -98,14 +98,12 @@ export default class API {
                 return { user: null, serverAccess: false }
             }
         },
-        register: async (logInName: string, displayName: string, email: string, password: string) => {
+        register: async (logInName: string, password: string) => {
             const result = await axios.post("/User/register", {
                 logInName,
-                displayName,
                 password,
-                email,
             })
-            console.log(result.data);
+            return result.data !== false
         },
         logIn: async (logInName: string, password: string) => {
             try {

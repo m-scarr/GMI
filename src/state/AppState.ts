@@ -102,6 +102,44 @@ export default class AppState {
         this.setIconSources();
     }
 
+    public save() {
+        return {
+            _currentCategory: this._currentCategory,
+            _currentEntity: this.currentEntity ? { category: this._currentEntity.category, id: this._currentEntity.id } : null,
+            _currentModal: this._currentModal,
+            _currentLocale: this._currentLocale ? this._currentLocale.id : null,
+            _selectedPlayerCharacter: this._selectedPlayerCharacter ? this._selectedPlayerCharacter.id : null,
+            _modals: {
+                item: { content: this._modals.item.content ? this._modals.item.content.id : null, equipped: this._modals.item.equipped },
+                battlefield: { content: this._modals.battlefield.content ? this._modals.battlefield.content.id : null }
+            }
+        }
+    }
+
+    public clear() {
+        this._currentEntity = null;
+        this._currentCategory = null;
+        this._goToEntity = null;
+        this._currentModal = null;
+        this._currentLocale = null;
+        this._droppingMarker = null;
+        this._selectedPlayerCharacter = null;
+        this._modals.item.content = null;
+        this._modals.item.equipped = false;
+        this._modals.battlefield.content = null;
+    }
+
+    public restore(data: any) {
+        this._currentCategory = data._currentCategory;
+        this._currentEntity = data._currentEntity ? Game.instance!.findEntity(data._currentEntity.category, data._currentEntity.id) : null;
+        this._currentModal = data._currentModal;
+        this._currentLocale = data._currentLocale ? Game.instance!.findEntity(Category.Locale, data._currentLocale) : null;
+        this._selectedPlayerCharacter = data._selectedPlayerCharacter ? Game.instance!.findCharacter(data._selectedPlayerCharacter) : null;
+        this._modals.item.content = data._modals.item.content ? Game.instance!.findEntity(Category.NativeItem, data._modals.item.content) : null;
+        this._modals.item.equipped = data._modals.item.equipped;
+        this._modals.battlefield.content = data._modals.battlefield.content ? Game.instance!.findEntity(Category.Battlefield, data._modals.battlefield.content) : null;
+    }
+
     public async logIn(logInName: string, password: string) {
         this.user = await API.user.logIn(logInName, password);
     }
