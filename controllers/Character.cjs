@@ -105,7 +105,6 @@ module.exports = {
         }
       } else {
         try {
-          console.log(JSON.stringify(req.preparedData));
           await req.entity.update(req.preparedData);
           res.json(true);
         } catch (err) {

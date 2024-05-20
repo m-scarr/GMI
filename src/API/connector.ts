@@ -17,7 +17,12 @@ export function $create(target: any, propertyKey: string, descriptor: PropertyDe
                 }
             }
         });
-        const category = ((target.toString().split("Category.")[1]).split(";")[0]);
+        let category;
+        if (API.prod) {
+            category = ((target.toString().split(`"category",S.`)[1]).split(")")[0]);
+        } else {
+            category = ((target.toString().split("Category.")[1]).split(";")[0]);
+        }
         const newEntity = await API.create(category, argObj);
         return new target.prototype.constructor(newEntity);
     };

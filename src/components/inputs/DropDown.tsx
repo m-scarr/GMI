@@ -58,7 +58,7 @@ export default function DropDown(props: Props) {
                                             paddingBottom: 4,
                                             fontSize: props.fontSize || 24
                                         }}
-                                            onClick={() => { console.log(option); props.onInput(option.id); setShowDropDown(false); }}
+                                            onClick={() => { props.onInput(option.id); setShowDropDown(false); }}
                                         >
                                             {option.name}
                                         </div>
