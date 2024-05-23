@@ -62,7 +62,7 @@ function Map({ }: Props) {
                 setDestX(-AppState.instance.goToEntity.location.x);
                 setDestY(-AppState.instance.goToEntity.location.y);
                 const localeId = AppState.instance.goToEntity.location.localeId;
-                await wait(10);
+                await wait(100);
                 AppState.instance.currentLocale = Game.instance!.findEntity(Category.Locale, localeId);
             }
         })()
@@ -71,6 +71,12 @@ function Map({ }: Props) {
     useEffect(() => {
         if (AppState.instance.currentLocale !== null) {
             draw(getState(), setState);
+        }
+        if (zoomFactorGoal && Math.abs(zoomFactor - zoomFactorGoal) > .01) {
+            setZoomFactor(zoomFactor + ((zoomFactorGoal - zoomFactor) / 5));
+        } else if (zoomFactorGoal) {
+            setZoomFactor(zoomFactorGoal!);
+            setZoomFactorGoal(null);
         }
         if (destX && destY) {
             var centerX = width / 2;
@@ -92,12 +98,6 @@ function Map({ }: Props) {
                 setMapY(destY * zoomFactor + centerY);
             }
         }
-        if (zoomFactorGoal && Math.abs(zoomFactor - zoomFactorGoal) > .05) {
-            setZoomFactor(zoomFactorGoal + (zoomFactor < zoomFactorGoal ? .01 : -.01));
-        } else if (zoomFactorGoal) {
-            setZoomFactor(zoomFactorGoal!);
-            setZoomFactorGoal(null);
-        }
     }, [AppState.instance.tick]);
 
     window.addEventListener('resize', () => {
@@ -110,23 +110,30 @@ function Map({ }: Props) {
         setMapX(mapX + (AppState.instance.showMenu ? -320 : 320));
     }, [AppState.instance.showMenu])
 
-    const center = () => {
-        let mapRatio = AppState.instance.currentLocale!.map.width / AppState.instance.currentLocale!.map.height;
-        let appRatio = width / height;
-        let newWidth = width;
-        let newHeight = height;
-        if (mapRatio > appRatio) {
-            newHeight = newWidth / mapRatio;
-        } else {
-            newWidth = newHeight * mapRatio;
+    const center = async () => {
+        let timeout = 5000
+        while (!AppState.instance.currentLocale!.map.complete && timeout > 0) {
+            await wait(1);
+            timeout -= 1;
         }
-        setZoomFactorGoal(newWidth / AppState.instance.currentLocale!.map.width);
-        setDestX(-AppState.instance.currentLocale!.map.width / 2);
-        setDestY(-AppState.instance.currentLocale!.map.height / 2);
+        if (timeout > 0) {
+            let mapRatio = AppState.instance.currentLocale!.map.width / AppState.instance.currentLocale!.map.height;
+            let appRatio = width / height;
+            let newWidth = width;
+            let newHeight = height;
+            if (mapRatio > appRatio) {
+                newHeight = newWidth / mapRatio;
+            } else {
+                newWidth = newHeight * mapRatio;
+            }
+            setZoomFactorGoal(newWidth / AppState.instance.currentLocale!.map.width);
+            setDestX(-AppState.instance.currentLocale!.map.width / 2);
+            setDestY(-AppState.instance.currentLocale!.map.height / 2);
+        }
     }
 
     useEffect(() => {
-        if (AppState.instance.currentLocale && destX === null && destY === null) {
+        if (AppState.instance.currentLocale && (destX === null || destY === null)) {
             center();
         }
     }, [AppState.instance.currentLocale])

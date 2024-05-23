@@ -8,6 +8,7 @@ import { Category } from "./types";
 import EntityList from "./EntityList";
 import GroupMember from "./GroupMember";
 import Game from "./Game";
+import AppState from "./AppState";
 
 export default class Group {
     public readonly category: Category = Category.Group;
@@ -101,6 +102,7 @@ export default class Group {
         while (this.logs.list.length > 0) {
             this.logs.list[0].forceDelete();
         }
+        AppState.instance.currentEntity = null;
         (Game.instance as any)[this.category].remove(this);
     }
 }

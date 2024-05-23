@@ -1,27 +1,37 @@
 import API from ".";
-import { runInAction } from "mobx"
+import { runInAction } from "mobx";
 import { Category } from "../state/types";
 
-export function $create(target: any, propertyKey: string, descriptor: PropertyDescriptor) {
-    const argNames = getParamNames(target[propertyKey]);
+const argNames: { [key: string]: any } = {
+    Combatant: ["characterId", "battlefieldId", "ally"],
+    GroupMember: ["characterId", "groupId"],
+    InventoryItem: ["ownerCategory", "ownerId", "nativeItemId"],
+    Log: ["ownerCategory", "ownerId", "text"],
+    Stat: ["nativeItemId", "name", "value"]
+};
+
+export function $create(target: any, _propertyKey: string, descriptor: PropertyDescriptor) {
     descriptor.value = async function (...args: any[]) {
         const argValues = args;
-        const argObj: { [key: string]: any } = {};
-        argNames.forEach((argName: string, index: number) => {
-            argObj[argName.replace('_', '')] = argValues[index];
-            if (argName === "_ownerCategory") {
-                if (argValues[index] == Category.Hero || argValues[index] == Category.NPC || argValues[index] == Category.Enemy) {
-                    argObj[argName.replace('_', '')] = "Character";
-                } else {
-                    argObj[argName.replace('_', '')] = (Category as any)[argValues[index]];
-                }
-            }
-        });
         let category;
-        if (API.prod) {
+        if (window.location.port === "" || window.location.port === "8080") {
             category = ((target.toString().split(`"category",S.`)[1]).split(")")[0]);
         } else {
             category = ((target.toString().split("Category.")[1]).split(";")[0]);
+        }
+        const argObj: { [key: string]: any } = {};
+        if (category in argNames) {
+            argValues.forEach((val: any, index: number) => {
+                let argName = argNames[category][index];
+                let argVal = val;
+                if (argName === "ownerCategory") {
+                    argVal = Category[val];
+                    if (argVal == "Hero" || argVal == "NPC" || argVal == "Enemy") {
+                        argVal = "Character";
+                    }
+                }
+                argObj[argName] = argVal;
+            });
         }
         const newEntity = await API.create(category, argObj);
         return new target.prototype.constructor(newEntity);
@@ -61,6 +71,7 @@ export function $delete(_target: any, _propertyKey: string, _descriptor: Propert
 }
 
 function getParamNames(func: Function) {
+    console.log(func)
     const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
     const ARGUMENT_NAMES = /([^\s,]+)/g;
     const fnStr = func.toString().replace(STRIP_COMMENTS, '');

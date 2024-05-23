@@ -9,6 +9,7 @@ const permissionMiddleWare = {
       "groupId",
       "characterId",
     ]);
+    console.log(req.body);
     const permissionRequest = await permissionsController.verifyPermission(
       req.user.id,
       req.body.gameMasterMode,

@@ -12,9 +12,8 @@ const getRouteCategory = (category: string) => {
 }
 
 export default class API {
-    static prod: boolean = false;
     static async init() {
-        axios.defaults.baseURL = window.location.protocol + "//" + window.location.hostname + (API.prod ? "" : ":8080");
+        axios.defaults.baseURL = window.location.protocol + "//" + window.location.hostname + (window.location.port === "" ? "" : ":8080");
         axios.defaults.withCredentials = true;
         return await API.user.isLoggedIn();
     }

@@ -1,4 +1,5 @@
 import { $create, $delete, $update } from "../API/connector";
+import AppState from "./AppState";
 import Entity from "./Entity";
 import EntityList from "./EntityList";
 import Game from "./Game";
@@ -84,6 +85,7 @@ export default class Event {
         while (this.logs.list.length > 0) {
             this.logs.list[0].forceDelete();
         }
+        AppState.instance.currentEntity = null;
         (Game.instance as any)[this.category].remove(this);
     }
 }

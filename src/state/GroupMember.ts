@@ -1,4 +1,5 @@
 import { $create, $delete, $update } from "../API/connector";
+import AppState from "./AppState";
 import Enemy from "./Enemy";
 import Entity from "./Entity";
 import Game from "./Game";
@@ -67,6 +68,7 @@ export default class GroupMember {
     public forceDelete() {
         this._group!.groupMembers.remove(this);
         this._character!.groupMembers.remove(this);
+        AppState.instance.currentEntity = null;
         (Game.instance as any)[this.category].remove(this);
     }
 }

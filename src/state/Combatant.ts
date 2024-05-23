@@ -1,4 +1,5 @@
 import { $create, $delete, $update } from "../API/connector";
+import AppState from "./AppState";
 import Battlefield from "./Battlefield";
 import Enemy from "./Enemy";
 import Entity from "./Entity";
@@ -56,6 +57,7 @@ export default class Combatant {
     public forceDelete() {
         this._battlefield!.combatants.remove(this);
         this._character!.combatants.remove(this);
+        AppState.instance.currentEntity = null;
         (Game.instance as any)[this.category].remove(this);
     }
 }
