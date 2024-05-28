@@ -1,4 +1,4 @@
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction, toJS } from "mobx";
 import { $create, $update, $delete } from "../API/connector";
 //import Entity from "./Entity";
 import Hero from "./Hero";
@@ -70,14 +70,22 @@ export default class Game {
 
     public async refresh() {
         const snapshot = AppState.instance.save();
-
+        let selectedPlayerCharacterId;
+        if (!AppState.instance.gameMasterMode) {
+            selectedPlayerCharacterId = AppState.instance.selectedPlayerCharacter!.id;
+        }
         AppState.instance.clear();
 
         this.clear();
-
-        await this.open();
-
+        if (AppState.instance.gameMasterMode) {
+            await this.open();
+        } else {
+            await Game.openPlayerCharacter(await API.read(Category.Hero, selectedPlayerCharacterId!));
+        }
         AppState.instance.restore(snapshot);
+        if (!AppState.instance.gameMasterMode && Game.instance![Category.Locale].list.length > 0) {
+            AppState.instance.currentLocale = Game.instance![Category.Locale].list[0];
+        }
     }
 
     @$create
@@ -88,19 +96,22 @@ export default class Game {
     }
 
     private constructor(data: any) {
-        this.id = data.id;
-        makeAutoObservable(this);
-        runInAction(() => {
-            Object.keys(data).forEach((key: string) => {
-                if (`_${key}` in (this as any)) {
-                    (this as any)[`_${key}`] = data[key];
-                }
+        if (data) {
+            this.id = data.id;
+            makeAutoObservable(this);
+            runInAction(() => {
+                Object.keys(data).forEach((key: string) => {
+                    if (`_${key}` in (this as any)) {
+                        (this as any)[`_${key}`] = data[key];
+                    }
+                });
             });
-        });
+        }
     }
 
     public async open() {
         Game._instance = this;
+        AppState.instance.selectedPlayerCharacter = null;
         const game = await API.read(Category.Game, this.id);
         runInAction(() => {
             this._name = game.name;
@@ -133,6 +144,30 @@ export default class Game {
             Entity[Category.Event].load(data);
         });
         AppState.instance.currentLocale = this._overworldLocale;
+        AppState.instance.currentModal = null;
+    }
+
+    public static async openPlayerCharacter(game: any) {
+        const newGame = Game.load({ id: game.character.gameId });
+        Game._instance = newGame;
+        if (game.locale !== null) {
+            Entity[Category.Locale].load(game.locale);
+        }
+        game.nativeItems.forEach((data: any) => {
+            Entity[Category.NativeItem].load(data);
+        });
+        game.groups.forEach((data: any) => {
+            Entity[Category.Group].load(data);
+        });
+        Entity[Category.Hero].load(game.character);
+        AppState.instance.selectedPlayerCharacter = Game.instance![Category.Hero].list[0];
+        AppState.instance.currentEntity = AppState.instance.selectedPlayerCharacter;
+        game.battlefields.forEach((data: any) => {
+            Entity[Category.Battlefield].load(data);
+        });
+        if (!AppState.instance.gameMasterMode && Game.instance![Category.Locale].list.length > 0) {
+            AppState.instance.currentLocale = Game.instance![Category.Locale].list[0];
+        }
         AppState.instance.currentModal = null;
     }
 

@@ -8,9 +8,7 @@ import LogPanel from '../components/LogPanel';
 import StatPanel from '../components/StatPanel';
 import DeleteButton from '../components/DeleteButton';
 
-type Props = {}
-
-function NativeItemPanel({ }: Props) {
+function NativeItemPanel() {
     return (
         <>
             <IconPanel />

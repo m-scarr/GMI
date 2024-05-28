@@ -112,7 +112,8 @@ export default class AppState {
             _modals: {
                 item: { content: this._modals.item.content ? this._modals.item.content.id : null, equipped: this._modals.item.equipped },
                 battlefield: { content: this._modals.battlefield.content ? this._modals.battlefield.content.id : null }
-            }
+            },
+            _showMenu: this._showMenu
         }
     }
 
@@ -127,6 +128,7 @@ export default class AppState {
         this._modals.item.content = null;
         this._modals.item.equipped = false;
         this._modals.battlefield.content = null;
+        this._showMenu = false;
     }
 
     public restore(data: any) {
@@ -138,10 +140,27 @@ export default class AppState {
         this._modals.item.content = data._modals.item.content ? Game.instance!.findEntity(Category.NativeItem, data._modals.item.content) : null;
         this._modals.item.equipped = data._modals.item.equipped;
         this._modals.battlefield.content = data._modals.battlefield.content ? Game.instance!.findEntity(Category.Battlefield, data._modals.battlefield.content) : null;
+        this._showMenu = data._showMenu;
     }
 
     public async logIn(logInName: string, password: string) {
         this.user = await API.user.logIn(logInName, password);
+    }
+
+    public set selectedPlayerCharacter(value: Hero | null) {
+        this._selectedPlayerCharacter = value;
+    }
+
+    public get loading() {
+        return this._loading;
+    }
+
+    public set loading(value: boolean) {
+        this._loading = value;
+    }
+
+    public get selectedPlayerCharacter() {
+        return this._selectedPlayerCharacter;
     }
 
     public get tick() {
@@ -203,7 +222,7 @@ export default class AppState {
 
 
     public get currentEntity() {
-        return this._currentEntity;
+        return this._selectedPlayerCharacter === null ? this._currentEntity : this.selectedPlayerCharacter;
     }
 
     public set goToEntity(newVal: any) {
@@ -224,7 +243,7 @@ export default class AppState {
         } else {
             this._currentModal = modalType;
         }
-        if (modalType === ModalType.GameSelector || modalType === ModalType.PlayerSelector) {
+        if (modalType === ModalType.GameSelector || modalType === ModalType.PlayerCharacterSelector) {
             this.readByUser(modalType === ModalType.GameSelector ? Category.Game : Category.Hero)
         }
     }
@@ -239,7 +258,9 @@ export default class AppState {
                 });
             });
         } else {
-            this._modals.playerCharacters = result;
+            runInAction(() => {
+                this._modals.playerCharacters = result;
+            });
         }
     }
 

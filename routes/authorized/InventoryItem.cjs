@@ -41,8 +41,9 @@ const permissionMiddleWare = {
         "equipped",
       ]);
       if (
-        req.entity.dataValues.ownerCategory !== "Character" &&
-        !req.body.gameMasterMode
+        req.entity == null || (
+          req.entity.dataValues.ownerCategory !== "Character" &&
+          !req.body.gameMasterMode)
       ) {
         res.json(false);
         return;

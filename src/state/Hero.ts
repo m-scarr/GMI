@@ -22,6 +22,7 @@ export default class Hero {
     private _maxHp: number = 10;
     private _playerWritePermission: boolean = false;
     private _playerUserId: number | null = null;
+    private _playerUser: { logInName: string, id: number } | null = null;
     private _createdAt: string = "";
     private _updatedAt: string = "";
     private _markerSrc: string = "./assets/hero.png";
@@ -41,8 +42,24 @@ export default class Hero {
     }
 
     private constructor(data: any) {
-        Entity.build(this, data);
-        this._marker.src = this._markerSrc;
+        if (data) {
+            Entity.build(this, data);
+            this._marker.src = this._markerSrc;
+        }
+    }
+
+    @$update
+    private set playerUserId(value: number | null) {
+        this._playerUserId = value;
+    }
+
+    public get playerUser() {
+        return this._playerUser;
+    }
+
+    public set playerUser(value: { logInName: string, id: number } | null) {
+        this._playerUser = value;
+        this.playerUserId = (value !== null) ? value.id : null;
     }
 
     public get marker() {
@@ -119,15 +136,6 @@ export default class Hero {
     @$update
     public set playerWritePermission(value: boolean) {
         this._playerWritePermission = value;
-    }
-
-    public get playerUserId(): number | null {
-        return this._playerUserId;
-    }
-
-    @$update
-    public set playerUserId(value: number | null) {
-        this._playerUserId = value;
     }
 
     public get markerSrc(): string {

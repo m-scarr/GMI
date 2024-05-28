@@ -23,7 +23,6 @@ const permissions = {
         )
       ) {
         try {
-          console.log(JSON.stringify(entityList[i]))
           currentEntity = await db[entityList[i].type].findOne({
             where: {
               id:
@@ -49,10 +48,11 @@ const permissions = {
     }
     if (i <= entityList.length) {
       try {
+
         const gameOrCharacter = await db[
           gameMasterMode ? "Game" : "Character"
         ].findOne({
-          where: gameMasterMode
+          where: (gameMasterMode
             ? {
               id: currentEntity.dataValues.gameId,
               userId,
@@ -61,7 +61,7 @@ const permissions = {
               id: currentEntity.dataValues.characterId,
               playerUserId: userId,
               playerWritePermission: true,
-            },
+            }),
           logging: false,
         });
         if (gameOrCharacter == null) {

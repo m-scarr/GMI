@@ -32,8 +32,10 @@ export default class Cache {
     }
 
     private constructor(data: any) {
-        Entity.build(this, data);
-        this._marker.src = this._markerSrc;
+        if (data) {
+            Entity.build(this, data);
+            this._marker.src = this._markerSrc;
+        }
     }
 
     public get marker() {

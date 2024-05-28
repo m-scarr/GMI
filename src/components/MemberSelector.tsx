@@ -55,7 +55,7 @@ function MemberSelector({ }: Props) {
             <div style={{ transform: "translateX(-6px)", width: "calc(100% + 11px)", height: 250, overflowY: "scroll" }}>
                 {
                     Game.instance![category].list.map((character: Hero | NPC | Enemy) => {
-                        return Entity.hasMember(entity, character) ? null :
+                        return character.name.toUpperCase().includes(searchValue.toUpperCase()) ? Entity.hasMember(entity, character) ? null :
                             <Button
                                 key={`member-selector-button-${character.id}`}
                                 hoverable={true}
@@ -63,7 +63,7 @@ function MemberSelector({ }: Props) {
                                     GroupMember.create(character.id, entity.id);
                                 }}>
                                 {character.name}
-                            </Button>
+                            </Button> : null
                     })
                 }
             </div>

@@ -28,16 +28,18 @@ export default class GroupMember {
     }
 
     private constructor(data: any) {
-        Entity.build(this, data);
-        this._group = Game.instance!.findEntity(Category.Group, this._groupId!);
-        this._character = Game.instance!.findCharacter(this._characterId!);
-        if (this._character!.unique) {
-            while (this._character!.groupMembers.list.length > 0) {
-                this._character!.groupMembers.list[0].forceDelete();
+        if (data) {
+            Entity.build(this, data);
+            this._group = Game.instance!.findEntity(Category.Group, this._groupId!);
+            this._character = Game.instance!.findCharacter(this._characterId!);
+            if (this._character!.unique) {
+                while (this._character!.groupMembers.list.length > 0) {
+                    this._character!.groupMembers.list[0].forceDelete();
+                }
             }
+            this._group!.groupMembers.add(this);
+            this._character!.groupMembers.add(this);
         }
-        this._group!.groupMembers.add(this);
-        this._character!.groupMembers.add(this);
     }
 
     public get group() {
@@ -68,7 +70,6 @@ export default class GroupMember {
     public forceDelete() {
         this._group!.groupMembers.remove(this);
         this._character!.groupMembers.remove(this);
-        AppState.instance.currentEntity = null;
         (Game.instance as any)[this.category].remove(this);
     }
 }

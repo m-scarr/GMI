@@ -17,6 +17,17 @@ module.exports = (sequelize) => {
 
   GroupMember.initializeHooks = (models) => {
     models.GroupMember.afterCreate((groupMember) => {
+      models.GroupMember.findAll({
+        where: {
+          characterId: groupMember.dataValues.characterId,
+          groupId: groupMember.dataValues.groupId,
+          id: { [Op.ne]: groupMember.dataValues.id },
+        }
+      }).then((result) => {
+        result.forEach((groupMember) => {
+          groupMember.destroy();
+        });
+      });
       models.Character.findByPk(groupMember.dataValues.characterId).then(
         (character) => {
           if (character.dataValues.unique) {
@@ -33,7 +44,7 @@ module.exports = (sequelize) => {
     models.GroupMember.afterUpdate((groupMember) => {
       if (
         groupMember.dataValues.quantity !==
-          groupMember._previousDataValues.quantity &&
+        groupMember._previousDataValues.quantity &&
         groupMember.dataValues.quantity <= 0
       ) {
         groupMember.destroy();

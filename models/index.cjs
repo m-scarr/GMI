@@ -44,7 +44,7 @@ Object.keys(db).forEach((modelName) => {
 });
 
 sequelize
-  .sync({ alter: true })
+  .sync()
   .then(() => {
     console.log("Database synchronized and tables created");
   })

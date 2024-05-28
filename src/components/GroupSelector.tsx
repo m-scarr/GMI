@@ -40,11 +40,11 @@ function GroupSelector({ }: Props) {
         <Button>
             Group
             <br />
-            <DropDown options={options} value={value} onInput={(val: number | null) => {
+            <DropDown options={options} value={value} onInput={async (val: number | null) => {
                 if (val === null && entity.groupMembers.list.length > 0) {
                     entity.groupMembers.list[0].quantity = 0;
                 } else if (val !== null) {
-                    GroupMember.create(entity.id, val);
+                    await GroupMember.create(entity.id, val);
                 }
             }} />
         </Button>

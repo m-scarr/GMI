@@ -7,9 +7,7 @@ import InventoryPanel from '../components/InventoryPanel';
 import ItemSelector from '../components/ItemSelector';
 import DeleteButton from '../components/DeleteButton';
 
-type Props = {}
-
-function EnemyPanel({ }: Props) {
+function EnemyPanel() {
     return (
         <>
             <HealthBar />

@@ -6,9 +6,7 @@ import LogPanel from '../components/LogPanel';
 import DeleteButton from '../components/DeleteButton';
 import Button from '../components/Button';
 
-type Props = {}
-
-function BattlefieldPanel({ }: Props) {
+function BattlefieldPanel() {
     return (
         <>
             <Button>

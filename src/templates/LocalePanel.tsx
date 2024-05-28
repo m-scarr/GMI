@@ -5,9 +5,7 @@ import MarkerPanel from '../components/MarkerPanel';
 import NotePanel from '../components/NotePanel';
 import { observer } from 'mobx-react-lite';
 
-type Props = {}
-
-function LocalePanel({ }: Props) {
+function LocalePanel() {
     return (
         <>
             <MarkerPanel />

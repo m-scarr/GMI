@@ -19,6 +19,7 @@ export default class API {
     }
 
     static async create(category: Category, data: any) {
+        AppState.instance.loading = true;
         try {
             if (typeof category === "string") {
                 data.category = category;
@@ -33,31 +34,39 @@ export default class API {
             }
             data.gameMasterMode = AppState.instance.gameMasterMode;
             data.gameId = Game.instance?.id;
-            const result = await axios.post(`/auth/${getRouteCategory(typeof category === "string" ? category : Category[category])}/create`, data);
+            const result = await axios.post(`auth/${getRouteCategory(typeof category === "string" ? category : Category[category])}/create`, data);
             return result.data;
         } catch (err) {
             console.error(err);
             return null;
+        } finally {
+            AppState.instance.loading = false;
         }
     }
 
     static async readByUser(category: Category.Game | Category.Hero) {
+        AppState.instance.loading = true;
         try {
-            const result = await axios.get(`/auth/${category === Category.Game ? 'Game' : 'Character'}/readByUser`)
+            const result = await axios.get(`auth/${category === Category.Game ? 'Game' : 'Character'}/readByUser`)
             return result.data;
         } catch (err) {
             console.error(err);
             return null;
+        } finally {
+            AppState.instance.loading = false;
         }
     }
 
     static async read(category: Category.Game | Category.Hero, id: number) {
+        AppState.instance.loading = true;
         try {
-            const result = await axios.get(`/auth/${category === Category.Game ? 'Game' : 'Character'}/read?id=${id}`)
+            const result = await axios.get(`auth/${category === Category.Game ? 'Game' : 'Character'}/read?id=${id}`)
             return result.data;
         } catch (err) {
             console.error(err);
             return null;
+        } finally {
+            AppState.instance.loading = false;
         }
     }
 
@@ -66,28 +75,39 @@ export default class API {
         try {
             data.id = id;
             data.gameMasterMode = AppState.instance.gameMasterMode;
-            const result = await axios.put(`/auth/${getRouteCategory(typeof category === "string" ? category : Category[category])}/update`, data);
+            const result = await axios.put(`auth/${getRouteCategory(typeof category === "string" ? category : Category[category])}/update`, data);
             return result.data
         } catch (err) {
             console.error(err);
             return false;
+        } finally {
+            AppState.instance.loading = false;
         }
     }
 
     static async delete(category: Category, id: number) {
         try {
-            const result = await axios.delete(`/auth/${getRouteCategory(typeof category === "string" ? category : Category[category])}/delete?id=${id}&gameMasterMode=${AppState.instance.gameMasterMode}`);
+            const result = await axios.delete(`auth/${getRouteCategory(typeof category === "string" ? category : Category[category])}/delete?id=${id}&gameMasterMode=${AppState.instance.gameMasterMode}`);
             return result.data
         } catch (err) {
             console.error(err);
             return false;
+        } finally {
+            AppState.instance.loading = false;
         }
     }
 
     static user = {
+        search: async (logInName: string) => {
+            AppState.instance.loading = true;
+            const result = await axios.get(`auth/User/search?logInName=${logInName}`);
+            AppState.instance.loading = false;
+            return result.data;
+        },
         isLoggedIn: async () => {
+            //AppState.instance.loading = true;
             try {
-                const result = await axios.get(`/User/isLoggedIn`);
+                const result = await axios.get(`User/isLoggedIn`);
                 if (typeof result.data.success !== "undefined" && result.data.success === true) {
                     return { user: result.data.user, serverAccess: true };
                 } else {
@@ -96,18 +116,23 @@ export default class API {
             } catch (err) {
                 console.error(err);
                 return { user: null, serverAccess: false }
+            } finally {
+                //AppState.instance.loading = false;
             }
         },
         register: async (logInName: string, password: string) => {
-            const result = await axios.post("/User/register", {
+            AppState.instance.loading = true;
+            const result = await axios.post("User/register", {
                 logInName,
                 password,
             })
+            AppState.instance.loading = false;
             return result.data !== false
         },
         logIn: async (logInName: string, password: string) => {
+            AppState.instance.loading = true;
             try {
-                const result = await axios.post("/User/login", {
+                const result = await axios.post("User/login", {
                     logInName,
                     password,
                 });
@@ -119,10 +144,14 @@ export default class API {
             } catch (err) {
                 console.error(err);
                 return null
+            } finally {
+                AppState.instance.loading = false;
             }
         },
         logOut: async () => {
+            AppState.instance.loading = true;
             await axios.post("auth/User/logOut");
+            AppState.instance.loading = false;
             window.location.href = "/";
         }
     }

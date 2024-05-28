@@ -49,7 +49,7 @@ const permissionMiddleWare = {
       "visible",
       "hp",
       "maxHp",
-      "playerUsername",
+      "playerUserId",
       "playerWritePermission",
     ]);
     const permissionRequest = await permissionsController.verifyPermission(
@@ -66,13 +66,13 @@ const permissionMiddleWare = {
   },
 
   delete: async (req, res, next) => {
-    if (!req.query.gameMasterMode) {
+    if (!req.query.gameMasterMode == "true") {
       res.json(false);
       return;
     }
     const permissionRequest = await permissionsController.verifyPermission(
       req.user.id,
-      req.query.gameMasterMode,
+      req.query.gameMasterMode == "true",
       [{ type: "Character", id: req.query.id }]
     );
     if (!permissionRequest.permitted) {

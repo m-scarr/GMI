@@ -63,10 +63,11 @@ export enum ModalType {
     Register,
     ModeSelector,
     GameSelector,
-    PlayerSelector,
+    PlayerCharacterSelector,
     Item,
     Battlefield,
-    IconSelector
+    IconSelector,
+    UserSelector
 };
 
 export type VisibleEntity = (Hero | NPC | Enemy | Group | Cache | Event | Battlefield | Locale);

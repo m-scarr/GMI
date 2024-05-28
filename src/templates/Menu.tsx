@@ -19,6 +19,7 @@ import BattlefieldPanel from './BattlefieldPanel';
 import LocalePanel from './LocalePanel';
 import EventPanel from './EventPanel';
 import NameInput from '../components/NameInput';
+import PlayerCharacterPanel from './PlayerCharacterPanel';
 
 type Props = {}
 
@@ -49,61 +50,76 @@ function Menu({ }: Props) {
     }, [AppState.instance.tick]);
     return <>
         {AppState.instance.showMenu ?
-            <div style={{
+            <div style={AppState.instance.gameMasterMode ? {
                 position: "fixed",
                 left: 0,
                 top: 0,
                 bottom: 0,
                 width: AppState.instance.menuWidth,
                 borderRight: "2px solid white"
-            }}
+            } :
+                {
+                    position: "fixed",
+                    left: 0,
+                    top: 0,
+                    bottom: 0,
+                    width: AppState.instance.menuWidth,
+                    borderRight: "2px solid white",
+                    overflowY: "scroll",
+                    overflowX: "scroll"
+                }}
                 id="menu"
-            >
-                <MenuHeader />
-                {AppState.instance.currentEntity === null ? <SearchBar /> : <NameInput />}
-                <div ref={contentRef} style={{ width: "100%", height: height - contentTop, overflowY: "scroll" }}>
-                    {
-                        AppState.instance.currentCategory === null ? <Options /> : AppState.instance.currentEntity !== null ? (panelSwitchCase as any)[AppState.instance.currentCategory] :
-                            <>
-                                {
-                                    (Game.instance as any)[AppState.instance.currentCategory!].list.map((entity: any) => {
-                                        return <Button hoverable={true} key={Category[entity.category] + "-" + entity.id} onClick={() => { AppState.instance.currentEntity = entity; }}>{entity.name}</Button>
-                                    })
-                                }
-                                <Button hoverable={true} onClick={() => {
-                                    Entity.create(AppState.instance.currentCategory!);
-                                }}>+</Button>
-                            </>
-                    }
-                </div>
+            >{AppState.instance.gameMasterMode ?
+                (<>
+                    <MenuHeader />
+                    {AppState.instance.currentEntity === null ? <SearchBar /> : <NameInput />}
+                    <div ref={contentRef} style={{ width: "100%", height: height - contentTop, overflowY: "scroll" }}>
+                        {
+                            AppState.instance.currentCategory === null ? <Options /> : AppState.instance.currentEntity !== null ? (panelSwitchCase as any)[AppState.instance.currentCategory] :
+                                <>
+                                    {
+                                        (Game.instance as any)[AppState.instance.currentCategory!].list.map((entity: any) => {
+                                            return entity.name.toUpperCase().includes(AppState.instance.searchValue.toUpperCase()) ? <Button hoverable={true} key={Category[entity.category] + "-" + entity.id} onClick={() => { AppState.instance.currentEntity = entity; }}>{entity.name}</Button> : null
+                                        })
+                                    }
+                                    <Button hoverable={true} onClick={() => {
+                                        Entity.create(AppState.instance.currentCategory!);
+                                    }}>+</Button>
+                                </>
+                        }
+                    </div>
+                </>) : <PlayerCharacterPanel />}
             </div>
             : null}
-        <img style={{
-            position: "fixed",
-            top: 0,
-            left: AppState.instance.showMenu ? AppState.instance.menuWidth : 0,
-            zIndex: 10,
-            transform: `scaleX(${AppState.instance.showMenu ? '1' : '-1'})`,
-            borderBottomRightRadius: AppState.instance.showMenu ? 4 : 0,
-            borderBottomLeftRadius: AppState.instance.showMenu ? 0 : 4,
-            padding: "2px 0",
-            backgroundColor: showMenuHover ? "rgba(255, 255, 255, .75)" : "rgba(255, 255, 255, .5)",
-            opacity: showMenuHover ? 1 : .75,
-        }}
-            onMouseEnter={() => {
-                setShowMenuHover(true);
+        {Game.instance !== null ?
+            <img style={{
+                position: "fixed",
+                top: 0,
+                left: AppState.instance.showMenu ? AppState.instance.menuWidth : 0,
+                zIndex: 10,
+                transform: `scaleX(${AppState.instance.showMenu ? '1' : '-1'})`,
+                borderBottomRightRadius: AppState.instance.showMenu ? 4 : 0,
+                borderBottomLeftRadius: AppState.instance.showMenu ? 0 : 4,
+                padding: "2px 0",
+                backgroundColor: showMenuHover ? "rgba(255, 255, 255, .75)" : "rgba(255, 255, 255, .5)",
+                opacity: showMenuHover ? 1 : .75,
             }}
-            onMouseLeave={() => {
-                setShowMenuHover(false);
-            }}
-            onMouseOut={() => {
-                setShowMenuHover(false);
-            }}
-            alt=""
-            src="./assets/back.png"
-            onClick={() => {
-                AppState.instance.showMenu = !AppState.instance.showMenu;
-            }} />
+                onMouseEnter={() => {
+                    setShowMenuHover(true);
+                }}
+                onMouseLeave={() => {
+                    setShowMenuHover(false);
+                }}
+                onMouseOut={() => {
+                    setShowMenuHover(false);
+                }}
+                alt=""
+                src="./assets/back.png"
+                onClick={() => {
+                    AppState.instance.showMenu = !AppState.instance.showMenu;
+                }} />
+            :
+            null}
     </>
 }
 

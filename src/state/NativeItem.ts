@@ -8,29 +8,6 @@ import Log from "./Log";
 import Stat from "./Stat";
 import { Category } from "./types";
 
-/*models.NativeItem.afterUpdate((item) => {
-    if (item.dataValues.unique !== item._previousDataValues.unique) {
-        models.InventoryItem.destroy({
-            where: { nativeItemId: item.dataValues.id },
-        });
-        if (item.dataValues.unique) {
-            item.update({ currency: false });
-        }
-    }
-    if (
-        item.dataValues.currency !== item._previousDataValues.currency &&
-        item.dataValues.currency
-    ) {
-        item.update({ equippable: false, unique: false });
-    }
-    if (
-        item.dataValues.equippable !== item._previousDataValues.equippable &&
-        item.dataValues.equippable
-    ) {
-        item.update({ currency: false });
-    }
-});*/
-
 export default class NativeItem {
     public readonly category: Category = Category.NativeItem;
     public readonly id!: number;
@@ -40,7 +17,7 @@ export default class NativeItem {
     private _currency: boolean = false;
     private _unique: boolean = true;
     private _equippable: boolean = false;
-    private _notes:string = "";
+    private _notes: string = "";
 
     public logs: EntityList<Log> = new EntityList<Log>();
     public stats: EntityList<Stat> = new EntityList<Stat>();
@@ -54,8 +31,10 @@ export default class NativeItem {
     }
 
     private constructor(data: any) {
-        Entity.build(this, data);
-        this._icon.src = this._iconSrc;
+        if (data) {
+            Entity.build(this, data);
+            this._icon.src = this._iconSrc;
+        }
     }
 
     public get notes() {
@@ -63,7 +42,7 @@ export default class NativeItem {
     }
 
     @$update
-    public set notes(value:string) {
+    public set notes(value: string) {
         this._notes = value;
     }
 
@@ -118,7 +97,7 @@ export default class NativeItem {
         }
         this._unique = value;
     }
-    
+
     public get icon() {
         return this._icon;
     }

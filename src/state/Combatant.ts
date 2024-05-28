@@ -34,11 +34,13 @@ export default class Combatant {
     }
 
     private constructor(data: any) {
-        Entity.build(this, data);
-        this._character = Game.instance!.findCharacter(this._characterId!);
-        this._battlefield = Game.instance!.findEntity(Category.Battlefield, this._battlefieldId!);
-        this._character!.combatants.add(this);
-        this._battlefield!.combatants.add(this);
+        if (data) {
+            Entity.build(this, data);
+            this._character = Game.instance!.findCharacter(this._characterId!);
+            this._battlefield = Game.instance!.findEntity(Category.Battlefield, this._battlefieldId!);
+            this._character!.combatants.add(this);
+            this._battlefield!.combatants.add(this);
+        }
     }
 
     public get character() {

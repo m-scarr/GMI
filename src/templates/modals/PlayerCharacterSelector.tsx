@@ -1,9 +1,10 @@
 import AppState from '../../state/AppState';
 import { observer } from 'mobx-react-lite';
+import { Category, ModalType } from '../../state/types';
+import API from '../../API';
 import Game from '../../state/Game';
-import { ModalType } from '../../state/types';
 
-function GameSelectorModal() {
+function PlayerCharacterSelectorModal() {
   return (
     <div className="modal" style={{ width: "30vw" }} onClick={(e: any) => {
       e.stopPropagation();
@@ -12,28 +13,24 @@ function GameSelectorModal() {
         <div className='hoverable' style={{ padding: 4, borderRadius: 16, paddingBottom: 0 }} onClick={() => { AppState.instance.currentModal = ModalType.ModeSelector }}>
           <img alt="back" src="./assets/back.png" />
         </div>
-        <div style={{ width: "100%" }}>Games</div>
+        <div style={{ width: "100%" }}>Characters</div>
       </div>
       <hr />
       <div style={{ height: "40vh", overflowY: "scroll" }}>
-        {AppState.instance.modals.games.map((game: Game) => {
+        {AppState.instance.modals.playerCharacters.map((playerCharacter: any) => {
           return (
-            <div key={'game-button-' + game.id}>
-              <button key={'game-button-' + game.id} onClick={() => { game.open(); }}>
-                {game.name}
+            <div key={'player-character-button-' + playerCharacter.id}>
+              <button key={'player-character-button-' + playerCharacter.id} onClick={async () => {
+                Game.openPlayerCharacter(await API.read(Category.Hero, playerCharacter.id));
+              }}>
+                {playerCharacter.name}
               </button>
             </div>
           );
         })}
-        <button onClick={async () => {
-          await Game.create();
-          AppState.instance.currentModal = ModalType.GameSelector;
-        }}>
-          +
-        </button>
       </div>
     </div>
   )
 }
 
-export default observer(GameSelectorModal);
+export default observer(PlayerCharacterSelectorModal);

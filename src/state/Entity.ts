@@ -85,18 +85,22 @@ export default abstract class Entity {
     public static [Category.Locale]: any = {
         load: (data: any) => {
             Locale.load(data);
-            data.logs.forEach((log: any) => {
-                Log.load(log);
-            });
+            if (typeof data.logs !== "undefined") {
+                data.logs.forEach((log: any) => {
+                    Log.load(log);
+                });
+            }
         }
     }
 
     public static [Category.NativeItem]: any = {
         load: (data: any) => {
             NativeItem.load(data);
-            data.logs.forEach((log: any) => {
-                Log.load(log);
-            });
+            if (typeof data.logs !== "undefined") {
+                data.logs.forEach((log: any) => {
+                    Log.load(log);
+                });
+            }
             data.stats.forEach((stat: any) => {
                 Stat.load(stat);
             })
@@ -112,6 +116,12 @@ export default abstract class Entity {
             data.inventoryItems.forEach((inventoryItem: any) => {
                 InventoryItem.load(inventoryItem);
             });
+
+            //This is for player's interface
+            if (typeof data.groupMembers !== "undefined" && data.groupMembers.length > 0) {
+                //Group.load(data.groupMembers[0].group);
+                GroupMember.load(data.groupMembers[0]);
+            }
         }
     }
 
@@ -154,12 +164,16 @@ export default abstract class Entity {
     public static [Category.Group]: any = {
         load: (data: any) => {
             Group.load(data);
-            data.logs.forEach((log: any) => {
-                Log.load(log);
-            });
-            data.groupMembers.forEach((groupMember: any) => {
-                GroupMember.load(groupMember);
-            })
+            if (typeof data.logs !== "undefined") {
+                data.logs.forEach((log: any) => {
+                    Log.load(log);
+                });
+            }
+            if (typeof data.groupMembers !== "undefined") {
+                data.groupMembers.forEach((groupMember: any) => {
+                    GroupMember.load(groupMember);
+                });
+            }
         }
     }
 
@@ -171,7 +185,17 @@ export default abstract class Entity {
             });
             data.combatants.forEach((combatant: any) => {
                 Combatant.load(combatant);
-            })
+                if (typeof combatant.character !== "undefined") {
+                    if (combatant.character.category === "Hero") {
+                        Hero.load(combatant.character);
+                    } else if (combatant.character.category === "NPC") {
+                        NPC.load(combatant.character);
+                    } else {
+                        Enemy.load(combatant.character);
+                    }
+                }
+            });
+            // make changes for player's interface
         }
     }
 
@@ -185,11 +209,19 @@ export default abstract class Entity {
     }
 
     public static isVisible(entity: VisibleEntity) {
-        if (entity.category === Category.Hero || entity.category === Category.NPC || entity.category === Category.Enemy)  {
-            return entity.location.localeId === AppState.instance.currentLocale!.id && entity.visible && (entity as any).unique && (entity as any).groupMembers.list.length === 0;
+        if (AppState.instance.gameMasterMode) {
+            if (entity.category == Category.Hero || entity.category == Category.NPC || entity.category == Category.Enemy) {
+                return entity.location.localeId === AppState.instance.currentLocale!.id && entity.visible && (entity as any).unique && (entity as any).groupMembers.list.length === 0;
+            } else {
+                return entity.location.localeId === AppState.instance.currentLocale!.id && entity.visible;
+            }
         } else {
-            return entity.location.localeId === AppState.instance.currentLocale!.id && entity.visible;
-        }        
+            if (AppState.instance.selectedPlayerCharacter !== null && AppState.instance.selectedPlayerCharacter.groupMembers.list.length > 0) {
+                return AppState.instance.selectedPlayerCharacter !== null && entity.category == Category.Group && entity.id === AppState.instance.selectedPlayerCharacter.groupMembers.list[0].group!.id
+            } else {
+                return AppState.instance.selectedPlayerCharacter !== null && entity.category == Category.Hero && entity.id === AppState.instance.selectedPlayerCharacter.id
+            }
+        }
     }
 }
 //locales

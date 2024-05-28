@@ -9,12 +9,13 @@ function CheckButton(props: Props) {
     return (
         <Button>
             <div style={{ display: "flex", flexDirection: "row" }}>
-                <img
-                    alt="check/uncheck"
-                    src={`./assets/checkbox_${props.value ? 'filled' : 'empty'}.png`}
-                    onClick={() => { props.onInput(!props.value); }}
-                />
-                <div style={{width: "100%"}}>
+                <div onClick={() => { props.onInput(!props.value); }} style={{ alignSelf: "stretch", alignContent:"center" }}>
+                    <img
+                        alt="check/uncheck"
+                        src={`./assets/checkbox_${props.value ? 'filled' : 'empty'}.png`}
+                    />
+                </div>
+                <div style={{ width: "100%" }}>
                     {props.children}
                 </div>
             </div>

@@ -25,6 +25,7 @@ module.exports = {
               include: [
                 { model: db.Log, as: "logs" },
                 { model: db.InventoryItem, as: "inventoryItems" },
+                { model: db.User, as: "playerUser", attributes: ["logInName"] }
               ],
             },
             {
@@ -119,3 +120,110 @@ module.exports = {
     },
   },
 };
+
+
+const duplicateGame = async (gameId, userId) => {
+  let game = await db.Game.findOne({
+    where: { id: gameId },
+    include: [
+      {
+        model: db.Character,
+        as: "characters",
+        include: [
+          { model: db.Log, as: "logs" },
+          { model: db.InventoryItem, as: "inventoryItems" },
+        ],
+      },
+      {
+        model: db.Group,
+        as: "groups",
+        include: [
+          { model: db.Log, as: "logs" },
+          { model: db.GroupMember, as: "groupMembers" },
+        ],
+      },
+      {
+        model: db.Cache,
+        as: "caches",
+        include: [
+          { model: db.Log, as: "logs" },
+          { model: db.InventoryItem, as: "inventoryItems" },
+        ],
+      },
+      {
+        model: db.NativeItem,
+        as: "nativeItems",
+        include: [
+          { model: db.Log, as: "logs" },
+          { model: db.Stat, as: "stats" },
+        ],
+      },
+      {
+        model: db.Battlefield,
+        as: "battlefields",
+        include: [
+          { model: db.Log, as: "logs" },
+          { model: db.Combatant, as: "combatants" },
+        ],
+      },
+      {
+        model: db.Event,
+        as: "events",
+        include: [{ model: db.Log, as: "logs" }],
+      },
+      {
+        model: db.Locale,
+        as: "locales",
+        include: [{ model: db.Log, as: "logs" }],
+      },
+    ],
+  })
+
+  if (game !== null) {
+    game = game.toJSON();
+    let oldOverworldLocale = null;
+    for (let i = 0; i < game.locales.length; i++) {
+      const locale = game.locales[i];
+      if (locale.id == game.overworldId) {
+        oldOverworldLocale = locale;
+        break;
+      }
+    }
+    const newGame = await db.Game.create({ name: game.name, userId: userId });
+    const newLocaleIdMap = {};
+    const newLocales = [];
+    for (let i = 0; i < game.locales.length; i++) {
+      const oldLocale = game.locales[i];
+      if (oldLocale.id !== overworldLocale.id) {
+        const newLocale = await db.Locale.create({
+          name: oldLocale.name,
+          localeId: oldLocale.id,
+          x: oldLocale.x,
+          y: oldLocale.y,
+          visible: oldLocale.visible,
+          markerSrc: oldLocale.markerSrc,
+          mapSrc: oldLocale.mapSrc,
+          notes: oldLocale.notes,
+          gameId: newGame.id
+        });
+        newLocales.push(newLocale);
+        newLocaleIdMap[oldLocale.id.toString()] = newLocale.id;
+      }
+    }
+    for (let i = 0; i < newLocales.length; i++) {
+      const newLocale = newLocales[i];
+      const localeId = newLocaleIdMap[newLocale.dataValues.localeId];
+      await newLocale.update({ localeId });
+    }
+    const newOverworldLocale = await db.Locale.findOne({ where: { id: newGame.dataValues.overworldId } });
+    await newOverworldLocale.update({
+      name: oldLocale.name,
+      visible: oldLocale.visible,
+      mapSrc: oldLocale.mapSrc,
+      notes: oldLocale.notes,
+    });
+
+  } else {
+    console.error("The game was not found");
+  }
+}

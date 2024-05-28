@@ -26,7 +26,7 @@ function ItemSelector() {
             <div style={{ transform: "translateX(-6px)", width: "calc(100% + 11px)", height: 250, overflowY: "scroll" }}>
                 {
                     Game.instance![Category.NativeItem].list.map((item: NativeItem) => {
-                        return Entity.hasItem(entity, item) ? null :
+                        return item.name.toUpperCase().includes(searchValue.toUpperCase()) ? Entity.hasItem(entity, item) ? null :
                             <div
                                 key={`item-button-${item.id}`}
                                 onMouseEnter={() => {
@@ -43,7 +43,7 @@ function ItemSelector() {
                                 }}>
                                     {item.name}
                                 </Button>
-                            </div>
+                            </div> : null
                     })
                 }
             </div>

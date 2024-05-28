@@ -19,7 +19,7 @@ export default class Group {
     private _y: number | null = null;
     private _visible: boolean = true;
     private _markerSrc: string = "./assets/event.png";
-    private _notes:string = "";
+    private _notes: string = "";
 
     private _marker: HTMLImageElement = new Image();
     public groupMembers: EntityList<GroupMember> = new EntityList<GroupMember>();
@@ -33,8 +33,10 @@ export default class Group {
     }
 
     private constructor(data: any) {
-        Entity.build(this, data);
-        this._marker.src = this._markerSrc;
+        if (data) {
+            Entity.build(this, data);
+            this._marker.src = this._markerSrc;
+        }
     }
 
     public get marker() {
@@ -44,22 +46,22 @@ export default class Group {
     public get visible() {
         return this._visible;
     }
-        
+
     public get name(): string {
         return this._name;
     }
-     
+
     @$update
     public set visible(newVal: boolean) {
         this._visible = newVal;
     }
-    
+
     public get notes(): string {
         return this._notes;
     }
-       
+
     @$update
-    public set notes(newVal:string) {
+    public set notes(newVal: string) {
         this._notes = newVal;
     }
 
@@ -89,7 +91,7 @@ export default class Group {
     public set name(value: string) {
         this._name = value;
     }
-    
+
     @$delete
     public delete() {
         this.forceDelete();

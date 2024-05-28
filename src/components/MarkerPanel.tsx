@@ -11,8 +11,8 @@ function MarkerPanel({ }: Props) {
     const [entity, setEntity] = useState<any>(AppState.instance.currentEntity);
 
     const [visibilityEnabled, setVisibilityEnabled] =
-        useState<boolean>(typeof (AppState.instance.currentEntity as any).unique === "undefined" || ((AppState.instance.currentEntity as any).unique &&
-            (typeof (AppState.instance.currentEntity as any).groupMembers === "undefined" || (AppState.instance.currentEntity as any).groupMembers.list.length < 1)));
+        useState<boolean>(AppState.instance.gameMasterMode && (typeof (AppState.instance.currentEntity as any).unique === "undefined" || ((AppState.instance.currentEntity as any).unique &&
+            (typeof (AppState.instance.currentEntity as any).groupMembers === "undefined" || (AppState.instance.currentEntity as any).groupMembers.list.length < 1))));
 
     const [placingEnabled, setPlacingEnabled] =
         useState<boolean>(typeof (AppState.instance.currentEntity as any).unique === "undefined" || ((AppState.instance.currentEntity as any).unique &&
@@ -34,8 +34,8 @@ function MarkerPanel({ }: Props) {
 
     useEffect(() => {
         setEntity(AppState.instance.currentEntity)
-        setVisibilityEnabled(typeof (AppState.instance.currentEntity as any).unique === "undefined" || ((AppState.instance.currentEntity as any).unique &&
-            (typeof (AppState.instance.currentEntity as any).groupMembers === "undefined" || (AppState.instance.currentEntity as any).groupMembers.list.length < 1)));
+        setVisibilityEnabled(AppState.instance.gameMasterMode && (typeof (AppState.instance.currentEntity as any).unique === "undefined" || ((AppState.instance.currentEntity as any).unique &&
+            (typeof (AppState.instance.currentEntity as any).groupMembers === "undefined" || (AppState.instance.currentEntity as any).groupMembers.list.length < 1))));
         setPlacingEnabled(typeof (AppState.instance.currentEntity as any).unique === "undefined" || ((AppState.instance.currentEntity as any).unique &&
             (typeof (AppState.instance.currentEntity as any).groupMembers === "undefined" || (AppState.instance.currentEntity as any).groupMembers.list.length < 1)));
         setGoToEnabled(typeof (AppState.instance.currentEntity as any).unique === "undefined" || (AppState.instance.currentEntity as any).unique);
@@ -44,8 +44,8 @@ function MarkerPanel({ }: Props) {
     if (typeof (AppState.instance.currentEntity as any).groupMembers !== "undefined") {
         useEffect(() => {
             setEntity(AppState.instance.currentEntity)
-            setVisibilityEnabled(typeof (AppState.instance.currentEntity as any).unique === "undefined" || ((AppState.instance.currentEntity as any).unique &&
-                (typeof (AppState.instance.currentEntity as any).groupMembers === "undefined" || (AppState.instance.currentEntity as any).groupMembers.list.length < 1)));
+            setVisibilityEnabled(AppState.instance.gameMasterMode && (typeof (AppState.instance.currentEntity as any).unique === "undefined" || ((AppState.instance.currentEntity as any).unique &&
+                (typeof (AppState.instance.currentEntity as any).groupMembers === "undefined" || (AppState.instance.currentEntity as any).groupMembers.list.length < 1))));
             setPlacingEnabled(typeof (AppState.instance.currentEntity as any).unique === "undefined" || ((AppState.instance.currentEntity as any).unique &&
                 (typeof (AppState.instance.currentEntity as any).groupMembers === "undefined" || (AppState.instance.currentEntity as any).groupMembers.list.length < 1)));
             setGoToEnabled(typeof (AppState.instance.currentEntity as any).unique === "undefined" || (AppState.instance.currentEntity as any).unique);

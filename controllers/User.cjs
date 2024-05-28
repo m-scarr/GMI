@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const db = require("../models/index.cjs");
+const { Op } = require('sequelize');
 
 module.exports = {
   unauthorized: {
@@ -37,5 +38,16 @@ module.exports = {
       req.logout();
       res.json(true);
     },
+    search: async (req, res) => {
+      const users = await db.User.findAll({
+        where: {
+          logInName: {
+            [Op.like]: `%${req.query.logInName}%`
+          }
+        },
+        attributes: ["logInName", "id"]
+      });
+      res.json(users);
+    }
   },
 };

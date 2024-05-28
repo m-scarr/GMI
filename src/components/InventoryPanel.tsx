@@ -5,6 +5,7 @@ import { ModalType } from "../state/types";
 import Button from "./Button";
 import NumberInput from "./inputs/NumberInput";
 import { useEffect, useState } from "react";
+import { toJS } from "mobx";
 
 function InventoryPanel() {
     const [entity, setEntity] = useState<any>(AppState.instance.currentEntity);
@@ -35,7 +36,12 @@ export default observer(InventoryPanel)
 
 const InventoryItemPanel = observer(function InventoryItemPanel(props: { inventoryItem: InventoryItem }) {
     const [quantity, setQuantity] = useState<number>(props.inventoryItem.quantity);
+    const [equipped, setEquipped] = useState<boolean>(props.inventoryItem.equipped);
     useEffect(() => { setQuantity(props.inventoryItem.quantity); }, [props.inventoryItem, props.inventoryItem.quantity])
+    useEffect(() => {
+        setEquipped(props.inventoryItem.equipped);
+
+    }, [props.inventoryItem, props.inventoryItem.equipped])
     const unique = props.inventoryItem.nativeItem!.unique;
     const equippable = props.inventoryItem.nativeItem!.equippable;
     return <div
@@ -52,11 +58,11 @@ const InventoryItemPanel = observer(function InventoryItemPanel(props: { invento
                 {equippable ?
                     <div className="hoverable" style={{ alignSelf: "stretch", alignContent: "center", transform: "translateX(-6px)" }}
                         onClick={() => {
-                            const newVal = !props.inventoryItem.equipped;
+                            const newVal = !equipped;
                             props.inventoryItem.equipped = newVal;
                             AppState.instance.setModalData("item", ["equipped"], newVal);
                         }}>
-                        <img alt="" src={`./assets/checkbox_${props.inventoryItem.equipped ? 'filled' : 'empty'}.png`} />
+                        <img alt="" src={`./assets/checkbox_${equipped ? 'filled' : 'empty'}.png`} />
                     </div> : null
                 }
                 <div style={{ width: "100%" }}>

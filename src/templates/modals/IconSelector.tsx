@@ -2,9 +2,7 @@ import { observer } from "mobx-react-lite";
 import AppState, { checkImageSrc } from "../../state/AppState";
 import NativeItem from "../../state/NativeItem";
 
-type Props = {}
-
-function IconSelector({ }: Props) {
+function IconSelectorModal() {
     return (
         <div className="modal" style={{ display: "flex", flexDirection: "column", width: "80%" }} onClick={(e: any) => {
             e.stopPropagation();
@@ -67,4 +65,4 @@ function IconSelector({ }: Props) {
     )
 }
 
-export default observer(IconSelector);
+export default observer(IconSelectorModal);

@@ -4,9 +4,7 @@ import NotePanel from '../components/NotePanel';
 import LogPanel from '../components/LogPanel';
 import DeleteButton from '../components/DeleteButton';
 
-type Props = {}
-
-function EventPanel({ }: Props) {
+function EventPanel() {
     return (
         <>
             <MarkerPanel />

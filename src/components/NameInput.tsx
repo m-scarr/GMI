@@ -18,11 +18,11 @@ const NameInput = (_props: Props) => {
 
     return AppState.instance.currentCategory === null ? null : (
         <div style={{ backgroundColor: (refData as any)[AppState.instance.currentCategory].color, display: "flex", flexDirection: "row" }}>
-            <div className='hoverable' style={{ padding: 1, alignSelf: "stretch", alignContent: "center" }}>
+            {AppState.instance.gameMasterMode ? <div className='hoverable' style={{ padding: 1, alignSelf: "stretch", alignContent: "center" }}>
                 <div style={{ alignSelf: "stretch", alignContent: "center" }} onClick={() => { AppState.instance.currentEntity = null }} >
                     <img src="./assets/back.png" />
                 </div>
-            </div>
+            </div> : null}
             <div style={{ width: "100%", padding: 1 }}>
                 <TextInput
                     locking={true}

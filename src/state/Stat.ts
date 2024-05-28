@@ -21,9 +21,11 @@ export default class Stat {
     }
 
     private constructor(data: any) {
-        Entity.build(this, data);
-        this._nativeItem = Game.instance!.findEntity(Category.NativeItem, this._nativeItemId!);
-        this._nativeItem!.stats.add(this);
+        if (data) {
+            Entity.build(this, data);
+            this._nativeItem = Game.instance!.findEntity(Category.NativeItem, this._nativeItemId!);
+            this._nativeItem!.stats.add(this);
+        }
     }
 
     public get nativeItem() {

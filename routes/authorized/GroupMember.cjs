@@ -5,11 +5,11 @@ const router = require("express").Router();
 
 const permissionMiddleWare = {
   create: async (req, res, next) => {
+    console.log(req.body)
     req.preparedData = permissionsController.limitAttributes(req.body, [
       "groupId",
       "characterId",
     ]);
-    console.log(req.body);
     const permissionRequest = await permissionsController.verifyPermission(
       req.user.id,
       req.body.gameMasterMode,
@@ -27,10 +27,10 @@ const permissionMiddleWare = {
   },
 
   update: async (req, res, next) => {
-    if (!req.body.gameMasterMode) {
+    /*if (!req.body.gameMasterMode) {
       res.json(false);
       return;
-    }
+    }*/
     req.preparedData = permissionsController.limitAttributes(req.body, [
       "quantity",
     ]);
@@ -53,7 +53,7 @@ const permissionMiddleWare = {
   },
 
   delete: async (req, res, next) => {
-    if (!req.query.gameMasterMode) {
+    if (!req.query.gameMasterMode == "true") {
       res.json(false);
       return;
     }

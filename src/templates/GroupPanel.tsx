@@ -6,9 +6,7 @@ import MemberSelector from '../components/MemberSelector';
 import Roster from '../components/Roster';
 import DeleteButton from '../components/DeleteButton';
 
-type Props = {}
-
-function GroupPanel({ }: Props) {
+function GroupPanel() {
     return (
         <>
             <MarkerPanel />

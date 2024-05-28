@@ -30,9 +30,11 @@ export default class Locale {
     }
 
     private constructor(data: any) {
-        Entity.build(this, data);
-        this._map.src = this._mapSrc;
-        this._marker.src = this._markerSrc;
+        if (data) {
+            Entity.build(this, data);
+            this._map.src = this._mapSrc;
+            this._marker.src = this._markerSrc;
+        }
 
     }
 
@@ -81,7 +83,7 @@ export default class Locale {
     public get mapSrc() {
         return this._mapSrc;
     }
-    
+
     @$update
     public set mapSrc(value: string) {
         this._mapSrc = value;
@@ -92,7 +94,7 @@ export default class Locale {
     public set name(value: string) {
         this._name = value;
     }
-    
+
     @$delete
     public delete() {
         this.forceDelete();

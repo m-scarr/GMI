@@ -47,7 +47,7 @@ export default function DropDown(props: Props) {
                             </div>
                             <div style={{ height: 240, overflowY: "scroll" }}>
                                 {props.options.map((option: { id: number | null, name: string }) => {
-                                    return option.name.includes(searchValue) ? <div key={option.name + "-" + option.id} className="hoverable">
+                                    return option.name.toUpperCase().includes(searchValue.toUpperCase()) ? <div key={option.name + "-" + option.id} className="hoverable">
                                         <div style={{
                                             backgroundColor: "rgba(255, 255, 255, .15)",
                                             marginTop: 8,

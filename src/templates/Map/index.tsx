@@ -69,7 +69,7 @@ function Map({ }: Props) {
     }, [AppState.instance.goToEntity]);
 
     useEffect(() => {
-        if (AppState.instance.currentLocale !== null) {
+        if (typeof AppState.instance.currentLocale !== "undefined" && AppState.instance.currentLocale !== null && AppState.instance.currentLocale.map !== null && AppState.instance.currentLocale.map.complete) {
             draw(getState(), setState);
         }
         if (zoomFactorGoal && Math.abs(zoomFactor - zoomFactorGoal) > .01) {
@@ -112,7 +112,7 @@ function Map({ }: Props) {
 
     const center = async () => {
         let timeout = 5000
-        while (!AppState.instance.currentLocale!.map.complete && timeout > 0) {
+        while (!AppState.instance.currentLocale?.map.complete && timeout > 0) {
             await wait(1);
             timeout -= 1;
         }
@@ -180,8 +180,14 @@ function Map({ }: Props) {
                     control.mouseWheel(e, getState(), setState);
                 }}
             />
-            <div ref={titleDivRef} style={{ position: "fixed", top: 0, left: (AppState.instance.showMenu ? 320 : 0) + width / 2 - (titleDivRef.current ? titleDivRef.current!.clientWidth / 2 : 16)/* 16 should be div width / 2*/ }}>{AppState.instance.currentLocale?.name}
-                <img alt="" src="./assets/center.png" style={{ transform: "translateX(32px) translateY(8px)" }} onClick={center} /></div>
+            {AppState.instance.currentLocale === null ? <div style={{ position: "fixed", top: height / 2 - 16, left: (AppState.instance.showMenu ? 320 : 0), right: 0 }}>Map Not Available</div> : null}
+            {Game.instance !== null && AppState.instance.currentLocale !== null ?
+                <div ref={titleDivRef} style={{ position: "fixed", top: 0, left: (AppState.instance.showMenu ? 320 : 0) + width / 2 - (titleDivRef.current ? titleDivRef.current!.clientWidth / 2 : 16) }}>
+                    {AppState.instance.currentLocale?.name}
+                    <img alt="" src="./assets/center.png" style={{ transform: "translateX(32px) translateY(8px)" }} onClick={center} />
+                </div>
+                :
+                null}
         </>
     )
 }

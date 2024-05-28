@@ -17,16 +17,35 @@ module.exports = {
     read: async (req, res) => {
       try {
         const character = await db.Character.findOne({
-          where: { playerUserId: req.user.id, id: req.query.characterId },
+          where: {
+            playerUserId: req.user.id,
+            id: req.query.id
+          },
           include: [
-            { model: db.Log, as: "logs", order: [["createdAt", "ASC"]] },
-            { model: db.InventoryItem, as: "inventoryItems" },
+            {
+              model: db.Log,
+              as: "logs",
+              order: [["createdAt", "ASC"]]
+            },
+            {
+              model: db.InventoryItem,
+              as: "inventoryItems"
+            },
             {
               model: db.GroupMember,
               as: "groupMembers",
-              include: [{ model: db.Group, as: "group" }],
+              attributes: ["id", "groupId", "characterId", "quantity"],
+              include: [
+                {
+                  model: db.Group,
+                  as: "group",
+                }
+              ],
             },
-            { model: db.Combatant, as: "combatants" },
+            {
+              model: db.Combatant,
+              as: "combatants"
+            },
           ],
         });
 
@@ -34,6 +53,10 @@ module.exports = {
           res.json(false);
           return;
         }
+
+        const groups = await db.Group.findAll({
+          where: { gameId: character.gameId },
+        })
 
         const nativeItems = await db.NativeItem.findAll({
           where: { gameId: character.gameId },
@@ -62,10 +85,11 @@ module.exports = {
 
         const locale = await db.Locale.findOne({ where: { id: localeId } });
         res.json({
-          character: { ...character.dataValues },
-          nativeItems: [...nativeItems],
-          locale: { ...locale.dataValues },
-          battlefields: [...battlefields],
+          character: character.dataValues,
+          nativeItems,
+          locale: locale !== null ? locale.dataValues : null,
+          battlefields,
+          groups,
         });
         return;
       } catch (err) {

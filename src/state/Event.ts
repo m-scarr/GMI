@@ -28,8 +28,10 @@ export default class Event {
     }
 
     private constructor(data: any) {
-        Entity.build(this, data);
-        this._marker.src = this._markerSrc;
+        if (data) {
+            Entity.build(this, data);
+            this._marker.src = this._markerSrc;
+        }
     }
 
     public get marker() {
@@ -39,12 +41,12 @@ export default class Event {
     public get visible() {
         return this._visible;
     }
-        
+
     @$update
     public set visible(newVal: boolean) {
         this._visible = newVal;
     }
-    
+
     public get name(): string {
         return this._name;
     }

@@ -11,10 +11,14 @@ function ModeSelectorModal({ }: Props) {
     }}>
       I am a...<br /><br />
       <button onClick={() => {
+        AppState.instance.gameMasterMode = true;
         AppState.instance.currentModal = ModalType.GameSelector;
       }}>Game Master</button>
       <hr />
-      <button disabled>Player</button>
+      <button onClick={() => {
+        AppState.instance.gameMasterMode = false;
+        AppState.instance.currentModal = ModalType.PlayerCharacterSelector;
+      }}>Player</button>
     </div>
   )
 }

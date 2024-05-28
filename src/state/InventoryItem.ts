@@ -30,16 +30,18 @@ export default class InventoryItem {
     }
 
     private constructor(data: any) {
-        Entity.build(this, data);
-        this._owner = Game.instance!.findEntity(this._ownerCategory!, this._ownerId!);
-        this._nativeItem = Game.instance!.findEntity(Category.NativeItem, this._nativeItemId!);
-        if (this._nativeItem!.unique) {
-            while (this._nativeItem!.inventoryItems.list.length > 0) {
-                this._nativeItem!.inventoryItems.list[0].forceDelete();
+        if (data) {
+            Entity.build(this, data);
+            this._owner = Game.instance!.findEntity(this._ownerCategory!, this._ownerId!);
+            this._nativeItem = Game.instance!.findEntity(Category.NativeItem, this._nativeItemId!);
+            if (this._nativeItem!.unique) {
+                while (this._nativeItem!.inventoryItems.list.length > 0) {
+                    this._nativeItem!.inventoryItems.list[0].forceDelete();
+                }
             }
+            this._owner!.inventoryItems.add(this);
+            this._nativeItem!.inventoryItems.add(this);
         }
-        this._owner!.inventoryItems.add(this);
-        this._nativeItem!.inventoryItems.add(this);
     }
 
     public get quantity() {

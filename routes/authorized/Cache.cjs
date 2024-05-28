@@ -51,13 +51,13 @@ const permissionMiddleWare = {
   },
 
   delete: async (req, res, next) => {
-    if (!req.query.gameMasterMode) {
+    if (!req.query.gameMasterMode == "true") {
       res.json(false);
       return;
     }
     const permissionRequest = await permissionsController.verifyPermission(
       req.user.id,
-      req.query.gameMasterMode,
+      req.query.gameMasterMode == "true",
       [{ type: "Cache", id: req.query.id }]
     );
     if (!permissionRequest.permitted) {

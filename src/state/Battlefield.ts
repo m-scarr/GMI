@@ -24,8 +24,8 @@ export default class Battlefield {
 
     public combatants: EntityList<Combatant> = new EntityList<Combatant>();
     public logs: EntityList<Log> = new EntityList<Log>();
-    private _marker:HTMLImageElement = new Image();
-    private _map:HTMLImageElement = new Image();
+    private _marker: HTMLImageElement = new Image();
+    private _map: HTMLImageElement = new Image();
 
     @$create
     public static create(): any { }
@@ -35,9 +35,11 @@ export default class Battlefield {
     }
 
     private constructor(data: any) {
-        Entity.build(this, data);
-        this._marker.src = this._markerSrc;
-        this._map.src = this._mapSrc;
+        if (data) {
+            Entity.build(this, data);
+            this._marker.src = this._markerSrc;
+            this._map.src = this._mapSrc;
+        }
     }
 
     public get name(): string {
@@ -55,7 +57,7 @@ export default class Battlefield {
     public get markerSrc() {
         return this._markerSrc;
     }
-    
+
     @$update
     public set markerSrc(value: string) {
         this._markerSrc = value;
@@ -69,7 +71,7 @@ export default class Battlefield {
     public get mapSrc() {
         return this._mapSrc;
     }
-    
+
     @$update
     public set mapSrc(value: string) {
         this._mapSrc = value;
@@ -79,7 +81,7 @@ export default class Battlefield {
     public get visible() {
         return this._visible;
     }
-        
+
     @$update
     public set visible(newVal: boolean) {
         this._visible = newVal;

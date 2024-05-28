@@ -42,6 +42,18 @@ module.exports = (sequelize) => {
 
   InventoryItem.initializeHooks = (models) => {
     models.InventoryItem.afterCreate((inventoryItem) => {
+      models.InventoryItem.findAll({
+        where: {
+          nativeItemId: inventoryItem.dataValues.nativeItemId,
+          ownerCategory: inventoryItem.dataValues.ownerCategory,
+          ownerId: inventoryItem.dataValues.ownerId,
+          id: { [Op.ne]: inventoryItem.dataValues.id },
+        }
+      }).then((result) => {
+        result.forEach((item) => {
+          item.destroy();
+        });
+      });
       models.NativeItem.findByPk(inventoryItem.dataValues.nativeItemId).then(
         (item) => {
           if (item.dataValues.unique) {
@@ -58,7 +70,7 @@ module.exports = (sequelize) => {
     models.InventoryItem.afterUpdate((inventoryItem) => {
       if (
         inventoryItem.dataValues.quantity !==
-          inventoryItem._previousDataValues.quantity &&
+        inventoryItem._previousDataValues.quantity &&
         inventoryItem.dataValues.quantity <= 0
       ) {
         inventoryItem.destroy();

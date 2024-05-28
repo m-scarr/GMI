@@ -24,10 +24,10 @@ const permissionMiddleWare = {
       [
         req.body.gameMasterMode
           ? {
-              type: req.preparedData.ownerCategory,
-              id: req.preparedData.ownerId,
-            }
-          : { type: "Character", id: req.preparedData.characterId },
+            type: req.preparedData.ownerCategory,
+            id: req.preparedData.ownerId,
+          }
+          : { type: "Character", id: req.preparedData.ownerId },
       ]
     );
     if (!permissionRequest.permitted) {
@@ -42,8 +42,8 @@ const permissionMiddleWare = {
       req.entity = await db.Log.findByPk(req.query.id);
       const permissionRequest = await permissionsController.verifyPermission(
         req.user.id,
-        req.query.gameMasterMode,
-        [{ type: req.entity.ownerCategory, id: req.entity.ownerId }]
+        req.query.gameMasterMode == "true",
+        [req.query.gameMasterMode == "true" ? { type: req.entity.ownerCategory, id: req.entity.ownerId } : { type: "Character", id: req.entity.ownerId }]
       );
       if (!permissionRequest.permitted) {
         res.json(false);

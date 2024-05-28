@@ -1,30 +1,32 @@
 import { observer } from 'mobx-react-lite';
 import MarkerPanel from '../components/MarkerPanel';
 import HealthBar from '../components/HealthBar';
-import UniqueButton from '../components/UniqueButton';
 import LogPanel from '../components/LogPanel';
 import ItemSelector from '../components/ItemSelector';
 import InventoryPanel from '../components/InventoryPanel';
-import DeleteButton from '../components/DeleteButton';
 import GroupSelector from '../components/GroupSelector';
-import PlayerUserButton from '../components/PlayerUserButton';
-import PlayerWritePermissionButton from '../components/PlayerWritePermissionButton';
+import { useEffect, useRef } from 'react';
+import NameInput from '../components/NameInput';
+import AppState from '../state/AppState';
 
-function HeroPanel() {
+function PlayerCharacterPanel() {
+    const nameInputRef = useRef<any>(null);
+    useEffect(() => { }, [AppState.instance.tick]);
+
     return (
         <>
+            <div style={{ position: "fixed", zIndex: 5, width: 270 }} ref={nameInputRef}>
+                <NameInput />
+            </div>
+            <div style={{ height: (nameInputRef.current !== null ? nameInputRef.current.clientHeight + 8 : 42) }} />
             <HealthBar />
             <MarkerPanel />
-            <UniqueButton />
             <GroupSelector />
             <InventoryPanel />
             <ItemSelector />
             <LogPanel />
-            <PlayerUserButton />
-            <PlayerWritePermissionButton />
-            <DeleteButton />
         </>
     )
 }
 
-export default observer(HeroPanel);
+export default observer(PlayerCharacterPanel);

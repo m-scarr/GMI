@@ -22,9 +22,11 @@ export default class Log {
     }
 
     private constructor(data: any) {
-        Entity.build(this, data);
-        this._owner = Game.instance!.findEntity(this._ownerCategory!, this._ownerId!);
-        (this._owner as any).logs.add(this);
+        if (data) {
+            Entity.build(this, data);
+            this._owner = Game.instance!.findEntity(this._ownerCategory!, this._ownerId!);
+            (this._owner as any).logs.add(this);
+        }
     }
 
     public get createdAt() {
