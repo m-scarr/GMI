@@ -88,7 +88,7 @@ function Menu({ }: Props) {
                                 </>
                         }
                     </div>
-                </>) : <PlayerCharacterPanel />}
+                </>) : AppState.instance.currentEntity !== null ? <PlayerCharacterPanel /> : null}
             </div>
             : null}
         {Game.instance !== null ?

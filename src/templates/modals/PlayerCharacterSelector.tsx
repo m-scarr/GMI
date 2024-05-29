@@ -18,6 +18,7 @@ function PlayerCharacterSelectorModal() {
       <hr />
       <div style={{ height: "40vh", overflowY: "scroll" }}>
         {AppState.instance.modals.playerCharacters.map((playerCharacter: any) => {
+          console.log(playerCharacter);
           return (
             <div key={'player-character-button-' + playerCharacter.id}>
               <button key={'player-character-button-' + playerCharacter.id} onClick={async () => {

@@ -1,6 +1,8 @@
 import { observer } from 'mobx-react-lite';
 import { Category, ModalType } from '../../state/types';
 import AppState from '../../state/AppState';
+import { useEffect } from 'react';
+import Game from '../../state/Game';
 
 type Props = {}
 

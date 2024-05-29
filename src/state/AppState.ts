@@ -41,7 +41,7 @@ export default class AppState {
     private _currentLocale: Locale | null = null;
     private _droppingMarker: VisibleEntity | null = null;
     private _loading: boolean = false;
-    private _showMenu: boolean = false;
+    private _showMenu: boolean = true;
     private _serverAccess: boolean = false;
     private _selectedPlayerCharacter: Hero | null = null;
     private _tick: boolean = false;
