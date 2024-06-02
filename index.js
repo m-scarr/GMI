@@ -1,13 +1,19 @@
 import http from "http";
 import express from "express";
+import rateLimit from 'express-rate-limit';
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import db from "./models/index.cjs";
 import routes from "./routes/index.cjs";
-import session from "cookie-session";
+import session from "express-session";
 import passportConfig from "./config/passport.cjs";
 import { fileURLToPath } from 'url';
 import path from 'path';
+import RedisStore from 'connect-redis';
+import { createClient } from "redis";
+
+const redisClient = createClient();
+await redisClient.connect().catch(console.error)
 
 const port = process.env.PORT || 8080;
 const app = express();
@@ -32,11 +38,16 @@ app.use(express.json());
 
 app.use(
   session({
+    store: new RedisStore({ client: redisClient }),
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.SESSION_SECRET || "secret",
     cookie: {
-      secure: true,
-      maxAge: 60000,
+      httpOnly: true,
+      secure: env === "production",
+      maxAge: 1000 * 60 * 60 * 24,
+      sameSite: env === "production" ? "strict" : "none",
     },
-    secret: "secret",
   })
 );
 
